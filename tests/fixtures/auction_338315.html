@@ -1,0 +1,3730 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+<!doctype html>
+<html lang="lt">
+  <head>
+    <meta charset="utf-8" />
+    <title>Elektroninių varžytynių ir aukcionų portalas</title>
+    <link
+      rel="shortcut icon"
+      href="/evs/css/img/favicon.ico?v=1791947077056"
+      type="image/x-icon"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="/evs/js/lib/bootstrap/css/bootstrap.min.css?v=1791947077056"
+      media="all"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://fonts.googleapis.com/css?family=Open+Sans:400,700&subset=latin,latin-ext"
+      media="all"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="/evs/js/lib/select2-4.0.0/css/select2.min.css"
+      media="all"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="/evs/css/lib/select2-bootstrap-theme/select2-bootstrap.min.css"
+      media="all"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="/evs/js/lib/bootstrap-slider/css/bootstrap-slider.min.css?v=1791947077056"
+      media="all"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="/evs/css/style.css?v=1791947077056"
+      media="all"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="/evs/css/tablet.css?v=1791947077056"
+      media="screen"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="/evs/css/mobile.css?v=1791947077056"
+      media="screen"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="/evs/css/lib/font-awesome-4.3.0/css/font-awesome.min.css"
+      media="all"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="/evs/js/lib/fancybox/jquery.fancybox.css?v=1791947077056"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="/evs/css/print.css?v=1791947077056"
+      media="print"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="/evs/js/lib/kartik-v-bootstrap-fileinput/css/fileinput.min.css"
+      media="all"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+  </head>
+  <body>
+    <a href="#main-content" class="skip-to-content"
+      >Eiti į turinį</a>
+    <div class="wrapper">
+      <div class="container">
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div id="divErrorBrowserTooOld" class="msg error hidden">
+	Jūsų naršyklė nesuderinama su sistema. Galimas nekorektiškas sistemos veikimas. Tam, kad sistema veiktų korektiškai, privalote įsidiegti Internet Explorer 11, Mozilla Firefox 19, Google Chrome 28, Opera 15 ar naujesnę naršyklės versiją. Jeigu jūsų naršyklė yra naujesnė, patikrinkite ar išjungtas suderinamumo režimas.
+</div>
+
+        <header role="banner">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="row disabled-container d-none-important">
+    <div class="font-wrapper">
+        Šriftas:
+        <a id="font-disabled-1" class="form-control btn btn-primary font-size-1 disabled-button">
+            A
+        </a>
+        <a id="font-disabled-2" class="form-control btn btn-primary font-size-2 disabled-button">
+            A
+        </a>
+        <a id="font-disabled-3" class="form-control btn btn-primary font-size-3 disabled-button">
+            A
+        </a>
+    </div>
+    <div class="background-wrapper">
+        Fonas:
+        <a id="background-disabled-1" class="form-control btn btn-primary disabled-button">
+            Baltas
+        </a>
+        <a id="background-disabled-2" class="form-control btn btn-primary disabled-button">
+            Juodas
+        </a>
+    </div>
+    <div class="image-wrapper">
+        Iliustracijos:
+        <a id="image-disabled-1" class="form-control btn btn-primary disabled-button">
+            Rodyti
+        </a>
+        <a id="image-disabled-2" class="form-control btn btn-primary disabled-button">
+            Slėpti
+        </a>
+    </div>
+</div>
+
+<div class="row padding-vertical-sm">
+	<div class="col-sm-7">
+		<h1 class="logo-heading"><a href="/evs/" id="logo">Varžytynės ir aukcionai</a></h1>
+		<a href="/evs/" aria-label="Meniu" class="mobile_toogle"></a>
+	</div>
+
+	<div class="col-sm-5 mobile-click-to-see">
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="lang pull-right">
+					<a href="" data-open="false" id="disabled-toggle">Neįgaliesiems</a>
+					<a href="#" data-lang="lt" class="linkLocale act">LT</a>
+					<a href="#" data-lang="en" class="linkLocale ">EN</a>
+				</div>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-sm-offset-4 col-sm-4 col-xs-8">
+				
+			</div>
+
+
+			<div class="col-sm-4 col-xs-4 loginBlock">
+				
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	<a id="loginTooltipTrigger" href="#" class="pull-right" aria-expanded="false" aria-haspopup="dialog">
+		<i class="fa fa-sign-in fa-lg"></i> Prisijungti
+	</a>
+
+	<div id="loginTooltip" class="hidden">
+		<div class="container-fluid">
+			<div class="row">
+				<a href="/evs/common/login.do" class="url_login">
+					<i class="fa fa-sign-in fa-lg"></i> Prisijungti per iPasą
+				</a>
+			</div>
+			<div class="row">
+				
+				<a href="/evs/common/login.do?isLoginVIISP=true" class="url_login">
+					<i class="fa fa-sign-in fa-lg"></i> Prisijungti per elektroninius valdžios vartus
+				</a>
+			</div>
+		</div>
+	</div>
+
+			</div>
+		</div>
+	</div>
+</div>
+        </header>
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<nav aria-label="Pagrindinis meniu">
+<ul class="menu clearfix">
+	
+		<li>
+			
+			<a href="/evs/" class="">
+				<span>
+					Pradžia
+
+					
+				</span>
+			</a>
+
+			
+		</li>
+	
+		<li>
+			
+			<a href="/evs/pages/auctions.do" class="act">
+				<span>
+					Varžytynės ir aukcionai
+
+					
+				</span>
+			</a>
+
+			
+		</li>
+	
+		<li>
+			
+			<a href="/evs/about.do" class="">
+				<span>
+					Svarbūs pranešimai
+
+					
+				</span>
+			</a>
+
+			
+		</li>
+	
+		<li>
+			
+			<a href="/evs/legal.do" class="">
+				<span>
+					Teisės aktai
+
+					
+				</span>
+			</a>
+
+			
+		</li>
+	
+		<li>
+			
+			<a href="/evs/gdpr.do" class="">
+				<span>
+					Asmens duomenų apsauga
+
+					
+				</span>
+			</a>
+
+			
+		</li>
+	
+</ul>
+</nav>
+
+
+        <main id="main-content" role="main">
+          <div class="breadCrumbBlock">
+            
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<ul class="breadcrumb">
+	
+	
+		<li>
+			
+				
+					
+					<a href="/evs/" class="">
+					  
+              
+					      Pradžia
+              
+					    
+					  
+					</a>
+				
+				
+			
+		 </li>
+	
+		<li>
+			
+				
+					
+					<a href="/evs/pages/auctions.do" class="nextToLastCrumb">
+					  
+              
+					      Varžytynės ir aukcionai
+              
+					    
+					  
+					</a>
+				
+				
+			
+		 </li>
+	
+		<li>
+			
+				
+				
+				  
+            
+              Nr. 
+            
+            
+          
+				
+			
+		 </li>
+	
+</ul>
+
+            
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<a class="link-print hidden-xs" href="JavaScript:window.print();" >
+	<i class="fa fa-print"></i> Spausdinti
+</a>
+
+          </div>
+          <div class="clearfix"></div>
+
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	<div class="msg info when-xs-margin-horizontal-minus-10">Visi suinteresuoti asmenys, turintys teises į parduodamą turtą, iki varžytynių / aukciono pabaigos turi pateikti varžytynių / aukciono vykdytojui savo teises patvirtinančius dokumentus</div>
+
+
+
+
+
+
+
+
+
+
+<div id="successMessage" class="msg success when-xs-margin-horizontal-minus-10 hidden"></div>
+<div id="errorMessage" class="msg error when-xs-margin-horizontal-minus-10 hidden"></div>
+<div id="warningMessage" class="msg warning when-xs-margin-horizontal-minus-10 hidden"></div>
+
+	
+
+
+          
+	
+    
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2>
+	Nr. 337722
+
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<button type="button" name="back" value="back" class="btn btn-link backButton">
+	<i class="fa fa-caret-left"></i> Atgal
+</button>
+
+
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="info_block">
+	<ul class="list">
+		
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	<li>
+		<div class="left">Likęs laikas iki varžytynių / aukciono pabaigos:</div>
+		<div class="right text-nowrap">
+			<span id="timeLeft"></span>
+		</div>
+		<div class="right">
+			<span id="auctionEndDateChanged" class="msg info hidden">
+				Varžytynių / aukciono laikas pratęstas papildomam terminui, nes iki nustatytos varžytynių / aukciono pabaigos buvo atliktas bent vienas kainos kėlimas.
+			</span>
+		</div>
+	</li>
+
+
+		<li class="hideOnAuctionEnding">
+			<span class="left">
+				Didžiausia pasiūlyta kaina:
+			</span>
+
+			<div id="maxBidDiv" class="right ">
+				<span id="maxBid">
+					0
+				</span>
+				
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	<span class="bidStatusTag label hidden" title="Kaina dar nepakelta"></span>
+
+
+				
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" src="/evs/js/lib/jquery/jquery-2.1.4.min.js"></script>
+
+<script>
+	$(document).on("click", "#priceHistory", function (e) {
+		e.preventDefault();
+
+		$('#priceHistory').fancybox({
+			autoSize: false,
+			height: $(window).width() < 768 ? 600 : 480,
+			width: 1000,
+			afterShow: function() {
+				const iframeSelector = ".fancybox-iframe"
+				const iframeBody = $(iframeSelector).contents().find("body");
+				$(iframeBody).css('min-width', 'auto')
+				$(iframeSelector).attr("title", "Mano pasiūlytų kainų istorija");
+			}
+		});
+	});
+</script>
+
+
+
+
+			</div>
+		</li>
+
+		
+
+		<li id="liAuctionEndingHider" class="hidden">
+			<span class="left">&nbsp;</span>
+			<div class="right font-lg">
+				Varžytynės / aukcionas baigiamas, palaukite.
+			</div>
+		</li>
+
+		
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	</ul>
+</div>
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+    //document.getElementById("bidInput").addEventListener("keypress", priceValidator);
+    // var timer = null;
+    // $('#bidInput').keyup(function(){
+    //     clearTimeout(timer);
+    //     timer = setTimeout(priceValidator, 500);
+    //     document.getElementById("bidInput").value = document.getElementById("bidInput").value.replace(/(\d)(?=(\d{3})+$)/g, '$1 ');
+    // });
+	//
+    // function priceValidator(){
+    //     if(document.getElementById("bidInput").value/9.999 >parseInt($('#minValidBid').text())){
+    //         $('#exampleModal').modal('show');
+    //     }
+    // }
+</script>
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+		
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+
+	<div class="load_block">
+		<div class="clearfix">
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<ul class="list">
+	
+		<li>
+			<span class="left">Tipas:</span>
+			<span class="right" >Pirmosios</span>
+		</li>
+	
+	<li>
+		<span class="left">Būsena:</span>
+		<span class="right" >
+			<span class="label label-primary">Vykstančios</span>
+			<span class="label label-default">Antstolių varžytynės</span>
+		</span>
+	</li>
+	
+	
+
+
+
+	<li class="sep">
+		<span class="left">Pradžios data:</span>
+		<span class="right" >2026-09-15 09:11:06</span>
+	</li>
+	<li>
+		<span class="left">Pabaigos data:</span>
+		<span id="showableAuctionEndDate" class="right" >
+			2026-10-15 09:11:59
+		</span>
+	</li>
+
+	
+	
+	
+	<li>
+		<span class="left">
+			
+				
+					Dalyvio mokestis:
+				
+				
+			
+		</span>
+		<span class="right" >348 Eur</span>
+	</li>
+
+	
+	<li>
+		
+			
+			
+				<span class="left">Pradinė pardavimo kaina:</span>
+				<span class="right" >3 480 Eur</span>
+			
+		
+	</li>
+	
+	
+</ul>
+
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="additional_block">REDACTED</div>
+
+			
+		</div>
+	</div>
+
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<ul class="additional_info">
+	<li>
+		<span class="left">Turto apžiūra:</span>
+		<span class="right">REDACTED</span>
+
+	</li>
+
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+<div id="mapScaleDiv" class="hidden">
+  <div class="col-xs-12">
+    <div class="text-center">
+      <button
+        id="mapMagnify"
+        type="submit"
+        class="btn btn-primary"
+        aria-label="Priartinti"
+      >
+        <i class="fa fa-lg fa-search-plus" aria-hidden="true"></i>
+      </button>
+
+      <input
+        type="text"
+        name="mapScale"
+        class="map-slider"
+        aria-label="Å½emÄlapio mastelis"
+        data-slider-tooltip="always"
+        data-slider-tooltip-position="top"
+        data-slider-min="1000"
+        data-slider-max="10000"
+        data-slider-step="1000"
+        data-slider-value="3000"
+        data-slider-ticks="[1000, 2000, 3000, 4000, 5000, 6000, 7000, 8000, 9000, 10000]"
+        style="width: 61%"
+      />
+
+      <button
+        id="mapCompress"
+        type="submit"
+        class="btn btn-primary"
+        aria-label="Nutolinti"
+      >
+        <i class="fa fa-lg fa-search-minus" aria-hidden="true"></i>
+      </button>
+    </div>
+  </div>
+</div>
+
+
+	<li>
+		<span class="left">Parduodamo turto vieta:</span>
+		<span class="right">
+			
+
+				<a href="https://www.eaukcionai.lt/evs/pages/map/photo.jpg?mapObjectId=1374279&mapScale=1000" rel="galleryMapPhotos"
+					class="url fancybox-map fancybox.image hidden">
+					<i class="fa fa-map-marker"></i> Žemėlapis
+				</a>
+
+			
+
+				<a href="https://www.eaukcionai.lt/evs/pages/map/photo.jpg?mapObjectId=1374279&mapScale=2000" rel="galleryMapPhotos"
+					class="url fancybox-map fancybox.image hidden">
+					<i class="fa fa-map-marker"></i> Žemėlapis
+				</a>
+
+			
+
+				<a href="https://www.eaukcionai.lt/evs/pages/map/photo.jpg?mapObjectId=1374279&mapScale=3000" rel="galleryMapPhotos"
+					class="url fancybox-map fancybox.image ">
+					<i class="fa fa-map-marker"></i> Žemėlapis
+				</a>
+
+			
+
+				<a href="https://www.eaukcionai.lt/evs/pages/map/photo.jpg?mapObjectId=1374279&mapScale=4000" rel="galleryMapPhotos"
+					class="url fancybox-map fancybox.image hidden">
+					<i class="fa fa-map-marker"></i> Žemėlapis
+				</a>
+
+			
+
+				<a href="https://www.eaukcionai.lt/evs/pages/map/photo.jpg?mapObjectId=1374279&mapScale=5000" rel="galleryMapPhotos"
+					class="url fancybox-map fancybox.image hidden">
+					<i class="fa fa-map-marker"></i> Žemėlapis
+				</a>
+
+			
+
+				<a href="https://www.eaukcionai.lt/evs/pages/map/photo.jpg?mapObjectId=1374279&mapScale=6000" rel="galleryMapPhotos"
+					class="url fancybox-map fancybox.image hidden">
+					<i class="fa fa-map-marker"></i> Žemėlapis
+				</a>
+
+			
+
+				<a href="https://www.eaukcionai.lt/evs/pages/map/photo.jpg?mapObjectId=1374279&mapScale=7000" rel="galleryMapPhotos"
+					class="url fancybox-map fancybox.image hidden">
+					<i class="fa fa-map-marker"></i> Žemėlapis
+				</a>
+
+			
+
+				<a href="https://www.eaukcionai.lt/evs/pages/map/photo.jpg?mapObjectId=1374279&mapScale=8000" rel="galleryMapPhotos"
+					class="url fancybox-map fancybox.image hidden">
+					<i class="fa fa-map-marker"></i> Žemėlapis
+				</a>
+
+			
+
+				<a href="https://www.eaukcionai.lt/evs/pages/map/photo.jpg?mapObjectId=1374279&mapScale=9000" rel="galleryMapPhotos"
+					class="url fancybox-map fancybox.image hidden">
+					<i class="fa fa-map-marker"></i> Žemėlapis
+				</a>
+
+			
+
+				<a href="https://www.eaukcionai.lt/evs/pages/map/photo.jpg?mapObjectId=1374279&mapScale=10000" rel="galleryMapPhotos"
+					class="url fancybox-map fancybox.image hidden">
+					<i class="fa fa-map-marker"></i> Žemėlapis
+				</a>
+
+			
+		</span>
+
+
+
+
+
+	</li>
+
+
+</ul>
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	<div class="product_desc">
+		<h2>
+			
+				
+				
+					Parduodamas turtas: Žemės sklypas
+				
+			
+		</h2>
+
+		<div class="clearfix mobile_hide">
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="gallery" data-estate-id="431736" role="group" aria-label="Žemės sklypas">
+	
+
+		
+			<ul class="bx-slider-for-estate-id431736">
+				
+					<li>
+						
+
+						
+							
+								
+								
+							
+							
+						
+
+
+						<a href="/evap-image/image/338315/912164/hd" class="fancybox-gallery fancybox.image" rel="gallery431736"
+						title="1.jpg" aria-label="1.jpg" data-secondary-title=""
+						data-slider-picture-url="/evap-image/image/338315/912164/big">
+
+							
+								<img src="/evap-image/image/338315/912164/big" title="1.jpg" alt="1.jpg" />
+							
+
+						</a>
+					</li>
+				
+					<li>
+						
+
+						
+							
+								
+								
+							
+							
+						
+
+
+						<a href="/evap-image/image/338315/912165/hd" class="fancybox-gallery fancybox.image" rel="gallery431736"
+						title="2.jpg" aria-label="2.jpg" data-secondary-title=""
+						data-slider-picture-url="/evap-image/image/338315/912165/big">
+
+							
+
+						</a>
+					</li>
+				
+					<li>
+						
+
+						
+							
+								
+								
+							
+							
+						
+
+
+						<a href="/evap-image/image/338315/912166/hd" class="fancybox-gallery fancybox.image" rel="gallery431736"
+						title="3.jpg" aria-label="3.jpg" data-secondary-title=""
+						data-slider-picture-url="/evap-image/image/338315/912166/big">
+
+							
+
+						</a>
+					</li>
+				
+			</ul>
+
+			<ul class="estate-pictures-pager bx-slider-pager-for-estate-id431736">
+				
+					<li>
+						<a data-slide-index="0" href="#" aria-label="1.jpg">
+							<img src="/evap-image/image/338315/912164/small" title="1.jpg" alt="1.jpg" />
+						</a>
+					</li>
+				
+					<li>
+						<a data-slide-index="1" href="#" aria-label="2.jpg">
+							<img src="/evap-image/image/338315/912165/small" title="2.jpg" alt="2.jpg" />
+						</a>
+					</li>
+				
+					<li>
+						<a data-slide-index="2" href="#" aria-label="3.jpg">
+							<img src="/evap-image/image/338315/912166/small" title="3.jpg" alt="3.jpg" />
+						</a>
+					</li>
+				
+			</ul>
+		
+
+
+
+		
+	
+</div>
+
+		<ul class="list">
+				
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	<li>
+		<span class="left">
+
+			
+				
+				
+					Parduodama turto dalis:</span>
+				
+			
+
+		<span class="right">1092/2184</span>
+	</li>
+
+
+
+
+	<li>
+		<span class="left">Bendras turto plotas:</span>
+		<span class="right">
+		
+			
+
+			
+				21,84&#32;
+				a.&#32;
+				(0,22
+				&#32;ha.)
+			
+			
+		</span>
+	</li>
+
+	<li>
+
+		<span class="left">
+
+			
+				
+			
+				Parduodamo turto dalies plotas:</span>
+			
+			
+
+		<span class="right">
+
+			
+
+			
+				10,92&#32;
+				a.&#32;
+				(0,11
+				&#32;ha.)
+			
+
+		</span>
+	</li>
+
+
+
+
+			<li>
+				<span class="left">Turto potipis:</span>
+				<span class="right">
+						
+							
+							
+								Sklypai
+							
+						
+					</span>
+				</li>
+				
+				<li>
+					<span class="left">Aprašymas:</span>
+					<span class="right">REDACTED</span>
+				</li>
+				
+				
+				
+					<li>
+						<span class="left">Savininkai:</span>
+						<span class="right">REDACTED</span>
+					</li>
+				
+				
+					<li>
+						<span class="left">Turto nuosavybės apribojimai:</span>
+						<span class="right">
+							
+								
+								Disponavimo teisės apribojimas
+							
+								
+									<br />
+								
+								Turto areštas
+							
+						</span>
+					</li>
+				
+
+				
+
+				
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	<li>
+		<span class="left">Unikalus Nr.:</span>
+		<span class="right">4400-0966-6952</span>
+	</li>
+	
+		<li>
+			<span class="left">Kadastrinis Nr.:</span>
+			<span class="right">5424/0001:194</span>
+		</li>
+	
+	<li>
+		<span class="left">Adresas:</span>
+		<span class="right">Kelmės r. sav. Kiaunorių k. Vingio g. 11</span>
+	</li>
+	
+	
+		
+	
+
+	
+		
+	
+
+				
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+			</ul>
+		</div>
+	</div>
+
+	<div class="product_desc">
+		<h2>
+			
+				
+				
+					Parduodamas turtas: Gyvenamas namas
+				
+			
+		</h2>
+
+		<div class="clearfix mobile_hide">
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="gallery" data-estate-id="431737" role="group" aria-label="Gyvenamas namas">
+	
+
+		
+
+
+
+		
+			<ul>
+				<li>
+					<span class="default-estate-list-photo NEKILN PASTATAI">
+						Pastatai
+					</span>
+				</li>
+			</ul>
+		
+	
+</div>
+
+		<ul class="list">
+				
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	<li>
+		<span class="left">
+
+			
+				
+				
+					Parduodama turto dalis:</span>
+				
+			
+
+		<span class="right">1/2</span>
+	</li>
+
+
+
+
+	<li>
+		<span class="left">Bendras turto plotas:</span>
+		<span class="right">
+		
+			
+				136,9&#32;
+				kv. m
+			
+
+			
+			
+		</span>
+	</li>
+
+	<li>
+
+		<span class="left">
+
+			
+				
+			
+				Parduodamo turto dalies plotas:</span>
+			
+			
+
+		<span class="right">
+
+			
+				68,45&#32;
+				kv. m
+			
+
+			
+
+		</span>
+	</li>
+
+
+
+
+			<li>
+				<span class="left">Turto potipis:</span>
+				<span class="right">
+						
+							
+							
+								Pastatai
+							
+						
+					</span>
+				</li>
+				
+				<li>
+					<span class="left">Aprašymas:</span>
+					<span class="right">REDACTED</span>
+				</li>
+				
+				
+				
+					<li>
+						<span class="left">Savininkai:</span>
+						<span class="right">REDACTED</span>
+					</li>
+				
+				
+					<li>
+						<span class="left">Turto nuosavybės apribojimai:</span>
+						<span class="right">
+							
+								
+								Disponavimo teisės apribojimas
+							
+								
+									<br />
+								
+								Turto areštas
+							
+						</span>
+					</li>
+				
+
+				
+
+				
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	<li>
+		<span class="left">Unikalus Nr.:</span>
+		<span class="right">5499-0004-8011</span>
+	</li>
+	
+	<li>
+		<span class="left">Adresas:</span>
+		<span class="right">Kelmės r. sav. Kiaunorių k. Vingio g. 11</span>
+	</li>
+	
+	
+
+	
+		
+	
+
+				
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+			</ul>
+		</div>
+	</div>
+
+	<div class="product_desc">
+		<h2>
+			
+				
+				
+					Parduodamas turtas: Daržinė
+				
+			
+		</h2>
+
+		<div class="clearfix mobile_hide">
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="gallery" data-estate-id="431738" role="group" aria-label="Daržinė">
+	
+
+		
+
+
+
+		
+			<ul>
+				<li>
+					<span class="default-estate-list-photo NEKILN PASTATAI">
+						Pastatai
+					</span>
+				</li>
+			</ul>
+		
+	
+</div>
+
+		<ul class="list">
+				
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	<li>
+		<span class="left">
+
+			
+				
+				
+					Parduodama turto dalis:</span>
+				
+			
+
+		<span class="right">1/2</span>
+	</li>
+
+
+
+
+
+
+	<li>
+		<span class="left">Užstatytas plotas:</span>
+		<span class="right">
+			34&#32;
+			kv. m
+		</span>
+	</li>
+
+
+			<li>
+				<span class="left">Turto potipis:</span>
+				<span class="right">
+						
+							
+							
+								Pastatai
+							
+						
+					</span>
+				</li>
+				
+				<li>
+					<span class="left">Aprašymas:</span>
+					<span class="right">REDACTED</span>
+				</li>
+				
+				
+				
+					<li>
+						<span class="left">Savininkai:</span>
+						<span class="right">REDACTED</span>
+					</li>
+				
+				
+					<li>
+						<span class="left">Turto nuosavybės apribojimai:</span>
+						<span class="right">
+							
+								
+								Disponavimo teisės apribojimas
+							
+								
+									<br />
+								
+								Turto areštas
+							
+						</span>
+					</li>
+				
+
+				
+
+				
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	<li>
+		<span class="left">Unikalus Nr.:</span>
+		<span class="right">5499-0004-8022</span>
+	</li>
+	
+	<li>
+		<span class="left">Adresas:</span>
+		<span class="right">Kelmės r. sav. Kiaunorių k. Vingio g. 11</span>
+	</li>
+	
+	
+
+	
+		
+	
+
+				
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+			</ul>
+		</div>
+	</div>
+
+	<div class="product_desc">
+		<h2>
+			
+				
+				
+					Parduodamas turtas: Tvartas
+				
+			
+		</h2>
+
+		<div class="clearfix mobile_hide">
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="gallery" data-estate-id="431739" role="group" aria-label="Tvartas">
+	
+
+		
+
+
+
+		
+			<ul>
+				<li>
+					<span class="default-estate-list-photo NEKILN PASTATAI">
+						Pastatai
+					</span>
+				</li>
+			</ul>
+		
+	
+</div>
+
+		<ul class="list">
+				
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	<li>
+		<span class="left">
+
+			
+				
+				
+					Parduodama turto dalis:</span>
+				
+			
+
+		<span class="right">1/2</span>
+	</li>
+
+
+
+
+
+
+	<li>
+		<span class="left">Užstatytas plotas:</span>
+		<span class="right">
+			41&#32;
+			kv. m
+		</span>
+	</li>
+
+
+			<li>
+				<span class="left">Turto potipis:</span>
+				<span class="right">
+						
+							
+							
+								Pastatai
+							
+						
+					</span>
+				</li>
+				
+				<li>
+					<span class="left">Aprašymas:</span>
+					<span class="right">REDACTED</span>
+				</li>
+				
+				
+				
+					<li>
+						<span class="left">Savininkai:</span>
+						<span class="right">REDACTED</span>
+					</li>
+				
+				
+					<li>
+						<span class="left">Turto nuosavybės apribojimai:</span>
+						<span class="right">
+							
+								
+								Disponavimo teisės apribojimas
+							
+								
+									<br />
+								
+								Turto areštas
+							
+						</span>
+					</li>
+				
+
+				
+
+				
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	<li>
+		<span class="left">Unikalus Nr.:</span>
+		<span class="right">5499-0004-8033</span>
+	</li>
+	
+	<li>
+		<span class="left">Adresas:</span>
+		<span class="right">Kelmės r. sav. Kiaunorių k. Vingio g. 11</span>
+	</li>
+	
+	
+
+	
+		
+	
+
+				
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+			</ul>
+		</div>
+	</div>
+
+	<div class="product_desc">
+		<h2>
+			
+				
+				
+					Parduodamas turtas: Ūkinis pastatas
+				
+			
+		</h2>
+
+		<div class="clearfix mobile_hide">
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="gallery" data-estate-id="431740" role="group" aria-label="Ūkinis pastatas">
+	
+
+		
+
+
+
+		
+			<ul>
+				<li>
+					<span class="default-estate-list-photo NEKILN PASTATAI">
+						Pastatai
+					</span>
+				</li>
+			</ul>
+		
+	
+</div>
+
+		<ul class="list">
+				
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	<li>
+		<span class="left">
+
+			
+				
+				
+					Parduodama turto dalis:</span>
+				
+			
+
+		<span class="right">1/2</span>
+	</li>
+
+
+
+
+
+
+	<li>
+		<span class="left">Užstatytas plotas:</span>
+		<span class="right">
+			19&#32;
+			kv. m
+		</span>
+	</li>
+
+
+			<li>
+				<span class="left">Turto potipis:</span>
+				<span class="right">
+						
+							
+							
+								Pastatai
+							
+						
+					</span>
+				</li>
+				
+				<li>
+					<span class="left">Aprašymas:</span>
+					<span class="right">REDACTED</span>
+				</li>
+				
+				
+				
+					<li>
+						<span class="left">Savininkai:</span>
+						<span class="right">REDACTED</span>
+					</li>
+				
+				
+					<li>
+						<span class="left">Turto nuosavybės apribojimai:</span>
+						<span class="right">
+							
+								
+								Disponavimo teisės apribojimas
+							
+								
+									<br />
+								
+								Turto areštas
+							
+						</span>
+					</li>
+				
+
+				
+
+				
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	<li>
+		<span class="left">Unikalus Nr.:</span>
+		<span class="right">5499-0004-8044</span>
+	</li>
+	
+	<li>
+		<span class="left">Adresas:</span>
+		<span class="right">Kelmės r. sav. Kiaunorių k. Vingio g. 11</span>
+	</li>
+	
+	
+
+	
+		
+	
+
+				
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+			</ul>
+		</div>
+	</div>
+
+	<div class="product_desc">
+		<h2>
+			
+				
+				
+					Parduodamas turtas: Ūkinis pastatas
+				
+			
+		</h2>
+
+		<div class="clearfix mobile_hide">
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="gallery" data-estate-id="431741" role="group" aria-label="Ūkinis pastatas">
+	
+
+		
+
+
+
+		
+			<ul>
+				<li>
+					<span class="default-estate-list-photo NEKILN PASTATAI">
+						Pastatai
+					</span>
+				</li>
+			</ul>
+		
+	
+</div>
+
+		<ul class="list">
+				
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	<li>
+		<span class="left">
+
+			
+				
+				
+					Parduodama turto dalis:</span>
+				
+			
+
+		<span class="right">1/2</span>
+	</li>
+
+
+
+
+
+
+	<li>
+		<span class="left">Užstatytas plotas:</span>
+		<span class="right">
+			21&#32;
+			kv. m
+		</span>
+	</li>
+
+
+			<li>
+				<span class="left">Turto potipis:</span>
+				<span class="right">
+						
+							
+							
+								Pastatai
+							
+						
+					</span>
+				</li>
+				
+				<li>
+					<span class="left">Aprašymas:</span>
+					<span class="right">REDACTED</span>
+				</li>
+				
+				
+				
+					<li>
+						<span class="left">Savininkai:</span>
+						<span class="right">REDACTED</span>
+					</li>
+				
+				
+					<li>
+						<span class="left">Turto nuosavybės apribojimai:</span>
+						<span class="right">
+							
+								
+								Disponavimo teisės apribojimas
+							
+								
+									<br />
+								
+								Turto areštas
+							
+						</span>
+					</li>
+				
+
+				
+
+				
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	<li>
+		<span class="left">Unikalus Nr.:</span>
+		<span class="right">5499-0004-8055</span>
+	</li>
+	
+	<li>
+		<span class="left">Adresas:</span>
+		<span class="right">Kelmės r. sav. Kiaunorių k. Vingio g. 11</span>
+	</li>
+	
+	
+
+	
+		
+	
+
+				
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+			</ul>
+		</div>
+	</div>
+
+
+
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+	var urlToSendFrontendLog = "/evs/api/public/log.txt?_csrf=00000000-0000-0000-0000-000000000000";
+</script>
+
+
+	
+	
+		<script type="text/javascript" src="/evs/js/lib/log4javascript/log4javascript_production.js?v=1791947077056"></script>
+	
+
+
+<script type="text/javascript" src="/evs/js/log4javascriptConfig.js?v=1791947077056"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" src="/evs/js/browserDetect.js?v=1791947077056"></script>
+<script type="text/javascript">
+	if ((BrowserDetect.browser == 'Explorer' && BrowserDetect.version < 12)
+			|| (BrowserDetect.browser == 'Firefox' && BrowserDetect.version < 19)
+			|| (BrowserDetect.browser == 'Chrome' && BrowserDetect.version < 28)
+			|| (BrowserDetect.browser == 'Mozilla' && BrowserDetect.version < 11)
+			|| (BrowserDetect.browser == 'Opera' && BrowserDetect.version < 15)) {
+		
+		var el = document.getElementById("divErrorBrowserTooOld");
+		if (el) {
+			el.className = el.className.replace(/\bhidden\b/,'');
+		}
+	}
+
+	ShowIEAlert();
+
+    function isIE() {
+        const ua = window.navigator.userAgent; //Check the userAgent property of the window.navigator object
+        const msie = ua.indexOf('MSIE '); // IE 10 or older
+        const trident = ua.indexOf('Trident/'); //IE 11
+
+        return (msie > 0 || trident > 0);
+    }
+
+
+    //function to show alert if it's IE
+    function ShowIEAlert(){
+        if(isIE()){
+            alert("Informuojame, kad siekiant užtikrinti elektroninės informacijos saugą, artimiausiu metu vartotojams, naudojantiems senesnę nei 11 Internet Explorer naršyklės versiją, www.evarzytynes.lt bus nepasiekiamas. Tam, kad galėtumėte pasiekti visą svetainėje esančią informaciją, maloniai prašome naudoti naujausias interneto naršyklių versijas.\n" +
+                " We inform you, that to ensure electronic information security, in the near future for users, who use older than 11 Internet Explorer browsers versions,  www.evarzytynes.lt will not be available. In order to access all the information on the website, please use the latest versions of web browsers.");
+        }
+    }
+</script>
+
+<script type="text/javascript" src="/evs/js/lib/jquery/jquery-2.1.4.min.js?v=1791947077056"></script>
+<script type="text/javascript" src="/evs/js/lib/bootstrap/js/bootstrap.min.js?v=1791947077056"></script>
+<!--[if lt IE 9]><script type="text/javascript" src="/evs/js/lib/respond.min.js?v=1791947077056"></script><![endif]-->
+<script type="text/javascript" src="/evs/js/lib/URI.js?v=1791947077056"></script>
+<script type="text/javascript" src="/evs/js/lib/momentjs/moment.min.js?v=1791947077056"></script>
+
+<script type="text/javascript" src="/evs/js/common.js?v=1791947077056"></script>
+
+<script type="text/javascript" src="/evs/js/lib/jquery.form.min.js?v=1791947077056"></script>
+
+<script type="text/javascript" src="/evs/js/lib/fancybox/jquery.fancybox.pack.js?v=2.1.5"></script>
+<script type="text/javascript" src="/evs/js/fancyboxConstructor.js?v=1791947077056"></script>
+<script type="text/javascript" src="/evs/js/sessionTimeout.js?v=1791947077056"></script>
+<script type="text/javascript" src="/evs/js/fileViewerConstructor.js?v=1791947077056"></script>
+
+<script type="text/javascript">
+	common.contextPath = '/evs';
+	common.language = 'lt';
+
+	common.csrfHeaderName = 'X-CSRF-TOKEN';
+	common.csrfName = '_csrf';
+	common.csrfToken = '00000000-0000-0000-0000-000000000000';
+
+	
+
+	var NTPserverUrl = common.contextPath + '/api/public/timeDifference.txt';
+</script>
+
+<script type="text/javascript" src="/evs/js/lib/ntp.js?v=1791947077056"></script>
+	<script type="text/javascript" src="/evs/js/lib/jquery.bxslider.min.js?v=1791947077056"></script>
+
+	<script type="text/javascript" src="/evs/js/lib/countdown/jquery.plugin.min.js?v=1791947077056"></script>
+	<script type="text/javascript" src="/evs/js/lib/countdown/jquery.countdown.min.js?v=1791947077056"></script>
+	<script type="text/javascript" src="/evs/js/lib/countdown/jquery.countdown-lt.js?v=1791947077056"></script>
+
+	<script type="text/javascript" src="/evs/js/lib/bootstrap-slider/bootstrap-slider.min.js?v=1791947077056"></script>
+
+	<script type="text/javascript" src="/evs/js/auction/auction.js?v=1791947077056"></script>
+	<script type="text/javascript" src="/evs/js/user.js?v=1791947077056"></script>
+	<script type="text/javascript" src="/evs/js/auction/bidValidator.js?v=1791947077056"></script>
+	<script type="text/javascript" src="/evs/js/auction/auctionProcess.js?v=1791947077056"></script>
+	<script type="text/javascript" src="/evs/js/auction/bid.js?v=1791947077056"></script>
+	<script type="text/javascript" src="/evs/js/auction/autoBid.js?v=1791947077056"></script>
+
+	<script type="text/javascript" src="/evs/js/auction/auctionStatusMessaging.js?v=1791947077056"></script>
+	<script type="text/javascript" src="/evs/js/auction/auctionStatus.js?v=1791947077056"></script>
+	<script type="text/javascript" src="/evs/js/auction/bidStatus.js?v=1791947077056"></script>
+
+	<script type="text/javascript" src="/evs/js/lib/spin.min.js?v=1791947077056"></script>
+
+	<script type="text/javascript" src="/evs/js/infoMsg.js?v=1791947077056"></script>
+	<script type="text/javascript" src="/evs/js/auction/map.js?v=1791947077056"></script>
+	<script type="text/javascript" src="/evs/js/auction/markedAuction.js?v=1791947077056"></script>
+	<script type="text/javascript">
+		markedAuction.addText = 'Įsiminti';
+		markedAuction.removeText = 'Įsimintas';
+	</script>
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+	auction.id = 338315;
+	auction.isAuctionOngoing = true;
+	auction.auctionStateTypeCode = 'VYKSTANCIOS';
+
+	auction.isAuction = false;
+
+	auction.startBid = 3480;
+	auction.maxBid = 0;
+
+	auction.showableAuctionEndDate = moment(parseInt(1792044719999));
+	auction.auctionEndDate = moment(parseInt(1792044719999));
+
+	
+	auction.isUserWinning = false;
+
+
+
+	
+
+
+
+	
+
+
+
+	bidValidator.bidTooBigWarningCoeficient = 1.2;
+	bidValidator.minValidIncrement = 0;
+
+
+
+	
+	auctionStatus.reloadPageUrl = '/evs/pages/auction.do?id=338315';
+
+
+
+	(function(msg, $, undefined) {
+		msg.winning  = 'Laimite';
+		msg.loosing = 'Nelaimite';
+		msg.manoPasiulytaKaina  = 'Mano pasiūlyta kaina';
+		msg.kitoDalyvioPasiulytaKaina = 'Kito dalyvio pasiūlyta kaina';
+		msg.bidStatusWait = 'Palaukite, siunčiame kainos pasiūlymą';
+		msg.failedBid = 'Klaida. Kainos pakelti nepavyko.';
+		msg.bidSent = 'Jūsų siūlymas sėkmingai perduotas.';
+		msg.mastelis  = 'Mastelis';
+		msg.klaidaSinchronizuojant = 'Klaida bandant sinchronizuoti laiką';
+		msg.klaidaGaunantAukcionoStatusa = 'Nepavyko atnaujinti aukciono statuso. Duomenys nėra aktualūs. Pabandykite perkrauti puslapį.';
+
+	} (window.msg = window.msg || {}, jQuery));
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+
+	
+	autoBid.autoBidPageUrl = "/evs/api/autoBid.do?auctionId=338315";
+
+
+
+	
+</script>
+
+        </main>
+      </div>
+      <div class="clearfooter"></div>
+      
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<a id="sessionTimeoutPopupTrigger" class="fancybox-no-close hidden" href="#sessionTimeoutPopupContent" aria-label="Session timeout popup trigger"></a>
+<div id="sessionTimeoutPopupContent"></div>
+    </div>
+
+    <footer class="footer" role="contentinfo">
+      
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="info_row">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="copy">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+
+				<ul class="list">
+					<li>&copy; 2024 Valstybės įmonė Registrų centras</li>
+					<li>
+						
+						<a href="http://info.registrucentras.lt/faq/evs">Informacija ir pagalba</a>
+					</li>
+				</ul>
+
+				<a href="http://www.esparama.lt/" class="url_logo">
+					<img src="/evs/css/img/bottom_logo.jpg" width="127" height="51"
+					alt="Europos Sąjunga. Kuriame Lietuvos ateitį." />
+				</a>
+
+			</div>
+		</div>
+	</div>
+</div>
+
+    </footer>
+  </body>
+</html>
+

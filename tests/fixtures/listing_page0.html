@@ -1,0 +1,9804 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+<!doctype html>
+<html lang="lt">
+  <head>
+    <meta charset="utf-8" />
+    <title>Elektroninių varžytynių ir aukcionų portalas</title>
+    <link
+      rel="shortcut icon"
+      href="/evs/css/img/favicon.ico?v=1791947077056"
+      type="image/x-icon"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="/evs/js/lib/bootstrap/css/bootstrap.min.css?v=1791947077056"
+      media="all"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://fonts.googleapis.com/css?family=Open+Sans:400,700&subset=latin,latin-ext"
+      media="all"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="/evs/js/lib/select2-4.0.0/css/select2.min.css"
+      media="all"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="/evs/css/lib/select2-bootstrap-theme/select2-bootstrap.min.css"
+      media="all"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="/evs/js/lib/bootstrap-slider/css/bootstrap-slider.min.css?v=1791947077056"
+      media="all"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="/evs/css/style.css?v=1791947077056"
+      media="all"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="/evs/css/tablet.css?v=1791947077056"
+      media="screen"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="/evs/css/mobile.css?v=1791947077056"
+      media="screen"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="/evs/css/lib/font-awesome-4.3.0/css/font-awesome.min.css"
+      media="all"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="/evs/js/lib/fancybox/jquery.fancybox.css?v=1791947077056"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="/evs/css/print.css?v=1791947077056"
+      media="print"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="/evs/js/lib/kartik-v-bootstrap-fileinput/css/fileinput.min.css"
+      media="all"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+  </head>
+  <body>
+    <a href="#main-content" class="skip-to-content"
+      >Eiti į turinį</a>
+    <div class="wrapper">
+      <div class="container">
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div id="divErrorBrowserTooOld" class="msg error hidden">
+	Jūsų naršyklė nesuderinama su sistema. Galimas nekorektiškas sistemos veikimas. Tam, kad sistema veiktų korektiškai, privalote įsidiegti Internet Explorer 11, Mozilla Firefox 19, Google Chrome 28, Opera 15 ar naujesnę naršyklės versiją. Jeigu jūsų naršyklė yra naujesnė, patikrinkite ar išjungtas suderinamumo režimas.
+</div>
+
+        <header role="banner">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="row disabled-container d-none-important">
+    <div class="font-wrapper">
+        Šriftas:
+        <a id="font-disabled-1" class="form-control btn btn-primary font-size-1 disabled-button">
+            A
+        </a>
+        <a id="font-disabled-2" class="form-control btn btn-primary font-size-2 disabled-button">
+            A
+        </a>
+        <a id="font-disabled-3" class="form-control btn btn-primary font-size-3 disabled-button">
+            A
+        </a>
+    </div>
+    <div class="background-wrapper">
+        Fonas:
+        <a id="background-disabled-1" class="form-control btn btn-primary disabled-button">
+            Baltas
+        </a>
+        <a id="background-disabled-2" class="form-control btn btn-primary disabled-button">
+            Juodas
+        </a>
+    </div>
+    <div class="image-wrapper">
+        Iliustracijos:
+        <a id="image-disabled-1" class="form-control btn btn-primary disabled-button">
+            Rodyti
+        </a>
+        <a id="image-disabled-2" class="form-control btn btn-primary disabled-button">
+            Slėpti
+        </a>
+    </div>
+</div>
+
+<div class="row padding-vertical-sm">
+	<div class="col-sm-7">
+		<h1 class="logo-heading"><a href="/evs/" id="logo">Varžytynės ir aukcionai</a></h1>
+		<a href="/evs/" aria-label="Meniu" class="mobile_toogle"></a>
+	</div>
+
+	<div class="col-sm-5 mobile-click-to-see">
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="lang pull-right">
+					<a href="" data-open="false" id="disabled-toggle">Neįgaliesiems</a>
+					<a href="#" data-lang="lt" class="linkLocale act">LT</a>
+					<a href="#" data-lang="en" class="linkLocale ">EN</a>
+				</div>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-sm-offset-4 col-sm-4 col-xs-8">
+				
+			</div>
+
+
+			<div class="col-sm-4 col-xs-4 loginBlock">
+				
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	<a id="loginTooltipTrigger" href="#" class="pull-right" aria-expanded="false" aria-haspopup="dialog">
+		<i class="fa fa-sign-in fa-lg"></i> Prisijungti
+	</a>
+
+	<div id="loginTooltip" class="hidden">
+		<div class="container-fluid">
+			<div class="row">
+				<a href="/evs/common/login.do" class="url_login">
+					<i class="fa fa-sign-in fa-lg"></i> Prisijungti per iPasą
+				</a>
+			</div>
+			<div class="row">
+				
+				<a href="/evs/common/login.do?isLoginVIISP=true" class="url_login">
+					<i class="fa fa-sign-in fa-lg"></i> Prisijungti per elektroninius valdžios vartus
+				</a>
+			</div>
+		</div>
+	</div>
+
+			</div>
+		</div>
+	</div>
+</div>
+        </header>
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<nav aria-label="Pagrindinis meniu">
+<ul class="menu clearfix">
+	
+		<li>
+			
+			<a href="/evs/" class="">
+				<span>
+					Pradžia
+
+					
+				</span>
+			</a>
+
+			
+		</li>
+	
+		<li>
+			
+			<a href="/evs/pages/auctions.do" class="act">
+				<span>
+					Varžytynės ir aukcionai
+
+					
+				</span>
+			</a>
+
+			
+		</li>
+	
+		<li>
+			
+			<a href="/evs/about.do" class="">
+				<span>
+					Svarbūs pranešimai
+
+					
+				</span>
+			</a>
+
+			
+		</li>
+	
+		<li>
+			
+			<a href="/evs/legal.do" class="">
+				<span>
+					Teisės aktai
+
+					
+				</span>
+			</a>
+
+			
+		</li>
+	
+		<li>
+			
+			<a href="/evs/gdpr.do" class="">
+				<span>
+					Asmens duomenų apsauga
+
+					
+				</span>
+			</a>
+
+			
+		</li>
+	
+</ul>
+</nav>
+
+
+        <main id="main-content" role="main">
+          <div class="breadCrumbBlock">
+            
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<ul class="breadcrumb">
+	
+	
+		<li>
+			
+				
+					
+					<a href="/evs/" class="nextToLastCrumb">
+					  
+              
+					      Pradžia
+              
+					    
+					  
+					</a>
+				
+				
+			
+		 </li>
+	
+		<li>
+			
+				
+				
+				  
+            
+              Varžytynės ir aukcionai
+            
+            
+          
+				
+			
+		 </li>
+	
+</ul>
+
+            
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<a class="link-print hidden-xs" href="JavaScript:window.print();" >
+	<i class="fa fa-print"></i> Spausdinti
+</a>
+
+          </div>
+          <div class="clearfix"></div>
+
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div id="successMessage" class="msg success when-xs-margin-horizontal-minus-10 hidden"></div>
+<div id="errorMessage" class="msg error when-xs-margin-horizontal-minus-10 hidden"></div>
+<div id="warningMessage" class="msg warning when-xs-margin-horizontal-minus-10 hidden"></div>
+
+	
+
+
+          
+	<form id="searchForm" name="searchForm" class="auctionsSearchForm margin-bottom-lg" action="/evs/pages/auctions.do" method="get" autocomplete="off">
+
+		
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="row margin-bottom-md">
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="col-md-3">
+	<label for="estateType">Turto tipas</label>
+	<select id="estateType" name="estateType" class="form-control">
+		<option value="">Pasirinkite...</option>
+		<option value="2">Kelių transporto priemonės</option><option value="3">Kilnojamas turtas</option><option value="1">Nekilnojamas turtas</option>
+	</select>
+	
+</div>
+<div class="col-md-3">
+	<label for="estateSubtype">Turto potipis</label>
+	<select id="estateSubtype" name="estateSubtype" class="form-control">
+		<option value="">Pasirinkite...</option>
+		<option value="2554">Akcijos ir kiti vertybiniai popieriai</option><option value="32">Autobusas</option><option value="15">Autobusas  ne daugiau 5t.</option><option value="16">Autobusas vir&scaron; 5t.</option><option value="46">Autokranas</option><option value="2559">Baldai</option><option value="48">Balninis vilkikas</option><option value="2551">Biuro įranga</option><option value="2552">Buitinė technika</option><option value="2555">Debitoriniai įsipareigojimai</option><option value="24">Džigeris</option><option value="69">Geležinkelių riedmenys ir konteineriai</option><option value="54">Gyvenama priekaba</option><option value="33">Gyvenamas automobilis</option><option value="2649">Jūrinės teritorijos elektrinių plėtrai konkursas</option><option value="70">Jūrų laivai</option><option value="55">Keleivinė priekaba</option><option value="61">Keleivinė puspriekabė</option><option value="14">Keleivinis automobilis</option><option value="12">Keturratis motociklas iki 350 kg.</option><option value="13">Keturratis motociklas iki 400 kg.</option><option value="72">Kitas turtas</option><option value="4">Kiti statiniai</option><option value="2553">Kompiuterių programinė ir techninė įranga</option><option value="47">Krovininis a.specialus</option><option value="44">Krovininis autocisterna</option><option value="17">Krovininis automobilis iki 3,5t.</option><option value="18">Krovininis automobilis nuo 3,5t. iki 12t.</option><option value="19">Krovininis automobilis vir&scaron; 12 t.</option><option value="45">Krovininis furgonas</option><option value="29">Krovininis motoroleris</option><option value="42">Krovininis platforma</option><option value="43">Krovininis savivartis</option><option value="53">L.a. priekaba</option><option value="35">L.a.krovininis furgonas</option><option value="34">L.a.krovininis pikapas</option><option value="51">L.a.su rankiniu vald.</option><option value="50">Lengvasis a. kombi</option><option value="52">Lengvasis a/m specialus</option><option value="49">Lengvasis automobilis</option><option value="2550">Ma&scaron;inos ir įrengimai</option><option value="31">Mažas autobusas</option><option value="7">Mopedas</option><option value="8">Mopedas su &scaron;onine priekaba</option><option value="9">Motociklas</option><option value="26">Motociklas</option><option value="25">Motociklas su priekaba</option><option value="10">Motociklas su &scaron;onine priekaba</option><option value="27">Motorinis vežimėlis</option><option value="28">Motoroleris</option><option value="5">Neklasifikuota</option><option value="2557">Nematerialusis turtas (prekių ženklai, licencijos ir kt.)</option><option value="6">Nenurodyta</option><option value="68">Orlaiviai</option><option value="2">Pastatai</option><option value="3">Patalpos/Butai</option><option value="2650">Paveldėjimo teisė</option><option value="21">Priekaba arba puspriekabė nuo 0,75t. iki 3,5t.</option><option value="22">Priekaba arba puspriekabė nuo 3,5t. iki 10t.</option><option value="23">Priekaba arba puspriekabė vir&scaron; 10t.</option><option value="58">Priekaba cisterna</option><option value="59">Priekaba furgonas</option><option value="20">Priekaba, kai b.m.  mažiau arba lygu  0,75t.</option><option value="56">Priekaba platforma</option><option value="64">Puspriekabė cisterna</option><option value="65">Puspriekabė furgonas</option><option value="62">Puspriekabė platforma</option><option value="2556">Reikalavimų teisės</option><option value="57">Savivartė priekaba</option><option value="63">Savivartė puspriekabė</option><option value="1">Sklypai</option><option value="30">Sniegaeigis</option><option value="60">Speciali priekaba</option><option value="66">Speciali puspriekabė</option><option value="2549">Statybinės medžiagos</option><option value="67">Traktoriai, savaeigės ma&scaron;inos, priekabos, puspriekabės</option><option value="38">Transporteris cisterna</option><option value="39">Transporteris furgonas</option><option value="40">Transporteris kombi</option><option value="36">Transporteris platforma</option><option value="37">Transporteris savivartis</option><option value="41">Transporteris specialus</option><option value="11">Triratis arba keturratis motociklas</option><option value="71">Vidaus vandenų laivai ir kiti įrenginiai</option><option value="2558">Visa įmonė (verslas)</option><option value="2560">Žemės nuomos teisė</option>
+	</select>
+	
+</div>
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="col-md-3">
+	<label for="stateType">Būsena</label>
+	<select id="stateType" name="stateType" class="form-control">
+		<option value="ATSAUKTOS">At&scaron;aukta</option><option value="BAIGTOS">Baigta</option><option value="IVYKUSIOS">Įvyko</option><option value="NEIVYKUSIOS">Neįvyko</option><option value="PASKELBTOS">Paskelbta</option><option value="VYKSTANCIOS">Vyksta</option><option value="PASKELBTA-IR-VYKSTA" selected="selected">Paskelbta ir Vyksta</option>
+	</select>
+	
+</div>
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="col-md-3">
+	<label for="kind">Varžytynių / aukcionų rūšis</label>
+	<select id="kind" name="kind" class="form-control">
+		<option value="">Pasirinkite...</option>
+		<option value="10">Antstolių aukcionai</option><option value="1">Antstolių varžytynės</option><option value="7">Kiti aukcionai</option><option value="2">Nemokumo administratorių varžytynės</option><option value="8">Nuomos konkursai</option><option value="6">Savivaldybės vykdomi kitų įmonių / įstaigų turto aukcionai</option><option value="4">Savivaldybių aukcionai</option><option value="3">Turto banko aukcionai</option><option value="5">Turto banko vykdomi kitų institucijų turto aukcionai</option>
+	</select>
+	
+</div>
+</div>
+
+<input id="advancedSearch" name="advancedSearch" type="hidden" value="true"/>
+
+<div class="row advancedSearch margin-bottom-md ">
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="col-md-3">
+	<label for="number">Varžytynių / aukciono numeris</label>
+	<input id="number" name="number" class="form-control validate-live-number" type="text" value=""/>
+	<span id="searchByNumberMsg" class="hidden">Bus ieškoma tik pagal varžytynių nr.</span>
+	
+</div>
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="col-md-3">
+	<label for="municipality">Savivaldybė</label>
+	<select id="municipality" name="municipality" class="form-control">
+		 <option value="">Pasirinkite...</option>
+		 <option value="461">Vilniaus m. sav.</option><option value="43">Kauno m. sav.</option><option value="112">Klaipėdos m. sav.</option><option value="259">&Scaron;iaulių m. sav.</option><option value="205">Panevėžio m. sav.</option><option value="2">Alytaus m. sav.</option><option value="114">Palangos m. sav.</option><option value="0">------------------------</option><option value="260">Akmenės r. sav.</option><option value="4">Alytaus r. sav.</option><option value="393">Anyk&scaron;čių r. sav.</option><option value="42">Bir&scaron;tono sav.</option><option value="206">Biržų r. sav.</option><option value="3">Druskininkų sav.</option><option value="1191">Elektrėnų sav.</option><option value="413">Ignalinos r. sav.</option><option value="44">Jonavos r. sav.</option><option value="267">Joni&scaron;kio r. sav.</option><option value="346">Jurbarko r. sav.</option><option value="53">Kai&scaron;iadorių r. sav.</option><option value="1192">Kalvarijos sav.</option><option value="63">Kauno r. sav.</option><option value="1193">Kazlų Rūdos sav.</option><option value="215">Kėdainių r. sav.</option><option value="278">Kelmės r. sav.</option><option value="115">Klaipėdos r. sav.</option><option value="127">Kretingos r. sav.</option><option value="228">Kupi&scaron;kio r. sav.</option><option value="27">Lazdijų r. sav.</option><option value="1292">Lietuvos Respublika</option><option value="162">Marijampolės sav.</option><option value="359">Mažeikių r. sav.</option><option value="426">Molėtų r. sav.</option><option value="113">Neringos sav.</option><option value="1196">Pagėgių sav.</option><option value="289">Pakruojo r. sav.</option><option value="235">Panevėžio r. sav.</option><option value="247">Pasvalio r. sav.</option><option value="367">Plungės r. sav.</option><option value="86">Prienų r. sav.</option><option value="298">Radvili&scaron;kio r. sav.</option><option value="98">Raseinių r. sav.</option><option value="1197">Rietavo sav.</option><option value="438">Roki&scaron;kio r. sav.</option><option value="136">Skuodo r. sav.</option><option value="187">&Scaron;akių r. sav.</option><option value="513">&Scaron;alčininkų r. sav.</option><option value="311">&Scaron;iaulių r. sav.</option><option value="332">&Scaron;ilalės r. sav.</option><option value="146">&Scaron;ilutės r. sav.</option><option value="539">&Scaron;irvintų r. sav.</option><option value="526">&Scaron;venčionių r. sav.</option><option value="323">Tauragės r. sav.</option><option value="381">Tel&scaron;ių r. sav.</option><option value="487">Trakų r. sav.</option><option value="501">Ukmergės r. sav.</option><option value="449">Utenos r. sav.</option><option value="16">Varėnos r. sav.</option><option value="163">Vilkavi&scaron;kio r. sav.</option><option value="462">Vilniaus r. sav.</option><option value="459">Visagino sav.</option><option value="403">Zarasų r. sav.</option>
+	</select>
+	
+</div>
+<div class="col-md-3">
+	<label for="city">Miestas</label>
+	<select id="city" name="city" class="form-control">
+		<option value="">Pasirinkite...</option>
+		<option value="1">Vilniaus m.</option><option value="6">Kauno m.</option><option value="7">Klaipėdos m.</option><option value="11">&Scaron;iaulių m.</option><option value="10">Panevėžio m.</option><option value="2">Alytaus m.</option><option value="9">Palangos m.</option><option value="0">------------------------</option><option value="13">Akmenės m.</option><option value="18">Anyk&scaron;čių m.</option><option value="76">Ariogalos m.</option><option value="99">Baltosios Vokės m.</option><option value="3">Bir&scaron;tono m.</option><option value="21">Biržų m.</option><option value="16">Daugų m.</option><option value="4">Druskininkų m.</option><option value="32">Dūk&scaron;to m.</option><option value="29">Dusetų m.</option><option value="98">Ei&scaron;i&scaron;kių m.</option><option value="91">Elektrėnų m.</option><option value="45">Ežerėlio m.</option><option value="51">Gargždų m.</option><option value="42">Garliavos m.</option><option value="96">Gelgaudi&scaron;kio m.</option><option value="89">Grigi&scaron;kių m.</option><option value="31">Ignalinos m.</option><option value="71">Jiezno m.</option><option value="34">Jonavos m.</option><option value="67">Joni&scaron;kėlio m.</option><option value="35">Joni&scaron;kio m.</option><option value="111">Jurbarko m.</option><option value="37">Kai&scaron;iadorių m.</option><option value="40">Kalvarijos m.</option><option value="19">Kavarsko m.</option><option value="39">Kazlų Rūdos m.</option><option value="46">Kėdainių m.</option><option value="48">Kelmės m.</option><option value="26">Kybartų m.</option><option value="53">Kretingos m.</option><option value="95">Kudirkos Naumiesčio m.</option><option value="55">Kupi&scaron;kio m.</option><option value="110">Kur&scaron;ėnų m.</option><option value="57">Lazdijų m.</option><option value="88">Lentvario m.</option><option value="63">Linkuvos m.</option><option value="5">Marijampolės m.</option><option value="59">Mažeikių m.</option><option value="61">Molėtų m.</option><option value="12">Naujosios Akmenės m.</option><option value="27">Nemenčinės m.</option><option value="8">Neringos m.</option><option value="78">Obelių m.</option><option value="101">Pabradės m.</option><option value="105">Pagėgių m.</option><option value="62">Pakruojo m.</option><option value="79">Pandėlio m.</option><option value="108">Panemunės m.</option><option value="66">Pasvalio m.</option><option value="68">Plungės m.</option><option value="52">Priekulės m.</option><option value="70">Prienų m.</option><option value="72">Radvili&scaron;kio m.</option><option value="64">Ramygalos m.</option><option value="75">Raseinių m.</option><option value="69">Rietavo m.</option><option value="77">Roki&scaron;kio m.</option><option value="90">Rūdi&scaron;kių m.</option><option value="54">Salantų m.</option><option value="60">Sedos m.</option><option value="17">Simno m.</option><option value="83">Skaudvilės m.</option><option value="81">Skuodo m.</option><option value="112">Smalininkų m.</option><option value="56">Subačiaus m.</option><option value="94">&Scaron;akių m.</option><option value="97">&Scaron;alčininkų m.</option><option value="73">&Scaron;eduvos m.</option><option value="103">&Scaron;ilalės m.</option><option value="104">&Scaron;ilutės m.</option><option value="109">&Scaron;irvintų m.</option><option value="102">&Scaron;venčionėlių m.</option><option value="100">&Scaron;venčionių m.</option><option value="82">Tauragės m.</option><option value="84">Tel&scaron;ių m.</option><option value="49">Tytuvėnų m.</option><option value="86">Trakų m.</option><option value="20">Tro&scaron;kūnų m.</option><option value="92">Ukmergės m.</option><option value="93">Utenos m.</option><option value="50">Užvenčio m.</option><option value="22">Vabalninko m.</option><option value="23">Varėnos m.</option><option value="85">Varnių m.</option><option value="58">Veisiejų m.</option><option value="15">Ventos m.</option><option value="14">Viek&scaron;nių m.</option><option value="87">Vievio m.</option><option value="24">Vilkavi&scaron;kio m.</option><option value="41">Vilkijos m.</option><option value="25">Virbalio m.</option><option value="33">Visagino m.</option><option value="28">Zarasų m.</option><option value="36">Žagarės m.</option><option value="38">Žiežmarių m.</option>
+	</select>
+	
+</div>
+<div class="col-md-3">
+    <label for="street">Gatvė</label>
+    <select id="street" name="street" class="form-control with_search_box">
+        <option value="">Pasirinkite...</option>
+        
+    </select>
+    
+</div>
+</div>
+
+<div class="row advancedSearch margin-bottom-md ">
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="col-md-3">
+	<label for="auctionType">Varžytynių / aukcionų tipas</label>
+	<select id="auctionType" name="auctionType" class="form-control">
+		<option value="">Pasirinkite...</option>
+		<option value="2">Antrosios</option><option value="4">Antrosios pakartotinės</option><option value="3237">Pakartotinis</option><option value="1638">Pakartotinis</option><option value="3338">Pakartotinis Antstolių aukcionai</option><option value="3040">Pakartotinis kiti aukcionai</option><option value="3137">Pirminis</option><option value="1637">Pirminis</option><option value="3337">Pirminis Antstolių aukcionai</option><option value="3039">Pirminis kiti aukcionai</option><option value="1">Pirmosios</option><option value="3">Pirmosios pakartotinės</option>
+	</select>
+	
+</div>
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="col-md-3">
+    <label for="areaSqFrom">
+        Plotas kv. m.
+    </label>
+    <div class="d-flex">
+        <input id="areaSqFrom" name="areaSqFrom" placeholder="Nuo" class="form-control validate-live-decimal-number" aria-label="Plotas kv. m. Nuo" type="text" value=""/>
+        <input id="areaSqTo" name="areaSqTo" placeholder="Iki" class="form-control validate-live-decimal-number" aria-label="Plotas kv. m. Iki" type="text" value=""/>
+        
+        
+    </div>
+</div>
+
+<div class="col-md-3">
+    <label for="areaFrom">
+        Plotas a.
+    </label>
+    <div class="d-flex">
+        <input id="areaFrom" name="areaFrom" placeholder="Nuo" class="form-control validate-live-positive-number" aria-label="Plotas a. Nuo" type="text" value=""/>
+        <input id="areaTo" name="areaTo" placeholder="Iki" class="form-control validate-live-positive-number" aria-label="Plotas a. Iki" type="text" value=""/>
+        
+        
+    </div>
+</div>
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+<div class="col-md-3">
+  <label for="organizerExecutor">
+    Vykdytojas / Organizatorius
+  </label>
+  <select id="organizerExecutor" name="organizerExecutor" class="form-control with_search_box">
+    <option value="">Pasirinkite...</option>
+    <option value="15332305">Elektrėnų savivaldybės administracija</option><option value="93918">Uždaroji akcinė bendrovė &quot;Raseinių komunalinės paslaugos&quot;</option><option value="14368929">Lietuvos Respublikos valstybės saugumo departamentas</option><option value="105334">UAB &quot;Roki&scaron;kio komunalininkas&quot;</option><option value="26883121">Vie&scaron;oji įstaiga Molėtų r. pirminės sveikatos priežiūros centras</option><option value="191363">Lietuvos nacionalinis muziejus</option><option value="28331653">UAB &quot;&Scaron;ventosios vartai&quot;</option><option value="100620200">Valstybinė energetikos reguliavimo taryba</option><option value="15214010">Kauno kultūros centras</option><option value="15326046">Vilniaus universitetas</option><option value="193055">Klaipėdos socialinių paslaugų centras &quot;Danė&quot;</option><option value="28942809">Auk&scaron;taitijos saugomų teritorijų direkcija</option><option value="15340856">Uždaroji akcinė bendrovė &quot;Tel&scaron;ių regiono atliekų tvarkymo centras&quot;</option><option value="74683">Kauno savivaldybės įmonė &quot;Kapinių priežiūra&quot;</option><option value="14358721">Uždaroji akcinė bendrovė &quot;UKMERGĖS AUTOBUSŲ PARKAS&quot;</option><option value="15270145">Akcinė bendrovė Turto bankas</option><option value="14452723">Vilniaus miesto savivaldybės administracija</option><option value="15446361">Rietavo savivaldybės administracija</option><option value="1000197900">Tel&scaron;ių rajono savivaldybės administracija</option><option value="15278459">Akcinė bendrovė &quot;Kelių priežiūra&quot;</option><option value="15332295">Druskininkų savivaldybės administracija</option><option value="15283598">Akcinė bendrovė Lietuvos pa&scaron;tas</option><option value="15032479">&Scaron;irvintų rajono savivaldybės administracija</option><option value="14489176">UAB &quot;Nordic Metrology Science&quot;</option><option value="201020">Lietuvos bankas</option><option value="105036">AB &quot;KN Energies&quot;</option><option value="14445614">Akcinė bendrovė Vidaus vandens kelių direkcija</option><option value="200989">Lietuvos Respublikos užsienio reikalų ministerija</option><option value="14457001">Lietuvos transporto saugos administracija</option><option value="200870">Klaipėdos universitetas</option><option value="66692">Vie&scaron;oji įstaiga &quot;Marijampolės telekinas&quot;</option><option value="14368355">Utenos apskrities vyriausiasis policijos komisariatas</option><option value="15332315">Visagino savivaldybės administracija</option><option value="15257163">Uždaroji akcinė bendrovė &quot;Anyk&scaron;čių vandenys&quot;</option><option value="15255697">Uždaroji akcinė bendrovė &quot;Neringos vanduo&quot;</option><option value="198111">Valstybinio socialinio draudimo fondo valdyba prie Socialinės apsaugos ir darbo ministerijos</option><option value="15570356">UAB &quot;Inreal&quot;</option><option value="28364954">Stasio Eidrigevičiaus menų centras</option><option value="15826789">Prienų kultūros ir laisvalaikio centras</option><option value="29103510">MB RSTORED</option><option value="207362">Vie&scaron;oji įstaiga Lazdynų poliklinika</option><option value="200970">Lietuvos Respublikos konkurencijos taryba</option><option value="100690600">UAB &quot;Būsto paskolų draudimas&quot;</option><option value="15389633">Ginčų komisija prie Socialinės apsaugos ir darbo ministerijos</option><option value="15326038">Vilniaus dailės akademija</option><option value="28068512">UAB &quot;Adomasta&quot;</option><option value="207317">Vie&scaron;oji įstaiga Regioninė Tel&scaron;ių ligoninė</option><option value="15337484">Savivaldybės įmonė &quot;SUSISIEKIMO PASLAUGOS&quot;</option><option value="100732100">Jaunimo reikalų agentūra</option><option value="28042120">TOMAS ČEPAUSKAS</option><option value="15447675">Kauno teritorinė ligonių kasa</option><option value="14459426">Uždaroji akcinė bendrovė &quot;&Scaron;ILUMOS ŪKIO SERVISAS&quot;</option><option value="26756660">Nemenčinės kultūros centras</option><option value="28327785">Lietuvos probacijos tarnyba</option><option value="15326743">Prie&scaron;gaisrinės apsaugos ir gelbėjimo departamentas prie Vidaus reikalų ministerijos</option><option value="14353613">Akcinė bendrovė &quot;Jonavos grūdai&quot;</option><option value="27950531">Savivaldybės įmonė &quot;Vilniaus atliekų sistemos administratorius&quot;</option><option value="93976">Mila&scaron;auskių tikroji ūkinė bendrija &quot;Žaibas&quot;</option><option value="15926807">Anyk&scaron;čių rajono socialinių paslaugų centras</option><option value="25625133">UAB &quot;ARCTIC FISHING&quot;</option><option value="15467550">UAB &quot;MARGINALAS&quot;</option><option value="15941338">VIE&Scaron;OJI ĮSTAIGA CENTRO POLIKLINIKA</option><option value="191663">Kupi&scaron;kio socialinės globos namai</option><option value="195925">Vie&scaron;oji įstaiga Respublikinė Panevėžio ligoninė</option><option value="26618935">Lietuvos neformaliojo &scaron;vietimo agentūra</option><option value="99719">Uždaroji akcinė bendrovė &quot;&Scaron;ilutės &scaron;ilumos tinklai&quot;</option><option value="26943841">UAB &quot;Ignitis grupės paslaugų centras&quot;</option><option value="700148400">Uždaroji akcinė bendrovė &quot;Visagino energija&quot;</option><option value="15757827">Nacionalinės teismų administracijos mokymo centras</option><option value="16011025">UAB &quot;ŽVAIGŽDŽIŲ NAMAI&quot;</option><option value="15144420">&Scaron;iaulių apskrities valstybinė mokesčių inspekcija</option><option value="28753200">MB Agrimilė</option><option value="15248692">Vie&scaron;oji įstaiga Roki&scaron;kio rajono ligoninė</option><option value="26433709">Vie&scaron;oji įstaiga &quot;Active Vilnius&quot;</option><option value="49344">Uždaroji akcinė bendrovė &quot;JŪRĖS MEDIS&quot;</option><option value="15135330">Kauno apskrities valstybinė mokesčių inspekcija</option><option value="196017">Valstybinė akreditavimo sveikatos priežiūros veiklai tarnyba prie Sveikatos apsaugos ministerijos</option><option value="192964">Lietuvos auk&scaron;toji jūreivystės mokykla</option><option value="14945066">Uždaroji akcinė bendrovė &quot;Plungės autobusų parkas&quot;</option><option value="28941986">Dzūkijos-Suvalkijos saugomų teritorijų direkcija</option><option value="193203">Biudžetinė įstaiga Valakampių socialinių paslaugų namai</option><option value="28330151">UAB &quot;Gusmeta&quot;</option><option value="15853261">UAB &quot;GERISTA&quot;</option><option value="87742">Lietuvos Respublikos ry&scaron;ių reguliavimo tarnyba</option><option value="15332301">Roki&scaron;kio rajono savivaldybės administracija</option><option value="15254173">Akcinė bendrovė Klaipėdos valstybinio jūrų uosto direkcija</option><option value="15253861">Vie&scaron;oji įstaiga &quot;Ekoagros&quot;</option><option value="15393189">Uždaroji akcinė bendrovė &quot;VAATC&quot;</option><option value="340078100">Klaipėdos miesto savivaldybės administracija</option><option value="700145700">Anyk&scaron;čių rajono savivaldybės administracija</option><option value="14670646">Varėnos rajono savivaldybės administracija</option><option value="15265684">Prienų rajono savivaldybės administracija</option><option value="340464000">Palangos miesto savivaldybės administracija</option><option value="15332294">Kazlų Rūdos savivaldybės administracija</option><option value="15317641">&Scaron;alčininkų rajono savivaldybės administracija</option><option value="188888">Tauragės apskrities vyriausiasis policijos komisariatas</option><option value="92405">Uždaroji akcinė bendrovė &quot;Dzūkijos vandenys&quot;</option><option value="15332304">&Scaron;venčionių rajono savivaldybės administracija</option><option value="218199">Uždaroji akcinė bendrovė &quot;Palangos &scaron;ilumos tinklai&quot;</option><option value="15429848">Pasienio kontrolės punktų direkcija prie Susisiekimo ministerijos</option><option value="15321996">&quot;Swedbank&quot;, AB</option><option value="15269099">Akcinė bendrovė &quot;VIAMATIKA&quot;</option><option value="14548741">Lietuvos Respublikos žemės ūkio ministerija</option><option value="95415">Uždaroji akcinė bendrovė &quot;Kauno &scaron;vara&quot;</option><option value="15290079">Alytaus profesinio rengimo centras</option><option value="15262496">Valstybės sienos apsaugos tarnyba prie Lietuvos Respublikos vidaus reikalų ministerijos</option><option value="14505812">I&scaron;teklių agentūra prie Lietuvos Respublikos vidaus reikalų ministerijos</option><option value="15182415">Valstybės įmonė Žemės ūkio informacijos ir kaimo verslo centras</option><option value="201467">Valstybės įmonė Registrų centras</option><option value="15263579">Uždaroji akcinė bendrovė &quot;Jonavos vandenys&quot;</option><option value="28387855">UAB &quot;Vilniaus regiono projektai&quot;</option><option value="15542333">Vie&scaron;ojo saugumo tarnyba prie Vidaus reikalų ministerijos</option><option value="27162483">UAB &quot;Statybos verslas&quot;</option><option value="27159399">UAB &quot;UHB AGRO&quot;</option><option value="15332297">Vilkavi&scaron;kio rajono savivaldybės administracija</option><option value="15332312">Tauragės rajono savivaldybės administracija</option><option value="15282977">Akcinė bendrovė &quot;Lietuvos geležinkeliai&quot;</option><option value="219495">Uždaroji akcinė bendrovė &quot;Plungės &scaron;ilumos tinklai&quot;</option><option value="100733400">Vie&scaron;oji įstaiga Vilnijos verslo inkubatorius</option><option value="15264948">Uždaroji akcinė bendrovė &quot;Kretingos vandenys&quot;</option><option value="27897578">Audito, apskaitos, turto vertinimo ir nemokumo valdymo tarnyba prie Lietuvos Respublikos finansų ministerijos</option><option value="15275814">Plungės rajono savivaldybės administracija</option><option value="26378840">AB &quot;Ignitis gamyba&quot;</option><option value="14553418">Akcinė bendrovė &quot;SMILTYNĖS PERKĖLA&quot;</option><option value="14343105">Vie&scaron;oji įstaiga LIETUVOS NACIONALINIS RADIJAS IR TELEVIZIJA</option><option value="15275621">Lietuvos Respublikos specialiųjų tyrimų tarnyba</option><option value="200784">Kur&scaron;ių nerijos nacionalinio parko direkcija</option><option value="15288175">Techninės pagalbos priemonių centras</option><option value="193287">Klaipėdos apskrities vyriausiasis policijos komisariatas</option><option value="91770">Uždaroji akcinė bendrovė &quot;Kauno autobusai&quot;</option><option value="15455006">Pakruojo sveikatos centras</option><option value="28990700">MB Urba sales</option><option value="15264987">Uždaroji akcinė bendrovė &quot;&Scaron;iaulių dujotiekio statyba&quot;</option><option value="15977123">Valstybinė lietuvių kalbos komisija</option><option value="15207143">Valstybės vaiko teisių apsaugos ir įvaikinimo tarnyba prie Socialinės apsaugos ir darbo ministerijos</option><option value="28565577">MB &quot;EMbazė&quot;</option><option value="28971764">Kai&scaron;iadorių bendrųjų funkcijų tarnyba</option><option value="14350174">Uždaroji akcinė bendrovė &quot;Ukmergės butų ūkis&quot;</option><option value="500253700">Joni&scaron;kio rajono savivaldybės administracija</option><option value="340080100">Kretingos rajono savivaldybės administracija</option><option value="15331632">Kelmės rajono savivaldybės administracija</option><option value="15332298">Kai&scaron;iadorių rajono savivaldybės administracija</option><option value="15321770">Panevėžio rajono savivaldybės administracija</option><option value="15332307">Pasvalio rajono savivaldybės administracija</option><option value="15332296">Kupi&scaron;kio rajono savivaldybės administracija</option><option value="15010084">Trakų rajono savivaldybės administracija</option><option value="15048447">&Scaron;iaulių rajono savivaldybės administracija</option><option value="205789">Akcinė bendrovė &quot;Kauno energija&quot;</option><option value="15332317">Mažeikių rajono savivaldybės administracija</option><option value="14447242">&Scaron;ilutės rajono savivaldybės administracija</option><option value="201338">UAB &quot;Prienų &scaron;ilumos tinklai&quot;</option><option value="27883946">AB &quot;Energijos skirstymo operatorius&quot;</option><option value="15326068">Vytauto Didžiojo universitetas</option><option value="900481900">Uždaroji akcinė bendrovė &quot;Vilkavi&scaron;kio &scaron;ilumos tinklai&quot;</option><option value="14440646">Uždaroji akcinė bendrovė &quot;&Scaron;ilutės autobusų parkas&quot;</option><option value="45285">Valstybės įmonė Valstybinių mi&scaron;kų urėdija</option><option value="15258939">Uždaroji akcinė bendrovė &quot;Utenos butų ūkis&quot;</option><option value="15254155">Akcinė bendrovė &quot;KLAIPĖDOS VANDUO&quot;</option><option value="186498">Kauno miesto savivaldybės Vinco Kudirkos vie&scaron;oji biblioteka</option><option value="15017556">Kalvarijos savivaldybės administracija</option><option value="14517071">Uždaroji akcinė bendrovė &quot;Bir&scaron;tono &scaron;iluma&quot;</option><option value="15222873">Vie&scaron;oji įstaiga &quot;Investuok Lietuvoje&quot;</option><option value="14315382">Panevėžio apskrities valstybinė mokesčių inspekcija</option><option value="14409769">Uždaroji akcinė bendrovė &quot;Tvarkyba&quot;</option><option value="196609">Lietuvos gyventojų genocido ir rezistencijos tyrimo centras</option><option value="100885300">Lietuvos metrologijos inspekcija</option><option value="15275110">Akcinė bendrovė &quot;Oro navigacija&quot;</option><option value="191750">Kauno maisto pramonės ir prekybos mokymo centras</option><option value="15264614">Uždaroji akcinė bendrovė &quot;KAI&Scaron;IADORIŲ &Scaron;ILUMA&quot;</option><option value="14361126">Vilniaus apskrities valstybinė mokesčių inspekcija</option><option value="27363113">UAB &quot;Skroblų alėja&quot;</option><option value="23996335">EIMANTAS VAINAUSKAS</option><option value="15795573">Vie&scaron;oji įstaiga Lazdijų sporto centras</option><option value="28837223">UAB Nemokumo sprendimų biuras</option><option value="15974851">UAB &quot;Administratoriai LT&quot;</option><option value="15283592">UAB Alytaus regiono atliekų tvarkymo centras</option><option value="193139">Ukmergės globos centras</option><option value="191376">Lietuvos audiosensorinė biblioteka</option><option value="92726">Uždaroji akcinė bendrovė &quot;Kėdainių vandenys&quot;</option><option value="26703678">Solar Development UAB</option><option value="25632309">UAB &quot;INTERADS&quot;</option><option value="26966939">UAB &quot;Aderealis&quot;</option><option value="15518597">Koncertinė įstaiga Lietuvos nacionalinė filharmonija</option><option value="191370">Lietuvos nacionalinė Martyno Mažvydo biblioteka</option><option value="15263309">Uždaroji akcinė bendrovė &quot;Raseinių &scaron;ilumos tinklai&quot;</option><option value="26700219">&Scaron;iaulių apylinkės teismas</option><option value="13910">Uždaroji akcinė bendrovė Tauragės autobusų parkas</option><option value="16008844">Tauragės kultūros centras</option><option value="15264392">Uždaroji akcinė bendrovė &quot;Kai&scaron;iadorių vandenys&quot;</option><option value="15841675">&Scaron;iaulių &scaron;vietimo kompetencijų centras</option><option value="26325087">Narkotikų, tabako ir alkoholio kontrolės departamentas</option><option value="26739375">MATAS ŽITKAUSKAS</option><option value="15795532">Lazdijų Motiejaus Gustaičio gimnazija</option><option value="28960678">UAB &quot;Trans group agro&quot;</option><option value="15262475">Uždaroji akcinė bendrovė &quot;Nemenčinės komunalininkas&quot;</option><option value="25608600">UAB &quot;INOVESTUS&quot;</option><option value="14977889">Uždaroji akcinė bendrovė &quot;Skuodo &scaron;iluma&quot;</option><option value="199692">Lietuvos apeliacinis teismas</option><option value="48618">UAB &quot;Pakruojo vandentiekis&quot;</option><option value="191357">Lietuvos nacionalinis dailės muziejus</option><option value="100745500">Vie&scaron;oji įstaiga Vilniaus statybininkų rengimo centras</option><option value="15441351">Vie&scaron;oji įstaiga Lazdijų socialinių paslaugų centras</option><option value="15216511">Nacionalinė visuomenės sveikatos priežiūros laboratorija</option><option value="15503854">Negalią turinčių asmenų centras &quot;Korys&quot;</option><option value="15530101">UAB &quot;AD REM LEZ&quot;</option><option value="15496166">Vie&scaron;oji įstaiga Vilniaus miesto psichikos sveikatos centras</option><option value="15306609">Akcinė bendrovė &quot;Via Lietuva&quot;</option><option value="14792450">Uždaroji akcinė bendrovė &quot;Lazdijų &scaron;iluma&quot;</option><option value="15822299">Nidos kultūros ir turizmo informacijos centras &quot;Agila&quot;</option><option value="100725400">Lietuvos Respublikos vadovybės apsaugos tarnyba</option><option value="28702713">MB Nka consulting</option><option value="100716700">Akcinė bendrovė &quot;Regitra&quot;</option><option value="28853166">UAB &Scaron;atrijos biuras</option><option value="29420048">UAB &quot;LTG Kompetencijų centras&quot;</option><option value="24228645">GEDIMINAS GLAVECKIS</option><option value="27437974">UAB &quot;Realus&quot;</option><option value="15898498">Vie&scaron;oji įstaiga Antakalnio poliklinika</option><option value="27757391">UAB &quot;Ibaltika&quot;</option><option value="124293">Uždaroji akcinė bendrovė &quot;Kalvarijos komunalininkas&quot;</option><option value="15257198">Uždaroji akcinė bendrovė &quot;Biržų vandenys&quot;</option><option value="15529846">Uždaroji akcinė bendrovė &quot;Arvi fertis&quot;</option><option value="200920">Higienos institutas</option><option value="15167556">PAMOKSLININKŲ ORDINO (DOMINIKONŲ) VILNIAUS &Scaron;V. APA&Scaron;TALŲ PILYPO IR JOKŪBO VIENUOLYNAS</option><option value="26381925">UAB &quot;SORA LT&quot;</option><option value="28384025">UAB Epsoma</option><option value="29105620">MB RESTART Group</option><option value="24345987">LUKAS CIDZIKAS</option><option value="1534431">ANDRIUS BLOŽĖ</option><option value="14896930">ROMAS ŽELVYS</option><option value="24505777">ANTANAS ZAPASNIKAS</option><option value="14939487">JAUNIUS BULKAUSKAS</option><option value="26759240">MANTAS TVARIJONAS</option><option value="16002491">UAB &quot;Vilmarlita&quot;</option><option value="26700200">Vilniaus miesto apylinkės teismas</option><option value="24454863">KRISTINA MAMEDOVA</option><option value="14553805">GIEDRIUS VILKAS</option><option value="48556">UAB &quot;Pakruojo autotransportas&quot;</option><option value="15257292">Uždaroji akcinė bendrovė Kretingos autobusų parkas</option><option value="15303950">Marijampolės savivaldybės administracija</option><option value="14967407">Raseinių rajono savivaldybės administracija</option><option value="28308124">Aplinkos apsaugos departamentas prie Aplinkos ministerijos</option><option value="15269053">Uždaroji akcinė bendrovė &quot;VILNIAUS VANDENYS&quot;</option><option value="200868">Vilniaus Gedimino technikos universitetas</option><option value="15572100">Globos namai &quot;Užuovėja&quot;</option><option value="15254780">Uždaroji akcinė bendrovė &quot;Alytaus &scaron;ilumos tinklai&quot;</option><option value="15255696">Uždaroji akcinė bendrovė &quot;NERINGOS KOMUNALININKAS&quot;</option><option value="15263864">Uždaroji akcinė bendrovė &quot;Jonavos &scaron;ilumos tinklai&quot;</option><option value="26433733">Uždaroji akcinė bendrovė &quot;Vilniaus vie&scaron;asis transportas&quot;</option><option value="15520596">Valstybinė duomenų apsaugos inspekcija</option><option value="111934">UAB &quot;Jonavos autobusai&quot;</option><option value="15964992">Uždaroji akcinė bendrovė &quot;Kur&scaron;ėnų vandenys&quot;</option><option value="112936">UAB &quot;Saulės dominija&quot;</option><option value="25633445">Lietuvos sveikatos mokslų universiteto Kauno ligoninė</option><option value="94584">Uždaroji akcinė bendrovė &quot;Stoties turgus&quot;</option><option value="28665631">Vie&scaron;oji įstaiga Transporto kompetencijų agentūra</option><option value="26930461">UAB &quot;Tripolio valda&quot;</option><option value="15187832">Uždaroji akcinė bendrovė &quot;Tel&scaron;ių vandenys&quot;</option><option value="28085059">MB &quot;Jotvingiai&quot;</option><option value="101728">Uždaroji akcinė bendrovė &quot;UKMERGĖS VANDENYS&quot;</option><option value="14565498">Uždaroji akcinė bendrovė &quot;TOKSIKA&quot;</option><option value="157710">Uždaroji akcinė bendrovė &quot;Vilkavi&scaron;kio vandenys&quot;</option><option value="15262274">Uždaroji akcinė bendrovė &quot;Varėnos &scaron;iluma&quot;</option><option value="15222813">V&scaron;Į &quot;Northtown Vilnius&quot;</option><option value="14566903">&Scaron;iaulių tardymo izoliatorius</option><option value="28726432">Biudžetinė įstaiga &quot;Komunalinio turto valdymas&quot;</option><option value="15332313">Akmenės rajono savivaldybės administracija</option><option value="14263013">Uždaroji akcinė bendrovė Kretingos &scaron;ilumos tinklai</option><option value="14459674">&quot;Swedbank lizingas&quot;, UAB</option><option value="15206391">Vilniaus teritorinė ligonių kasa</option><option value="189444">&Scaron;iaulių apskrities vyriausiasis policijos komisariatas</option><option value="16102613">Vie&scaron;oji įstaiga Karolini&scaron;kių poliklinika</option><option value="29045119">Valstybės įmonė Žemės ūkio duomenų centras</option><option value="100844400">Regionų administracinis teismas</option><option value="191650">Didvyžių socialinės globos namai</option><option value="26930852">UAB &quot;Purvynės valda&quot;</option><option value="28946127">UAB ROBSTA</option><option value="115721">Uždaroji akcinė bendrovė &quot;Visagino būstas&quot;</option><option value="24831971">SAULIUS VI&Scaron;INSKAS</option><option value="16120605">UAB &quot;Prolima&quot;</option><option value="9646">Vie&scaron;oji įstaiga Lietuvos prabavimo rūmai</option><option value="28228488">MB &quot;Akeita&quot;</option><option value="29441615">MB Projektikus</option><option value="26823673">UAB &quot;Investsitis&quot;</option><option value="15312696">Ugniagesių gelbėtojų mokykla</option><option value="15822255">UAB VERSLO ADMINISTRAVIMO KOMPANIJA</option><option value="200879">Lietuvos sporto universitetas</option><option value="100834800">Uždaroji akcinė bendrovė &quot;MALTOSA&quot;</option><option value="15293234">&Scaron;ilalės rajono savivaldybės administracija</option><option value="15333051">Alytaus miesto savivaldybės administracija</option><option value="15332300">&Scaron;akių rajono savivaldybės administracija</option><option value="15332306">Neringos savivaldybės administracija</option><option value="15332314">Molėtų rajono savivaldybės administracija</option><option value="700146700">Zarasų rajono savivaldybės administracija</option><option value="15332303">Kėdainių rajono savivaldybės administracija</option><option value="191685">Strėvininkų socialinės globos namai</option><option value="29275147">&quot;Hr ai&quot;, MB</option><option value="191342">Vilniaus senasis teatras</option><option value="14555379">Uždaroji akcinė bendrovė &quot;Kauno vandenys&quot;</option><option value="15766282">Vie&scaron;oji įstaiga Kaltinėnų pirminės sveikatos priežiūros centras</option><option value="800365900">Veisiejų socialinės globos namai</option><option value="214069">&quot;Industrial group&quot;, UAB</option><option value="28650720">UAB &quot;Sileo namai&quot;</option><option value="15564174">Vie&scaron;oji įstaiga KLAIPĖDOS PSICHIKOS SVEIKATOS CENTRAS</option><option value="15332299">Klaipėdos rajono savivaldybės administracija</option><option value="500504500">Pakruojo rajono savivaldybės administracija</option><option value="15331276">Radvili&scaron;kio rajono savivaldybės administracija</option><option value="43418">Uždaroji akcinė bendrovė &quot;Vilniaus vystymo kompanija&quot;</option><option value="15332308">Ukmergės rajono savivaldybės administracija</option><option value="15955285">Vie&scaron;oji įstaiga Naujosios Vilnios poliklinika</option><option value="189653">Tel&scaron;ių apskrities vyriausiasis policijos komisariatas</option><option value="15212624">Uždaroji akcinė bendrovė &quot;Pieno tyrimai&quot;</option><option value="15274887">Uždaroji akcinė bendrovė &quot;Mažeikių &scaron;ilumos tinklai&quot;</option><option value="100822800">Nacionalinė žemės tarnyba prie Aplinkos ministerijos</option><option value="15088017">Panevėžio miesto savivaldybės administracija</option><option value="14792446">Lazdijų rajono savivaldybės administracija</option><option value="200613800">Kauno miesto savivaldybės administracija</option><option value="200644900">Kauno rajono savivaldybės administracija</option><option value="15274683">AB &quot;Miesto gijos&quot;</option><option value="15265100">Uždaroji akcinė bendrovė &quot;&Scaron;iaulių energija&quot;</option><option value="125659">Uždaroji akcinė bendrovė &quot;&Scaron;iaulių vandenys&quot;</option><option value="200869">Kauno technologijos universitetas</option><option value="15275414">&Scaron;iaulių miesto savivaldybės administracija</option><option value="15332302">Jonavos rajono savivaldybės administracija</option><option value="14512566">Alytaus rajono savivaldybės administracija</option><option value="700146600">Ignalinos rajono savivaldybės administracija</option><option value="100831100">Vilniaus rajono savivaldybės administracija</option><option value="15254164">Akcinė bendrovė &quot;KLAIPĖDOS ENERGIJA&quot;</option><option value="14533747">Uždaroji akcinė bendrovė &quot;Sūduvos vandenys&quot;</option><option value="194607">Auk&scaron;taitijos profesinio rengimo centras</option><option value="15757128">&Scaron;vietimo mainų paramos fondas</option><option value="16087247">UAB &quot;Bankrotų administravimo grupė&quot;</option><option value="200977">VIE&Scaron;OJI ĮSTAIGA TECHNIKOS PRIEŽIŪROS TARNYBA</option><option value="14994923">Vie&scaron;oji įstaiga Tauragės ligoninė</option><option value="100665900">Lietuvos Respublikos ekonomikos ir inovacijų ministerija</option><option value="92724">Uždaroji akcinė bendrovė &quot;Kėdainių butai&quot;</option><option value="28176124">UAB &quot;Miltransa&quot;</option><option value="15268284">UAB &quot;IBC logistika&quot;</option><option value="200880">Lietuvos teismo ekspertizės centras</option><option value="27087880">MB &quot;Sidabrinė lapė&quot;</option><option value="26464404">AB &quot;Lietuvos veislininkystė&quot;</option><option value="118546">Uždaroji akcinė bendrovė &quot;Crumina&quot;</option><option value="15084758">VALSTYBĖS ĮMONĖ IGNALINOS ATOMINĖ ELEKTRINĖ</option><option value="15284337">Respublikinis priklausomybės ligų centras</option><option value="15382419">UŽDAROJI AKCINĖ BENDROVĖ &quot;NEVETAS&quot;</option><option value="93917">Uždaroji akcinė bendrovė &quot;Raseinių autobusų parkas&quot;</option><option value="100657600">Uždaroji akcinė bendrovė &quot;TRAKŲ PASLAUGOS&quot;</option><option value="15575764">Marijampolės specialieji socialinės globos namai</option><option value="126206">Uždaroji akcinė bendrovė &quot;Nemėžio komunalininkas&quot;</option><option value="28288672">MB &quot;Vuolis&quot;</option><option value="15269432">Akcinė bendrovė Lietuvos oro uostai</option><option value="94788">UAB &quot;&Scaron;venčionių komunalinis centras&quot;</option><option value="15257274">Uždaroji akcinė bendrovė Ignalinos butų ūkis</option><option value="120183">UAB &quot;MATUIZŲ PLYTINĖ&quot;</option><option value="123329">UAB Kur&scaron;ėnų komunalinis ūkis</option><option value="15252426">UAB &quot;Vilniaus ap&scaron;vietimas&quot;</option><option value="15226804">Aplinkos apsaugos agentūra</option><option value="15259101">Uždaroji akcinė bendrovė &quot;Utenos &scaron;ilumos tinklai&quot;</option><option value="26560790">UAB &quot;Lietuvos žirgynas&quot;</option><option value="26978866">UAB &quot;Naudingas plotas&quot;</option><option value="16095015">Molėtų r. Giedraičių Antano Jaro&scaron;evičiaus gimnazija</option><option value="340462100">Klaipėdos valstybinė kolegija</option><option value="191564">Nacionalinis maisto ir veterinarijos rizikos vertinimo institutas</option><option value="14459448">Uždaroji akcinė bendrovė &quot;VILNIAUS ŽALGIRIO DENGTAS PLAUKIMO BASEINAS&quot;</option><option value="107743">SĮ &quot;Kretingos komunalininkas&quot;</option><option value="200994">Muitinės departamentas prie Lietuvos Respublikos finansų ministerijos</option><option value="15302421">Žuvininkystės tarnyba prie Lietuvos Respublikos žemės ūkio ministerijos</option><option value="168212">Uždaroji akcinė bendrovė &quot;ID Vilnius&quot;</option><option value="25592122">Valstybinė augalininkystės tarnyba prie Žemės ūkio ministerijos</option><option value="100749800">Vilniaus kolegija</option><option value="28331653">UAB &quot;&Scaron;ventosios vartai&quot;</option><option value="14918744">Akcinė bendrovė &quot;Detonas&quot;</option><option value="26821834">AB &quot;Amber Grid&quot;</option><option value="14452717">UAB &quot;Eika Group&quot;</option><option value="28942818">Žemaitijos saugomų teritorijų direkcija</option><option value="15251781">Mykolo Romerio universitetas</option><option value="16111070">Marijampolės kultūros centras</option><option value="115946">Uždaroji akcinė bendrovė &quot;Visagino mechanizacija&quot;</option><option value="16107516">UAB &quot;Meharis&quot;</option><option value="15247314">Įmonių bankroto valdymo departamentas prie Ūkio ministerijos</option><option value="200616700">Bir&scaron;tono savivaldybės administracija</option><option value="400006100">Biržų rajono savivaldybės administracija</option><option value="600037400">Jurbarko rajono savivaldybės administracija</option><option value="14371343">Utenos rajono savivaldybės administracija</option><option value="11617">UAB &quot;&Scaron;iaulių &scaron;viesa&quot;</option><option value="15332309">Skuodo rajono savivaldybės administracija</option><option value="15266765">Savivaldybės įmonė &quot;Vilniaus miesto būstas&quot;</option><option value="98439">Valstybės įmonė Valstybės žemės fondas</option><option value="100745800">Uždaroji akcinė bendrovė &quot;ELEKTRĖNŲ KOMUNALINIS ŪKIS&quot;</option><option value="15333049">Pagėgių savivaldybės administracija</option><option value="100893600">Nacionalinė mokėjimo agentūra prie Žemės ūkio ministerijos</option><option value="100620100">Vie&scaron;ųjų pirkimų tarnyba</option><option value="201015">Lietuvos Respublikos kultūros ministerija</option><option value="15181521">Policijos departamentas prie Lietuvos Respublikos vidaus reikalų ministerijos</option><option value="15283386">Uždaroji akcinė bendrovė &quot;ARVI&quot; ir ko</option><option value="14523917">Valstybinė mokesčių inspekcija prie Lietuvos Respublikos finansų ministerijos</option><option value="15252437">Uždaroji akcinė bendrovė &quot;GRINDA&quot;</option><option value="14741591">Uždaroji akcinė bendrovė &quot;Jonavos paslaugos&quot;</option><option value="15262246">Vie&scaron;oji įstaiga Alytaus rajono savivaldybės pirminės sveikatos priežiūros centras</option><option value="15511125">Koncertinė įstaiga Kauno valstybinė filharmonija</option><option value="132027">Savivaldybės įmonė &quot;Kai&scaron;iadorių paslaugos&quot;</option><option value="15290718">UAB &quot;Lidl Lietuva&quot;</option><option value="26744582">DANIJOS KARALYSTĖS AMBASADA</option><option value="1624477">KAZIMIERAS TRI&Scaron;KUS</option><option value="128839">Biudžetinė įstaiga &quot;Paslaugos Neringai&quot;</option><option value="29411920">Tauragės kultūros centras</option><option value="191187">Klaipėdos teritorinė muitinė</option><option value="15258424">UAB &quot;Tauragės vandenys&quot;</option><option value="16112571">Lietuvos policijos mokykla</option><option value="15265197">AB &quot;PANEVĖŽIO ENERGIJA&quot;</option><option value="14548061">Klaipėdos Ernesto Galvanausko profesinio mokymo centras</option><option value="15221098">Uždaroji akcinė bendrovė Klaipėdos regiono atliekų tvarkymo centras</option><option value="10755">Uždaroji akcinė bendrovė Jurbarko autobusų parkas</option><option value="15307299">Kauno tardymo izoliatorius</option><option value="14402559">Lietuvos Respublikos &scaron;vietimo, mokslo ir sporto ministerija</option><option value="26642602">Koncertinė įstaiga &quot;Kauno santaka&quot;</option><option value="500443300">&Scaron;iaulių apygardos teismas</option><option value="195991">Nacionalinis visuomenės sveikatos centras prie Sveikatos apsaugos ministerijos</option><option value="29213989">UAB &quot;Be pelno&quot;</option><option value="14380859">Utenos regioninis profesinio mokymo centras</option><option value="26152093">UAB &quot;Deiga&quot;</option><option value="106502">Akcinė bendrovė &quot;PANEVĖŽIO BUTŲ ŪKIS&quot;</option><option value="15165583">Vilniaus apygardos teismas</option><option value="15799988">Klaipėdos teritorinė ligonių kasa</option><option value="15277084">Vie&scaron;oji įstaiga Lazdijų kultūros centras</option><option value="15257148">Uždaroji akcinė bendrovė &quot;Anyk&scaron;čių &scaron;iluma&quot;</option><option value="191696">Socialinės globos centras &quot;Vija&quot;</option><option value="15498280">Vie&scaron;oji įstaiga Mykolo Marcinkevičiaus ligoninė</option><option value="198446">Valstybinė teismo psichiatrijos tarnyba prie Sveikatos apsaugos ministerijos</option><option value="26992964">UAB &quot;Omandus&quot;</option><option value="15223692">Vie&scaron;oji įstaiga Inovacijų agentūra</option><option value="15819961">Vilkavi&scaron;kio &quot;Au&scaron;ros&quot; gimnazija</option><option value="16047230">UAB &quot;Geopartneris&quot;</option><option value="123580">Uždaroji akcinė bendrovė Kur&scaron;ėnų autobusų parkas</option><option value="29133553">Panevėžio nekilnojamojo turto valdymo centras</option><option value="191352">Koncertinė įstaiga Valstybinis ansamblis &quot;Lietuva&quot;</option><option value="100858400">Vie&scaron;oji įstaiga &quot;VILNIAUS GIMDYMO NAMAI&quot;</option><option value="24809995">ARVYDAS SORAKA</option><option value="27318480">MATAS SAKALAUSKAS</option><option value="28046114">ANTSTOLIS LAURYNAS LUK&Scaron;YS</option><option value="191184">Kauno teritorinė muitinė</option><option value="340437500">Biudžetinė įstaiga Socialinių paslaugų centras &quot;Klaipėdos lak&scaron;tutė&quot;</option><option value="27143427">UAB &quot;Ignitis&quot;</option><option value="15225029">Vie&scaron;oji įstaiga Pasvalio pirminės asmens sveikatos priežiūros centras</option><option value="14974640">UAB &quot;Skuodo autobusai&quot;</option><option value="15172073">Vie&scaron;oji įstaiga Jurbarko turizmo ir verslo informacijos centras</option><option value="15989018">UAB &quot;Tempo invest&quot;</option><option value="189008">Vie&scaron;oji įstaiga KLAIPĖDOS VAIKŲ LIGONINĖ</option><option value="15386614">Turgelių &quot;Aistuvos&quot; gimnazija</option><option value="15138833">Uždaroji akcinė bendrovė &quot;RIVONA&quot;</option><option value="26357469">TITAS TIMOFEJEVAS</option><option value="201003">Lietuvos Respublikos generalinė prokuratūra</option><option value="29248520">MB DB Projects</option><option value="29747450">MB &quot;GANA&quot;</option><option value="15994851">Seredžiaus senelių globos namai</option><option value="15071327">Lietuvos medžiotojų ir žvejų draugijos Jurbarko skyrius</option><option value="15441907">Uždaroji akcinė bendrovė &quot;AUDATA&quot;</option><option value="108971">Uždaroji akcinė bendrovė &quot;Masada&quot;</option><option value="16107224">Kai&scaron;iadorių socialinių paslaugų centras</option><option value="26528642">AB &quot;AGATHUM&quot;</option><option value="127850">Uždaroji akcinė bendrovė &quot;&Scaron;alčininkų &scaron;ilumos tinklai&quot;</option><option value="15258958">Uždaroji akcinė bendrovė &quot;Utenos vandenys&quot;</option><option value="15483909">JOLANTA JANIONIENĖ</option><option value="26463981">INDRĖ &Scaron;VEIKAUSKIENĖ</option><option value="14584160">Uždaroji akcinė bendrovė Naujosios Akmenės autobusų parkas</option><option value="105641">Uždaroji akcinė bendrovė &quot;&Scaron;akių vandenys&quot;</option><option value="14655982">Uždaroji akcinė bendrovė &quot;Biržų &scaron;ilumos tinklai&quot;</option><option value="15527683">EGIDIJUS NOMEIKA</option><option value="27812992">Antstolės A.Mikulėnienės kontora</option><option value="27813079">Antstolio S.Užkuraičio kontora</option><option value="27813001">Antstolės A.Muzikevičienės kontora</option><option value="27813094">Antstolio Artūro Auglio  kontora</option><option value="27813116">Antstolio Aleksandro &Scaron;čiukino kontora</option><option value="27813010">Antstolės Linos Ugnės Novikienės kontora</option><option value="27812995">Antstolių Nemiros &Scaron;iugždaitės-Stakeliūnės ir Dariaus Stakeliūno kontora</option><option value="27813076">Antstolės Vaivos &Scaron;imkienės kontora</option><option value="27813114">Antstolės V.Vėliuvienės kontora</option><option value="27813023">Antstolės Terezos Gerasimovič kontora</option><option value="27814280">Antstolio Armino Naujokaičio kontora</option><option value="27813089">Antstolio R.A.Genučio kontora</option><option value="27813566">Antst. R. Pauzienės kontora</option><option value="27812993">Antstolės A.Rimaitės Žičkuvienės kontora</option><option value="27813011">Antstolės Marijos Gaivenės kontora</option><option value="27813128">Antstolio J.Koly&scaron;ko kontora</option><option value="27813029">Antstolio N.Alenino kontora</option><option value="27812923">Antstolės N.Bacevičienės kont.</option><option value="27813283">Antstolio Giedriaus Salicko kontora</option><option value="27813164">Antstolės Gintarės Bandžienės kontora</option><option value="27813115">Antstolio A.Christenok kontora</option><option value="27813091">Antstolio S.Degimo kontora</option><option value="27813320">Antstolio R. Vižaini&scaron;kio kontora</option><option value="27813088">Antstolio R.Vasiliausko kontora</option><option value="27813124">Antstolio Dariaus Jonaičio kontora</option><option value="27813112">Antstolės G.Andrijauskienės kontora</option><option value="27813060">Antstolių Brigitos Palavinskienės ir Eduardo Sergėjėvo kontora</option><option value="27813061">Antstolių V.Čegliko,B.Čere&scaron;kienės ir V.Leskevičienės kontora</option><option value="29448302">Antstolės Jurgos Pranckevičienės kontora</option><option value="29301928">Antstolio Vitalio Milevičiaus kontora</option><option value="27813031">Antstolio R.Budreikos kontora</option><option value="27813086">Antstolio R.Kudrausko kontora</option><option value="27813021">Antstolės Sonatos Vaicekauskienės kontora</option><option value="27813117">Antstolio A.Selezniovo ir S.Selezniovienės kontora</option><option value="27813026">Antstolio M.Jastromskio kontora</option><option value="27813016">Antstolės Andželos Tama&scaron;auskienės kontora</option><option value="27813000">Antstolės A.Adomaitienės kontora</option><option value="27813085">Antstolio Dariaus Blizniko kontora</option><option value="27813096">Antstolio Donato Kisieliaus kontora</option><option value="27813014">Antstolės O.Godeliauskienės kontora</option><option value="27813129">Antstolės I.Ežerskienės kontora</option><option value="27813132">Antstolės N.Budriūnienės kontora</option><option value="27813092">Antstolio V.Kučinsko kontora</option><option value="27813082">Antstolio T.Ubarto kontora</option><option value="27813150">Antstolių G.Puodžiuko ir A.Puodžiukienės kontora</option><option value="27812998">Antstolės A.Kvaraciejienės kontora</option><option value="27813126">Antstolio G.Kairio kontora</option><option value="28646427">Antstolės Indrės Klungės kontora</option><option value="28646760">Antstolio Mindaugo Mažrimo kontora</option><option value="27813120">Antstolio A.Lia&scaron;kovo kontora</option><option value="27813005">Antstolės D.Kaniauskienės kontora</option><option value="27813123">Antstolių D.&Scaron;idlausko ir A.Stani&scaron;auskaitės kontora</option><option value="27813024">Antstolio M.Petrovskio kontora</option><option value="27813119">Antstolio A.Bespalovo kontora</option><option value="28405351">Antstolės Vilmos Leskevičienės kontora</option><option value="27813007">Antstolės G.Kunickienės kontora</option><option value="27813059">Antstolio V.Drungilo kontora</option><option value="28046394">Antstolės Virginijos Paunovienės kontora</option><option value="27813020">Antstolės R.Mikliu&scaron;ienės kontora</option><option value="27813125">Antstolio G.Jonausko kontora</option><option value="29452754">Antstolės Simonos Pivoriūnės kontora</option><option value="27813056">Antstolės Jurgitos Žilinskaitės kontora</option><option value="27813009">Antstolės J.Bareikienės kontora</option><option value="27813017">Antstolės D.Marčiukaitienės kontora</option><option value="27813027">Antstolio M.Lekečinsko kontora</option><option value="29301929">Antstolės Daivos Milevičienės kontora</option><option value="27813018">Antstolės E.Miliauskienės kontora</option><option value="27813152">Antst. R. Adom.ir D.Petr. kon.</option><option value="27813095">Antstolės J.Gančierienės kontora</option><option value="27813058">Antstolės N.Jutkienės kontora</option><option value="27896596">Antstolės Svajonės Žukaitienės kontora</option><option value="27813111">Antstolės Giedrės Vasiliauskaitės kontora</option><option value="27813363">Antstolio D. Traigio kontora</option><option value="27813008">Antstolės I.Girdenienės kontora</option><option value="27813015">Antstolės Astos Pliu&scaron;kevičienės kontora</option><option value="27813083">Antstolio V.Zubino kontora</option><option value="27813151">Antst.I.Karalienės,N.Lipeikienės,G.Badikonio,A.BublioirR.Kamarausko kontora</option><option value="27813131">Antstolės J.Blažienės kontora</option><option value="27813090">Antstolio S.Ramanausko kontora</option><option value="27813006">Antstolės E.Rulienės kontora</option><option value="27813189">Antstolio K.Ko&scaron;io kontora</option><option value="27813022">Antstolės S.Kastanauskienės kontora</option><option value="27813028">Antstolio M.Dabkaus kontora</option><option value="27813004">Antstolės D.Prunskienės kontora</option><option value="27813054">Antstolės I.Bak&scaron;ienės kontora</option><option value="27813080">Antstolio S.Virbicko kontora</option><option value="27813030">Antstolio R.Stanislausko kontora</option><option value="27813025">Antstolio M.Al&scaron;ausko kontora</option><option value="28135861">Antstolių Brigitos Palavinskienės ir Eduardo Sergėjevo kontora</option><option value="27813084">Antstolio Zeno Zenkevičiaus kontora</option><option value="27813073">Antstolės Redos Sta&scaron;enienės kontora</option><option value="27812996">Antstolių V.Me&scaron;kauskienės ir I.Gaidelio kontora</option><option value="27813081">Antstolio S.O.Gra&scaron;io kontora</option><option value="27813087">Antstolio R.Vaitkevičiaus kontora</option><option value="27812994">Antstolės Linos Pužienės kontora</option><option value="27813122">Antstolio A.Balčiūno kontora</option><option value="27813055">Antstolės I.Beliačic kontora</option><option value="27813113">Antstolės V.Daugirdienės kontora</option><option value="27813002">Antstolės B.Tamkevičienės kontora</option><option value="27812999">Antstolių Astos Luk&scaron;ienės ir Lauryno Luk&scaron;io kontora</option><option value="27813127">Antstolio J.Petriko kontora</option><option value="27813074">Antstolių Redos Vizgaudienės ir Gretos Žutautės kontora</option><option value="27813003">Antstolės D.Kelmelienės kontora</option><option value="27813075">Antstolės R.Gražienės kontora</option><option value="28411305">Antstolės Birutės Čere&scaron;kienės kontora</option><option value="27813078">Antstolio S.Mulevičiaus kontora</option><option value="27813279">Antstolio E. Smagurausko kontora</option>
+  </select>
+  
+</div>
+
+</div>
+
+<div class="row advancedSearch margin-bottom-md ">
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="col-md-3">
+	<label for="startBidFrom">Pradinė turto pardavimo kaina nuo</label>
+	<input id="startBidFrom" name="startBidFrom" class="form-control" type="text" value=""/>
+	
+</div>
+<div class="col-md-3">
+	<label for="startBidUntil">Pradinė turto pardavimo kaina iki</label>
+	<input id="startBidUntil" name="startBidUntil" class="form-control" type="text" value=""/>
+	
+</div>
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="col-md-3">
+	<label for="startDateFrom">Varžytynių pradžia nuo</label>
+	<span class="input-group datepicker-activator">
+		<input id="startDateFrom" name="startDateFrom" class="form-control datepicker" type="text" value=""/>
+		<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+	</span>
+	
+</div>
+<div class="col-md-3">
+	<label for="endDateTo">Varžytynių pabaiga iki</label>
+	<span class="input-group datepicker-activator">
+		<input id="endDateTo" name="endDateTo" class="form-control datepicker" type="text" value=""/>
+		<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+	</span>
+	
+</div>
+</div>
+
+<div class="row advancedSearch margin-bottom-md ">
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="col-md-3">
+	<label for="startsOn">Paskelbta</label>
+	<select id="startsOn" name="startsOn" class="form-control">
+		<option value="">Pasirinkite...</option>
+		<option value="&Scaron;iandien">&Scaron;iandien</option><option value="&Scaron;ią savaitę">&Scaron;ią savaitę</option><option value="&Scaron;į mėnesį">&Scaron;į mėnesį</option>
+	</select>
+	
+</div>
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="col-md-3">
+	<label for="endsOn">Pabaigos laikotarpis</label>
+	<select id="endsOn" name="endsOn" class="form-control">
+		<option value="">Pasirinkite...</option>
+		<option value="&Scaron;iandien">&Scaron;iandien</option><option value="&Scaron;ią savaitę">&Scaron;ią savaitę</option><option value="&Scaron;į mėnesį">&Scaron;į mėnesį</option>
+	</select>
+	
+</div>
+</div>
+
+<div class="row">
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="col-xs-6 col-md-3">
+	<button type="submit" class="form-control btn btn-primary">
+		<i class="fa fa-search"></i> Ieškoti
+	</button>
+</div>
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="col-xs-2">
+	<button type="submit" name="clear" value="true" class="btn btn-link when-xs-btn-primary" aria-label="Išvalyti">
+		<i class="fa fa-times"></i>
+		<span class="hidden-xs">Išvalyti</span>
+	</button>
+</div>
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+<div class="col-xs-4 col-md-7">
+  <a
+    href="#"
+    class="btnAdvancedSearch btn btn-link when-xs-btn-primary pull-right"
+    role="button"
+    aria-label="Išplėstinė paieška"
+    aria-expanded="true"
+  >
+    <span class="hidden-xs">
+      <span class="fa fa-search"></span>
+      Išplėstinė paieška&nbsp;
+    </span>
+    <i
+      class="fa fa-angle-up fa-lg"
+    ></i>
+  </a>
+</div>
+
+</div>
+
+		
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+		
+
+			<div class="row margin-bottom-md">
+				<div class="col-md-offset-2 col-md-6 col-vertical-middle padding-top-md">
+					
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	<input id="inputPaginationPage" name="page" type="hidden" value="0"/>
+
+	<nav class="text-center">
+		<ul class="pagination">
+			
+				
+					
+						
+					
+					
+					
+				
+
+				
+
+				
+
+				
+					<li class="disabled">
+						<a href="#" data-page="-1" class="paginationLink btn-link" aria-label="Ankstesnis puslapis">
+							<i class="fa fa-chevron-left"></i>
+						</a>
+					</li>
+				
+
+			
+				
+					
+					
+					
+						
+					
+				
+
+				
+					<li class="active">
+						<a href="#" data-page="0" class="paginationLink">
+							1
+						</a>
+					</li>
+				
+
+				
+
+				
+
+			
+				
+					
+					
+					
+						
+					
+				
+
+				
+
+				
+					<li>
+						<a href="#" data-page="1" class="paginationLink hidden-xs" aria-label="">
+							2
+						</a>
+					</li>
+				
+
+				
+
+			
+				
+					
+					
+					
+						
+					
+				
+
+				
+
+				
+					<li>
+						<a href="#" data-page="2" class="paginationLink hidden-xs" aria-label="">
+							3
+						</a>
+					</li>
+				
+
+				
+
+			
+				
+					
+					
+					
+						
+					
+				
+
+				
+
+				
+					<li>
+						<a href="#" data-page="3" class="paginationLink hidden-xs" aria-label="">
+							4
+						</a>
+					</li>
+				
+
+				
+
+			
+				
+					
+					
+					
+						
+					
+				
+
+				
+
+				
+					<li>
+						<a href="#" data-page="4" class="paginationLink hidden-xs" aria-label="">
+							5
+						</a>
+					</li>
+				
+
+				
+
+			
+				
+					
+					
+					
+						
+					
+				
+
+				
+
+				
+
+				
+					<li class="disabled">
+						<a href="#" data-page="-1" class="paginationLink btn-link" aria-label="">
+							...
+						</a>
+					</li>
+				
+
+			
+				
+					
+					
+					
+						
+					
+				
+
+				
+
+				
+					<li>
+						<a href="#" data-page="58" class="paginationLink hidden-xs" aria-label="">
+							59
+						</a>
+					</li>
+				
+
+				
+
+			
+				
+					
+					
+						
+					
+					
+				
+
+				
+
+				
+					<li>
+						<a href="#" data-page="1" class="paginationLink when-xs-btn btn-link when-xs-btn-primary" aria-label="Kitas puslapis">
+							<i class="fa fa-chevron-right"></i>
+						</a>
+					</li>
+				
+
+				
+
+			
+		</ul>
+	</nav>
+
+
+
+
+				</div>
+				
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="col-md-4 col-xs-12 col-vertical-middle when-xs-margin-vertical-sm">
+	<div class="row">
+		<div class="hidden-xs col-md-1"></div>
+		<div class="col-xs-12 col-md-11">
+			<label for="sortBy">
+				Rūšiuoti pagal:
+			</label>
+
+			<select id="sortBy" name="sortBy" class="form-element">
+				<option value="maxBid.ASC">Siūlomą kainą: mažiausia vir&scaron;uje</option><option value="maxBid.DESC">Siūlomą kainą: didžiausia vir&scaron;uje</option><option value="endDate.ASC" selected="selected">Pabaigos laiką: greičiausiai baigsis</option><option value="endDate.DESC">Pabaigos laiką: vėliausiai baigsis</option><option value="startDate.DESC">Pradžios laiką: naujausios vir&scaron;uje</option><option value="startDate.ASC">Pradžios laiką: seniausios vir&scaron;uje</option><option value="number.ASC">Varžytynių numerį: A-Z</option><option value="number.DESC">Varžytynių numerį: Z-A</option>
+			</select>
+		</div>
+	</div>
+</div>
+
+			</div>
+
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<ul class="bid_list">
+	
+		<li>
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+		<a href="/evs/pages/auction.do?id=338321&number=337733"
+		class="foto default-estate-list-photo NEKILN PATAL-BUT small-font-if-long-text"
+		aria-label="Patalpos/Butai">
+			Patalpos/Butai
+		</a>
+	
+
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="top_block">
+	<h2 class="no">
+		<a href="/evs/pages/auction.do?id=338321&number=337733">
+			Nr. 337733
+		</a>
+	</h2>
+	&emsp;
+	<div class="inline-block">
+		<div class="label label-primary font-11">Vykstančios</div>
+		<div class="label label-default font-11">Antstolių varžytynės</div>
+
+		
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	</div>
+	
+        <div id="markContainer_338321" class="inline-block pull-right">
+            
+        </div>
+	
+</div>
+
+			<ul class="desc">
+				
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li>
+	<span class="txt">
+		Pradžia:
+	</span>
+	2026-09-15 09:02
+</li>
+<li>
+	<span class="txt">
+		Pabaiga:
+	</span>
+	2026-10-15 09:02
+</li>
+<li>
+	<span class="txt">
+		Liko:
+	</span>
+	10 val. 43 min.
+</li>
+				
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+				
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+
+	
+
+<li class="sep">
+	<span class="txt">
+
+
+
+		
+			
+			
+				Pradinė kaina:
+			
+		
+
+	</span>
+	
+		 4 000 Eur
+	 
+	
+</li>
+				
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li>
+	<span class="txt">
+		
+			
+			
+				Paskutinė siūloma kaina:
+			
+		
+	</span>
+	
+		
+			7 520 Eur
+		
+		
+	
+</li>
+			</ul>
+
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="list_box">
+	<span class="title">
+		
+			
+				
+			
+			
+				Turtas:
+			
+		
+	</span>
+	<ul class="list">
+		<li>Garažas (boksas), 19,6 kv. m<br /><span class="small">Elektrėnų sav. Elektrėnų m. Elektrinės g. 4-216</span></li>
+	</ul>
+</div>
+		</li>
+	
+		<li>
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+		<a href="/evs/pages/auction.do?id=338315&number=337722" class="foto">
+			<img src="/evap-image/image/338315/912164/medium" alt="Sklypai" />
+		</a>
+	
+	
+
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="top_block">
+	<h2 class="no">
+		<a href="/evs/pages/auction.do?id=338315&number=337722">
+			Nr. 337722
+		</a>
+	</h2>
+	&emsp;
+	<div class="inline-block">
+		<div class="label label-primary font-11">Vykstančios</div>
+		<div class="label label-default font-11">Antstolių varžytynės</div>
+
+		
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	</div>
+	
+        <div id="markContainer_338315" class="inline-block pull-right">
+            
+        </div>
+	
+</div>
+
+			<ul class="desc">
+				
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li>
+	<span class="txt">
+		Pradžia:
+	</span>
+	2026-09-15 09:11
+</li>
+<li>
+	<span class="txt">
+		Pabaiga:
+	</span>
+	2026-10-15 09:11
+</li>
+<li>
+	<span class="txt">
+		Liko:
+	</span>
+	10 val. 52 min.
+</li>
+				
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+				
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+
+	
+
+<li class="sep">
+	<span class="txt">
+
+
+
+		
+			
+			
+				Pradinė kaina:
+			
+		
+
+	</span>
+	
+		 3 480 Eur
+	 
+	
+</li>
+				
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li>
+	<span class="txt">
+		
+			
+			
+				Paskutinė siūloma kaina:
+			
+		
+	</span>
+	
+		
+		
+			–
+		
+	
+</li>
+			</ul>
+
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="list_box">
+	<span class="title">
+		
+			
+				
+			
+			
+				Turtas:
+			
+		
+	</span>
+	<ul class="list">
+		<li>Žemės sklypas 1092/2184 dalis, 21,84 a. (0,22 ha.)</li><li>Gyvenamas namas 1/2 dalis, 136,9 kv. m</li><li>Daržinė 1/2 dalis, 34 kv. m</li><li>Tvartas 1/2 dalis, 41 kv. m<br /><span class="small">Kelmės r. sav. Kiaunorių k. Vingio g. 11</span></li><li>......</li>
+	</ul>
+</div>
+		</li>
+	
+		<li>
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+		<a href="/evs/pages/auction.do?id=338322&number=337734" class="foto">
+			<img src="/evap-image/image/338322/912213/medium" alt="Patalpos/Butai" />
+		</a>
+	
+	
+
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="top_block">
+	<h2 class="no">
+		<a href="/evs/pages/auction.do?id=338322&number=337734">
+			Nr. 337734
+		</a>
+	</h2>
+	&emsp;
+	<div class="inline-block">
+		<div class="label label-primary font-11">Vykstančios</div>
+		<div class="label label-default font-11">Antstolių varžytynės</div>
+
+		
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	</div>
+	
+        <div id="markContainer_338322" class="inline-block pull-right">
+            
+        </div>
+	
+</div>
+
+			<ul class="desc">
+				
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li>
+	<span class="txt">
+		Pradžia:
+	</span>
+	2026-09-15 09:15
+</li>
+<li>
+	<span class="txt">
+		Pabaiga:
+	</span>
+	2026-10-15 09:15
+</li>
+<li>
+	<span class="txt">
+		Liko:
+	</span>
+	10 val. 56 min.
+</li>
+				
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+				
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+
+	
+
+<li class="sep">
+	<span class="txt">
+
+
+
+		
+			
+			
+				Pradinė kaina:
+			
+		
+
+	</span>
+	
+		 12 160 Eur
+	 
+	
+</li>
+				
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li>
+	<span class="txt">
+		
+			
+			
+				Paskutinė siūloma kaina:
+			
+		
+	</span>
+	
+		
+		
+			–
+		
+	
+</li>
+			</ul>
+
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="list_box">
+	<span class="title">
+		
+			
+				
+			
+			
+				Turtas:
+			
+		
+	</span>
+	<ul class="list">
+		<li>Butas Nr.1 2 kamb., 39,13 kv. m<br /><span class="small">Vilniaus r. sav. Vėliučionių k. Gandrų g. 1-1</span></li>
+	</ul>
+</div>
+		</li>
+	
+		<li>
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+		<a href="/evs/pages/auction.do?id=337099&number=336258" class="foto">
+			<img src="/evap-image/image/337099/907355/medium" alt="Sklypai" />
+		</a>
+	
+	
+
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="top_block">
+	<h2 class="no">
+		<a href="/evs/pages/auction.do?id=337099&number=336258">
+			Nr. 336258
+		</a>
+	</h2>
+	&emsp;
+	<div class="inline-block">
+		<div class="label label-primary font-11">Vykstančios</div>
+		<div class="label label-default font-11">Antstolių varžytynės</div>
+
+		
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	</div>
+	
+        <div id="markContainer_337099" class="inline-block pull-right">
+            
+        </div>
+	
+</div>
+
+			<ul class="desc">
+				
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li>
+	<span class="txt">
+		Pradžia:
+	</span>
+	2026-09-15 09:26
+</li>
+<li>
+	<span class="txt">
+		Pabaiga:
+	</span>
+	2026-10-15 09:26
+</li>
+<li>
+	<span class="txt">
+		Liko:
+	</span>
+	11 val. 7 min.
+</li>
+				
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+				
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+
+	
+
+<li class="sep">
+	<span class="txt">
+
+
+
+		
+			
+			
+				Pradinė kaina:
+			
+		
+
+	</span>
+	
+		 13 808 Eur
+	 
+	
+</li>
+				
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li>
+	<span class="txt">
+		
+			
+			
+				Paskutinė siūloma kaina:
+			
+		
+	</span>
+	
+		
+			17 070 Eur
+		
+		
+	
+</li>
+			</ul>
+
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="list_box">
+	<span class="title">
+		
+			
+				
+			
+			
+				Turtas:
+			
+		
+	</span>
+	<ul class="list">
+		<li>Žemės sklypas 9500/10459 dalis, 104,59 a. (1,05 ha.)<br /><span class="small">Klaipėdos r. sav. Eglynų k.</span></li>
+	</ul>
+</div>
+		</li>
+	
+		<li>
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+		<a href="/evs/pages/auction.do?id=338302&number=337706" class="foto">
+			<img src="/evap-image/image/338302/912103/medium" alt="Sklypai" />
+		</a>
+	
+	
+
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="top_block">
+	<h2 class="no">
+		<a href="/evs/pages/auction.do?id=338302&number=337706">
+			Nr. 337706
+		</a>
+	</h2>
+	&emsp;
+	<div class="inline-block">
+		<div class="label label-primary font-11">Vykstančios</div>
+		<div class="label label-default font-11">Antstolių varžytynės</div>
+
+		
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	</div>
+	
+        <div id="markContainer_338302" class="inline-block pull-right">
+            
+        </div>
+	
+</div>
+
+			<ul class="desc">
+				
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li>
+	<span class="txt">
+		Pradžia:
+	</span>
+	2026-09-15 09:54
+</li>
+<li>
+	<span class="txt">
+		Pabaiga:
+	</span>
+	2026-10-15 09:54
+</li>
+<li>
+	<span class="txt">
+		Liko:
+	</span>
+	11 val. 35 min.
+</li>
+				
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+				
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+
+	
+
+<li class="sep">
+	<span class="txt">
+
+
+
+		
+			
+			
+				Pradinė kaina:
+			
+		
+
+	</span>
+	
+		 1 432 Eur
+	 
+	
+</li>
+				
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li>
+	<span class="txt">
+		
+			
+			
+				Paskutinė siūloma kaina:
+			
+		
+	</span>
+	
+		
+		
+			–
+		
+	
+</li>
+			</ul>
+
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="list_box">
+	<span class="title">
+		
+			
+				
+			
+			
+				Turtas:
+			
+		
+	</span>
+	<ul class="list">
+		<li>Žemės sklypas 5200/41000 dalis, 410 a. (4,1 ha.)<br /><span class="small">Kretingos r. sav. Voveraičių k.</span></li>
+	</ul>
+</div>
+		</li>
+	
+		<li>
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+		<a href="/evs/pages/auction.do?id=338303&number=337707" class="foto">
+			<img src="/evap-image/image/338303/912105/medium" alt="Sklypai" />
+		</a>
+	
+	
+
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="top_block">
+	<h2 class="no">
+		<a href="/evs/pages/auction.do?id=338303&number=337707">
+			Nr. 337707
+		</a>
+	</h2>
+	&emsp;
+	<div class="inline-block">
+		<div class="label label-primary font-11">Vykstančios</div>
+		<div class="label label-default font-11">Antstolių varžytynės</div>
+
+		
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	</div>
+	
+        <div id="markContainer_338303" class="inline-block pull-right">
+            
+        </div>
+	
+</div>
+
+			<ul class="desc">
+				
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li>
+	<span class="txt">
+		Pradžia:
+	</span>
+	2026-09-15 09:54
+</li>
+<li>
+	<span class="txt">
+		Pabaiga:
+	</span>
+	2026-10-15 09:54
+</li>
+<li>
+	<span class="txt">
+		Liko:
+	</span>
+	11 val. 35 min.
+</li>
+				
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+				
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+
+	
+
+<li class="sep">
+	<span class="txt">
+
+
+
+		
+			
+			
+				Pradinė kaina:
+			
+		
+
+	</span>
+	
+		 20 340 Eur
+	 
+	
+</li>
+				
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li>
+	<span class="txt">
+		
+			
+			
+				Paskutinė siūloma kaina:
+			
+		
+	</span>
+	
+		
+		
+			–
+		
+	
+</li>
+			</ul>
+
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="list_box">
+	<span class="title">
+		
+			
+				
+			
+			
+				Turtas:
+			
+		
+	</span>
+	<ul class="list">
+		<li>Žemės sklypas, 214,99 a. (2,15 ha.)<br /><span class="small">Prienų r. sav. Antaveršio k.</span></li>
+	</ul>
+</div>
+		</li>
+	
+		<li>
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+		<a href="/evs/pages/auction.do?id=338304&number=337708" class="foto">
+			<img src="/evap-image/image/338304/912107/medium" alt="Sklypai" />
+		</a>
+	
+	
+
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="top_block">
+	<h2 class="no">
+		<a href="/evs/pages/auction.do?id=338304&number=337708">
+			Nr. 337708
+		</a>
+	</h2>
+	&emsp;
+	<div class="inline-block">
+		<div class="label label-primary font-11">Vykstančios</div>
+		<div class="label label-default font-11">Antstolių varžytynės</div>
+
+		
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	</div>
+	
+        <div id="markContainer_338304" class="inline-block pull-right">
+            
+        </div>
+	
+</div>
+
+			<ul class="desc">
+				
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li>
+	<span class="txt">
+		Pradžia:
+	</span>
+	2026-09-15 09:55
+</li>
+<li>
+	<span class="txt">
+		Pabaiga:
+	</span>
+	2026-10-15 09:55
+</li>
+<li>
+	<span class="txt">
+		Liko:
+	</span>
+	11 val. 36 min.
+</li>
+				
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+				
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+
+	
+
+<li class="sep">
+	<span class="txt">
+
+
+
+		
+			
+			
+				Pradinė kaina:
+			
+		
+
+	</span>
+	
+		 45 600 Eur
+	 
+	
+</li>
+				
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li>
+	<span class="txt">
+		
+			
+			
+				Paskutinė siūloma kaina:
+			
+		
+	</span>
+	
+		
+		
+			–
+		
+	
+</li>
+			</ul>
+
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="list_box">
+	<span class="title">
+		
+			
+				
+			
+			
+				Turtas:
+			
+		
+	</span>
+	<ul class="list">
+		<li>Žemės sklypas, 6,25 a. (0,06 ha.)</li><li>Gyvenamasis namas, 203,84 kv. m</li><li>Ūkinis pastatas, 25 kv. m</li><li>Kiemo statiniai<br /><span class="small">Tauragės r. sav. Tauragės m. Šiaurės g. 23</span></li>
+	</ul>
+</div>
+		</li>
+	
+		<li>
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+		<a href="/evs/pages/auction.do?id=338327&number=337742" class="foto">
+			<img src="/evap-image/image/338327/912227/medium" alt="Sklypai" />
+		</a>
+	
+	
+
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="top_block">
+	<h2 class="no">
+		<a href="/evs/pages/auction.do?id=338327&number=337742">
+			Nr. 337742
+		</a>
+	</h2>
+	&emsp;
+	<div class="inline-block">
+		<div class="label label-primary font-11">Vykstančios</div>
+		<div class="label label-default font-11">Antstolių varžytynės</div>
+
+		
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	</div>
+	
+        <div id="markContainer_338327" class="inline-block pull-right">
+            
+        </div>
+	
+</div>
+
+			<ul class="desc">
+				
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li>
+	<span class="txt">
+		Pradžia:
+	</span>
+	2026-09-15 10:10
+</li>
+<li>
+	<span class="txt">
+		Pabaiga:
+	</span>
+	2026-10-15 10:10
+</li>
+<li>
+	<span class="txt">
+		Liko:
+	</span>
+	11 val. 51 min.
+</li>
+				
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+				
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+
+	
+
+<li class="sep">
+	<span class="txt">
+
+
+
+		
+			
+			
+				Pradinė kaina:
+			
+		
+
+	</span>
+	
+		 6 600 Eur
+	 
+	
+</li>
+				
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li>
+	<span class="txt">
+		
+			
+			
+				Paskutinė siūloma kaina:
+			
+		
+	</span>
+	
+		
+		
+			–
+		
+	
+</li>
+			</ul>
+
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="list_box">
+	<span class="title">
+		
+			
+				
+			
+			
+				Turtas:
+			
+		
+	</span>
+	<ul class="list">
+		<li>Žemės sklypas, 19 a. (0,19 ha.)</li><li>Gyvenamasis namas, 121,31 kv. m</li><li>Ūkinis pastatas, 125 kv. m</li><li>Ūkinis pastatas, 9 kv. m<br /><span class="small">Biržų r. sav. Medeikių k. Vilties aklg. 5</span></li><li>......</li>
+	</ul>
+</div>
+		</li>
+	
+		<li>
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+		<a href="/evs/pages/auction.do?id=338328&number=337744" class="foto">
+			<img src="/evap-image/image/338328/912234/medium" alt="Patalpos/Butai" />
+		</a>
+	
+	
+
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="top_block">
+	<h2 class="no">
+		<a href="/evs/pages/auction.do?id=338328&number=337744">
+			Nr. 337744
+		</a>
+	</h2>
+	&emsp;
+	<div class="inline-block">
+		<div class="label label-primary font-11">Vykstančios</div>
+		<div class="label label-default font-11">Antstolių varžytynės</div>
+
+		
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	</div>
+	
+        <div id="markContainer_338328" class="inline-block pull-right">
+            
+        </div>
+	
+</div>
+
+			<ul class="desc">
+				
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li>
+	<span class="txt">
+		Pradžia:
+	</span>
+	2026-09-15 10:11
+</li>
+<li>
+	<span class="txt">
+		Pabaiga:
+	</span>
+	2026-10-15 10:11
+</li>
+<li>
+	<span class="txt">
+		Liko:
+	</span>
+	11 val. 52 min.
+</li>
+				
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+				
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+
+	
+
+<li class="sep">
+	<span class="txt">
+
+
+
+		
+			
+			
+				Pradinė kaina:
+			
+		
+
+	</span>
+	
+		 1 805 Eur
+	 
+	
+</li>
+				
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li>
+	<span class="txt">
+		
+			
+			
+				Paskutinė siūloma kaina:
+			
+		
+	</span>
+	
+		
+		
+			–
+		
+	
+</li>
+			</ul>
+
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="list_box">
+	<span class="title">
+		
+			
+				
+			
+			
+				Turtas:
+			
+		
+	</span>
+	<ul class="list">
+		<li>Butas 1/2 dalis 2 kamb., 56,33 kv. m<br /><span class="small">Telšių r. sav. Vainočių k. Beržų g. 2-4</span></li><li>Žemės sklypas 1/2 dalis, 15 a. (0,15 ha.)<br /><span class="small">Telšių r. sav. Vainočių k.</span></li><li>Ūkinis pastatas 1/2 dalis, 51 kv. m</li><li>Viralinė 1/2 dalis, 9 kv. m<br /><span class="small">Telšių r. sav. Vainočių k. Beržų g. 2</span></li><li>......</li>
+	</ul>
+</div>
+		</li>
+	
+		<li>
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+		<a href="/evs/pages/auction.do?id=338329&number=337745"
+		class="foto default-estate-list-photo NEKILN SKLYPAI small-font-if-long-text"
+		aria-label="Sklypai">
+			Sklypai
+		</a>
+	
+
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="top_block">
+	<h2 class="no">
+		<a href="/evs/pages/auction.do?id=338329&number=337745">
+			Nr. 337745
+		</a>
+	</h2>
+	&emsp;
+	<div class="inline-block">
+		<div class="label label-primary font-11">Vykstančios</div>
+		<div class="label label-default font-11">Antstolių varžytynės</div>
+
+		
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	</div>
+	
+        <div id="markContainer_338329" class="inline-block pull-right">
+            
+        </div>
+	
+</div>
+
+			<ul class="desc">
+				
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li>
+	<span class="txt">
+		Pradžia:
+	</span>
+	2026-09-15 10:19
+</li>
+<li>
+	<span class="txt">
+		Pabaiga:
+	</span>
+	2026-10-15 10:19
+</li>
+<li>
+	<span class="txt">
+		Liko:
+	</span>
+	12 val.
+</li>
+				
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+				
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+
+	
+
+<li class="sep">
+	<span class="txt">
+
+
+
+		
+			
+			
+				Pradinė kaina:
+			
+		
+
+	</span>
+	
+		 5 340 Eur
+	 
+	
+</li>
+				
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li>
+	<span class="txt">
+		
+			
+			
+				Paskutinė siūloma kaina:
+			
+		
+	</span>
+	
+		
+			5 340 Eur
+		
+		
+	
+</li>
+			</ul>
+
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="list_box">
+	<span class="title">
+		
+			
+				
+			
+			
+				Turtas:
+			
+		
+	</span>
+	<ul class="list">
+		<li>Žemės sklypas 1/2 dalis, 623,44 a. (6,23 ha.)<br /><span class="small">Kupiškio r. sav. Linkiškių k.</span></li>
+	</ul>
+</div>
+		</li>
+	
+		<li>
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+		<a href="/evs/pages/auction.do?id=338330&number=337746"
+		class="foto default-estate-list-photo NEKILN SKLYPAI small-font-if-long-text"
+		aria-label="Sklypai">
+			Sklypai
+		</a>
+	
+
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="top_block">
+	<h2 class="no">
+		<a href="/evs/pages/auction.do?id=338330&number=337746">
+			Nr. 337746
+		</a>
+	</h2>
+	&emsp;
+	<div class="inline-block">
+		<div class="label label-primary font-11">Vykstančios</div>
+		<div class="label label-default font-11">Antstolių varžytynės</div>
+
+		
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	</div>
+	
+        <div id="markContainer_338330" class="inline-block pull-right">
+            
+        </div>
+	
+</div>
+
+			<ul class="desc">
+				
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li>
+	<span class="txt">
+		Pradžia:
+	</span>
+	2026-09-15 10:41
+</li>
+<li>
+	<span class="txt">
+		Pabaiga:
+	</span>
+	2026-10-15 10:41
+</li>
+<li>
+	<span class="txt">
+		Liko:
+	</span>
+	12 val. 22 min.
+</li>
+				
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+				
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+
+	
+
+<li class="sep">
+	<span class="txt">
+
+
+
+		
+			
+			
+				Pradinė kaina:
+			
+		
+
+	</span>
+	
+		 2 040 Eur
+	 
+	
+</li>
+				
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li>
+	<span class="txt">
+		
+			
+			
+				Paskutinė siūloma kaina:
+			
+		
+	</span>
+	
+		
+		
+			–
+		
+	
+</li>
+			</ul>
+
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="list_box">
+	<span class="title">
+		
+			
+				
+			
+			
+				Turtas:
+			
+		
+	</span>
+	<ul class="list">
+		<li>Žemės sklypas, 99 a. (0,99 ha.)<br /><span class="small">Biržų r. sav. Pučiakalnės k.</span></li>
+	</ul>
+</div>
+		</li>
+	
+		<li>
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+		<a href="/evs/pages/auction.do?id=338331&number=337747" class="foto">
+			<img src="/evap-image/image/338331/912236/medium" alt="Kilnojamas turtas" />
+		</a>
+	
+	
+
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="top_block">
+	<h2 class="no">
+		<a href="/evs/pages/auction.do?id=338331&number=337747">
+			Nr. 337747
+		</a>
+	</h2>
+	&emsp;
+	<div class="inline-block">
+		<div class="label label-primary font-11">Vykstančios</div>
+		<div class="label label-default font-11">Nemokumo administratorių varžytynės</div>
+
+		
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	</div>
+	
+        <div id="markContainer_338331" class="inline-block pull-right">
+            
+        </div>
+	
+</div>
+
+			<ul class="desc">
+				
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li>
+	<span class="txt">
+		Pradžia:
+	</span>
+	2026-09-15 10:49
+</li>
+<li>
+	<span class="txt">
+		Pabaiga:
+	</span>
+	2026-10-15 10:49
+</li>
+<li>
+	<span class="txt">
+		Liko:
+	</span>
+	12 val. 30 min.
+</li>
+				
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+				
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+
+	
+
+<li class="sep">
+	<span class="txt">
+
+
+
+		
+			
+			
+				Pradinė kaina:
+			
+		
+
+	</span>
+	
+		 189 085 Eur
+	 
+	
+</li>
+				
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li>
+	<span class="txt">
+		
+			
+			
+				Paskutinė siūloma kaina:
+			
+		
+	</span>
+	
+		
+		
+			–
+		
+	
+</li>
+			</ul>
+
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="list_box">
+	<span class="title">
+		
+			
+				
+			
+			
+				Turtas:
+			
+		
+	</span>
+	<ul class="list">
+		<li>Debitorinių skolų paketas</li>
+	</ul>
+</div>
+		</li>
+	
+		<li>
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+		<a href="/evs/pages/auction.do?id=338333&number=337749"
+		class="foto default-estate-list-photo NEKILN SKLYPAI small-font-if-long-text"
+		aria-label="Sklypai">
+			Sklypai
+		</a>
+	
+
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="top_block">
+	<h2 class="no">
+		<a href="/evs/pages/auction.do?id=338333&number=337749">
+			Nr. 337749
+		</a>
+	</h2>
+	&emsp;
+	<div class="inline-block">
+		<div class="label label-primary font-11">Vykstančios</div>
+		<div class="label label-default font-11">Antstolių varžytynės</div>
+
+		
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	</div>
+	
+        <div id="markContainer_338333" class="inline-block pull-right">
+            
+        </div>
+	
+</div>
+
+			<ul class="desc">
+				
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li>
+	<span class="txt">
+		Pradžia:
+	</span>
+	2026-09-15 11:00
+</li>
+<li>
+	<span class="txt">
+		Pabaiga:
+	</span>
+	2026-10-15 11:00
+</li>
+<li>
+	<span class="txt">
+		Liko:
+	</span>
+	12 val. 41 min.
+</li>
+				
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+				
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+
+	
+
+<li class="sep">
+	<span class="txt">
+
+
+
+		
+			
+			
+				Pradinė kaina:
+			
+		
+
+	</span>
+	
+		 1 913 Eur
+	 
+	
+</li>
+				
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li>
+	<span class="txt">
+		
+			
+			
+				Paskutinė siūloma kaina:
+			
+		
+	</span>
+	
+		
+		
+			–
+		
+	
+</li>
+			</ul>
+
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="list_box">
+	<span class="title">
+		
+			
+				
+			
+			
+				Turtas:
+			
+		
+	</span>
+	<ul class="list">
+		<li>Žemės sklypas 3/16 dalis, 426 a. (4,26 ha.)<br /><span class="small">Rokiškio r. sav. Audronių I k.</span></li>
+	</ul>
+</div>
+		</li>
+	
+		<li>
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+		<a href="/evs/pages/auction.do?id=338335&number=337752" class="foto">
+			<img src="/evap-image/image/338335/912252/medium" alt="Sklypai" />
+		</a>
+	
+	
+
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="top_block">
+	<h2 class="no">
+		<a href="/evs/pages/auction.do?id=338335&number=337752">
+			Nr. 337752
+		</a>
+	</h2>
+	&emsp;
+	<div class="inline-block">
+		<div class="label label-primary font-11">Vykstančios</div>
+		<div class="label label-default font-11">Antstolių varžytynės</div>
+
+		
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	</div>
+	
+        <div id="markContainer_338335" class="inline-block pull-right">
+            
+        </div>
+	
+</div>
+
+			<ul class="desc">
+				
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li>
+	<span class="txt">
+		Pradžia:
+	</span>
+	2026-09-15 11:24
+</li>
+<li>
+	<span class="txt">
+		Pabaiga:
+	</span>
+	2026-10-15 11:24
+</li>
+<li>
+	<span class="txt">
+		Liko:
+	</span>
+	13 val. 5 min.
+</li>
+				
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+				
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+
+	
+
+<li class="sep">
+	<span class="txt">
+
+
+
+		
+			
+			
+				Pradinė kaina:
+			
+		
+
+	</span>
+	
+		 5 920 Eur
+	 
+	
+</li>
+				
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li>
+	<span class="txt">
+		
+			
+			
+				Paskutinė siūloma kaina:
+			
+		
+	</span>
+	
+		
+		
+			–
+		
+	
+</li>
+			</ul>
+
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="list_box">
+	<span class="title">
+		
+			
+				
+			
+			
+				Turtas:
+			
+		
+	</span>
+	<ul class="list">
+		<li>Žemės sklypas, 129,45 a. (1,29 ha.)<br /><span class="small">Biržų r. sav. Gaigalų k.</span></li>
+	</ul>
+</div>
+		</li>
+	
+		<li>
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+		<a href="/evs/pages/auction.do?id=338336&number=337753" class="foto">
+			<img src="/evap-image/image/338336/912254/medium" alt="Sklypai" />
+		</a>
+	
+	
+
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="top_block">
+	<h2 class="no">
+		<a href="/evs/pages/auction.do?id=338336&number=337753">
+			Nr. 337753
+		</a>
+	</h2>
+	&emsp;
+	<div class="inline-block">
+		<div class="label label-primary font-11">Vykstančios</div>
+		<div class="label label-default font-11">Antstolių varžytynės</div>
+
+		
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	</div>
+	
+        <div id="markContainer_338336" class="inline-block pull-right">
+            
+        </div>
+	
+</div>
+
+			<ul class="desc">
+				
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li>
+	<span class="txt">
+		Pradžia:
+	</span>
+	2026-09-15 11:27
+</li>
+<li>
+	<span class="txt">
+		Pabaiga:
+	</span>
+	2026-10-15 11:27
+</li>
+<li>
+	<span class="txt">
+		Liko:
+	</span>
+	13 val. 8 min.
+</li>
+				
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+				
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+
+	
+
+<li class="sep">
+	<span class="txt">
+
+
+
+		
+			
+			
+				Pradinė kaina:
+			
+		
+
+	</span>
+	
+		 21 440 Eur
+	 
+	
+</li>
+				
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li>
+	<span class="txt">
+		
+			
+			
+				Paskutinė siūloma kaina:
+			
+		
+	</span>
+	
+		
+		
+			–
+		
+	
+</li>
+			</ul>
+
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="list_box">
+	<span class="title">
+		
+			
+				
+			
+			
+				Turtas:
+			
+		
+	</span>
+	<ul class="list">
+		<li>Žemės sklypas, 470 a. (4,7 ha.)<br /><span class="small">Biržų r. sav. Gaigalų k.</span></li>
+	</ul>
+</div>
+		</li>
+	
+		<li>
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+		<a href="/evs/pages/auction.do?id=338339&number=337757" class="foto">
+			<img src="/evap-image/image/338339/912260/medium" alt="Sklypai" />
+		</a>
+	
+	
+
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="top_block">
+	<h2 class="no">
+		<a href="/evs/pages/auction.do?id=338339&number=337757">
+			Nr. 337757
+		</a>
+	</h2>
+	&emsp;
+	<div class="inline-block">
+		<div class="label label-primary font-11">Vykstančios</div>
+		<div class="label label-default font-11">Antstolių varžytynės</div>
+
+		
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	</div>
+	
+        <div id="markContainer_338339" class="inline-block pull-right">
+            
+        </div>
+	
+</div>
+
+			<ul class="desc">
+				
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li>
+	<span class="txt">
+		Pradžia:
+	</span>
+	2026-09-15 11:39
+</li>
+<li>
+	<span class="txt">
+		Pabaiga:
+	</span>
+	2026-10-15 11:39
+</li>
+<li>
+	<span class="txt">
+		Liko:
+	</span>
+	13 val. 20 min.
+</li>
+				
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+				
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+
+	
+
+<li class="sep">
+	<span class="txt">
+
+
+
+		
+			
+			
+				Pradinė kaina:
+			
+		
+
+	</span>
+	
+		 15 000 Eur
+	 
+	
+</li>
+				
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li>
+	<span class="txt">
+		
+			
+			
+				Paskutinė siūloma kaina:
+			
+		
+	</span>
+	
+		
+		
+			–
+		
+	
+</li>
+			</ul>
+
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="list_box">
+	<span class="title">
+		
+			
+				
+			
+			
+				Turtas:
+			
+		
+	</span>
+	<ul class="list">
+		<li>Žemės sklypas 169/1083 dalis, 10,83 a. (0,11 ha.)</li><li>Gyvenamas namas 53/400 dalis, 180,07 kv. m</li><li>Šiltnamis 1/4 dalis, 25 kv. m</li><li>Ūkinis pastatas 1/4 dalis, 15 kv. m<br /><span class="small">Kauno m. sav. Kauno m. Skirmanto g. 27</span></li><li>......</li>
+	</ul>
+</div>
+		</li>
+	
+		<li>
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+		<a href="/evs/pages/auction.do?id=338342&number=337761" class="foto">
+			<img src="/evap-image/image/338342/912272/medium" alt="Pastatai" />
+		</a>
+	
+	
+
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="top_block">
+	<h2 class="no">
+		<a href="/evs/pages/auction.do?id=338342&number=337761">
+			Nr. 337761
+		</a>
+	</h2>
+	&emsp;
+	<div class="inline-block">
+		<div class="label label-primary font-11">Vykstančios</div>
+		<div class="label label-default font-11">Antstolių varžytynės</div>
+
+		
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	</div>
+	
+        <div id="markContainer_338342" class="inline-block pull-right">
+            
+        </div>
+	
+</div>
+
+			<ul class="desc">
+				
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li>
+	<span class="txt">
+		Pradžia:
+	</span>
+	2026-09-15 11:48
+</li>
+<li>
+	<span class="txt">
+		Pabaiga:
+	</span>
+	2026-10-15 11:48
+</li>
+<li>
+	<span class="txt">
+		Liko:
+	</span>
+	13 val. 29 min.
+</li>
+				
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+				
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+
+	
+
+<li class="sep">
+	<span class="txt">
+
+
+
+		
+			
+			
+				Pradinė kaina:
+			
+		
+
+	</span>
+	
+		 60 000 Eur
+	 
+	
+</li>
+				
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li>
+	<span class="txt">
+		
+			
+			
+				Paskutinė siūloma kaina:
+			
+		
+	</span>
+	
+		
+		
+			–
+		
+	
+</li>
+			</ul>
+
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="list_box">
+	<span class="title">
+		
+			
+				
+			
+			
+				Turtas:
+			
+		
+	</span>
+	<ul class="list">
+		<li>Gyvenamasis namas 86725/332880 dalis, 332,88 kv. m</li><li>Žemės sklypas 305/914 dalis, 9,14 a. (0,09 ha.)<br /><span class="small">Trakų r. sav. Trakų m. Beržų g. 2</span></li>
+	</ul>
+</div>
+		</li>
+	
+		<li>
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+		<a href="/evs/pages/auction.do?id=338334&number=337750" class="foto">
+			<img src="/evap-image/image/338334/912237/medium" alt="Sklypai" />
+		</a>
+	
+	
+
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="top_block">
+	<h2 class="no">
+		<a href="/evs/pages/auction.do?id=338334&number=337750">
+			Nr. 337750
+		</a>
+	</h2>
+	&emsp;
+	<div class="inline-block">
+		<div class="label label-primary font-11">Vykstančios</div>
+		<div class="label label-default font-11">Antstolių varžytynės</div>
+
+		
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	</div>
+	
+        <div id="markContainer_338334" class="inline-block pull-right">
+            
+        </div>
+	
+</div>
+
+			<ul class="desc">
+				
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li>
+	<span class="txt">
+		Pradžia:
+	</span>
+	2026-09-15 12:00
+</li>
+<li>
+	<span class="txt">
+		Pabaiga:
+	</span>
+	2026-10-15 12:00
+</li>
+<li>
+	<span class="txt">
+		Liko:
+	</span>
+	13 val. 41 min.
+</li>
+				
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+				
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+
+	
+
+<li class="sep">
+	<span class="txt">
+
+
+
+		
+			
+			
+				Pradinė kaina:
+			
+		
+
+	</span>
+	
+		 10 080 Eur
+	 
+	
+</li>
+				
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li>
+	<span class="txt">
+		
+			
+			
+				Paskutinė siūloma kaina:
+			
+		
+	</span>
+	
+		
+		
+			–
+		
+	
+</li>
+			</ul>
+
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="list_box">
+	<span class="title">
+		
+			
+				
+			
+			
+				Turtas:
+			
+		
+	</span>
+	<ul class="list">
+		<li>Žemės sklypas 1/2 dalis, 18 a. (0,18 ha.)</li><li>Gyvenamasis namas 1/2 dalis, 101,65 kv. m</li><li>Lauko virtuvė 1/2 dalis, 29 kv. m</li><li>Ūkinis pastatas 1/2 dalis, 167 kv. m<br /><span class="small">Šalčininkų r. sav. Pajuodupio k. Sodų g. 17</span></li><li>......</li>
+	</ul>
+</div>
+		</li>
+	
+		<li>
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+		<a href="/evs/pages/auction.do?id=338355&number=337776" class="foto">
+			<img src="/evap-image/image/338355/912289/medium" alt="Sklypai" />
+		</a>
+	
+	
+
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="top_block">
+	<h2 class="no">
+		<a href="/evs/pages/auction.do?id=338355&number=337776">
+			Nr. 337776
+		</a>
+	</h2>
+	&emsp;
+	<div class="inline-block">
+		<div class="label label-primary font-11">Vykstančios</div>
+		<div class="label label-default font-11">Antstolių varžytynės</div>
+
+		
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	</div>
+	
+        <div id="markContainer_338355" class="inline-block pull-right">
+            
+        </div>
+	
+</div>
+
+			<ul class="desc">
+				
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li>
+	<span class="txt">
+		Pradžia:
+	</span>
+	2026-09-15 13:23
+</li>
+<li>
+	<span class="txt">
+		Pabaiga:
+	</span>
+	2026-10-15 13:23
+</li>
+<li>
+	<span class="txt">
+		Liko:
+	</span>
+	15 val. 4 min.
+</li>
+				
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+				
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+
+	
+
+<li class="sep">
+	<span class="txt">
+
+
+
+		
+			
+			
+				Pradinė kaina:
+			
+		
+
+	</span>
+	
+		 1 760 Eur
+	 
+	
+</li>
+				
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li>
+	<span class="txt">
+		
+			
+			
+				Paskutinė siūloma kaina:
+			
+		
+	</span>
+	
+		
+		
+			–
+		
+	
+</li>
+			</ul>
+
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="list_box">
+	<span class="title">
+		
+			
+				
+			
+			
+				Turtas:
+			
+		
+	</span>
+	<ul class="list">
+		<li>Žemės sklypas 120/4197 dalis, 41,97 a. (0,42 ha.)<br /><span class="small">Kauno m. sav. Kauno m. Romainių g.</span></li>
+	</ul>
+</div>
+		</li>
+	
+		<li>
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+		<a href="/evs/pages/auction.do?id=338357&number=337779" class="foto">
+			<img src="/evap-image/image/338357/912294/medium" alt="Sklypai" />
+		</a>
+	
+	
+
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="top_block">
+	<h2 class="no">
+		<a href="/evs/pages/auction.do?id=338357&number=337779">
+			Nr. 337779
+		</a>
+	</h2>
+	&emsp;
+	<div class="inline-block">
+		<div class="label label-primary font-11">Vykstančios</div>
+		<div class="label label-default font-11">Antstolių varžytynės</div>
+
+		
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	</div>
+	
+        <div id="markContainer_338357" class="inline-block pull-right">
+            
+        </div>
+	
+</div>
+
+			<ul class="desc">
+				
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li>
+	<span class="txt">
+		Pradžia:
+	</span>
+	2026-09-15 13:36
+</li>
+<li>
+	<span class="txt">
+		Pabaiga:
+	</span>
+	2026-10-15 13:36
+</li>
+<li>
+	<span class="txt">
+		Liko:
+	</span>
+	15 val. 17 min.
+</li>
+				
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+				
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+
+	
+
+<li class="sep">
+	<span class="txt">
+
+
+
+		
+			
+			
+				Pradinė kaina:
+			
+		
+
+	</span>
+	
+		 85 800 Eur
+	 
+	
+</li>
+				
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li>
+	<span class="txt">
+		
+			
+			
+				Paskutinė siūloma kaina:
+			
+		
+	</span>
+	
+		
+		
+			–
+		
+	
+</li>
+			</ul>
+
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="list_box">
+	<span class="title">
+		
+			
+				
+			
+			
+				Turtas:
+			
+		
+	</span>
+	<ul class="list">
+		<li>Žemės sklypas, 6,05 a. (0,06 ha.)</li><li>Sodo pastatas, 53,98 kv. m<br /><span class="small">Alytaus r. sav. Nemunaičio k. Jotvingių g. 30</span></li>
+	</ul>
+</div>
+		</li>
+	
+</ul>
+
+			<div class="row">
+				<div class="col-md-offset-2 col-md-6 col-vertical-middle padding-top-md when-xs-no-vertical-padding">
+					
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	<input id="inputPaginationPage" name="page" type="hidden" value="0"/>
+
+	<nav class="text-center">
+		<ul class="pagination">
+			
+				
+					
+						
+					
+					
+					
+				
+
+				
+
+				
+
+				
+					<li class="disabled">
+						<a href="#" data-page="-1" class="paginationLink btn-link" aria-label="Ankstesnis puslapis">
+							<i class="fa fa-chevron-left"></i>
+						</a>
+					</li>
+				
+
+			
+				
+					
+					
+					
+						
+					
+				
+
+				
+					<li class="active">
+						<a href="#" data-page="0" class="paginationLink">
+							1
+						</a>
+					</li>
+				
+
+				
+
+				
+
+			
+				
+					
+					
+					
+						
+					
+				
+
+				
+
+				
+					<li>
+						<a href="#" data-page="1" class="paginationLink hidden-xs" aria-label="">
+							2
+						</a>
+					</li>
+				
+
+				
+
+			
+				
+					
+					
+					
+						
+					
+				
+
+				
+
+				
+					<li>
+						<a href="#" data-page="2" class="paginationLink hidden-xs" aria-label="">
+							3
+						</a>
+					</li>
+				
+
+				
+
+			
+				
+					
+					
+					
+						
+					
+				
+
+				
+
+				
+					<li>
+						<a href="#" data-page="3" class="paginationLink hidden-xs" aria-label="">
+							4
+						</a>
+					</li>
+				
+
+				
+
+			
+				
+					
+					
+					
+						
+					
+				
+
+				
+
+				
+					<li>
+						<a href="#" data-page="4" class="paginationLink hidden-xs" aria-label="">
+							5
+						</a>
+					</li>
+				
+
+				
+
+			
+				
+					
+					
+					
+						
+					
+				
+
+				
+
+				
+
+				
+					<li class="disabled">
+						<a href="#" data-page="-1" class="paginationLink btn-link" aria-label="">
+							...
+						</a>
+					</li>
+				
+
+			
+				
+					
+					
+					
+						
+					
+				
+
+				
+
+				
+					<li>
+						<a href="#" data-page="58" class="paginationLink hidden-xs" aria-label="">
+							59
+						</a>
+					</li>
+				
+
+				
+
+			
+				
+					
+					
+						
+					
+					
+				
+
+				
+
+				
+					<li>
+						<a href="#" data-page="1" class="paginationLink when-xs-btn btn-link when-xs-btn-primary" aria-label="Kitas puslapis">
+							<i class="fa fa-chevron-right"></i>
+						</a>
+					</li>
+				
+
+				
+
+			
+		</ul>
+	</nav>
+
+
+
+
+				</div>
+			</div>
+		
+
+	<div>
+</div></form>
+
+
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+	var urlToSendFrontendLog = "/evs/api/public/log.txt?_csrf=00000000-0000-0000-0000-000000000000";
+</script>
+
+
+	
+	
+		<script type="text/javascript" src="/evs/js/lib/log4javascript/log4javascript_production.js?v=1791947077056"></script>
+	
+
+
+<script type="text/javascript" src="/evs/js/log4javascriptConfig.js?v=1791947077056"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" src="/evs/js/browserDetect.js?v=1791947077056"></script>
+<script type="text/javascript">
+	if ((BrowserDetect.browser == 'Explorer' && BrowserDetect.version < 12)
+			|| (BrowserDetect.browser == 'Firefox' && BrowserDetect.version < 19)
+			|| (BrowserDetect.browser == 'Chrome' && BrowserDetect.version < 28)
+			|| (BrowserDetect.browser == 'Mozilla' && BrowserDetect.version < 11)
+			|| (BrowserDetect.browser == 'Opera' && BrowserDetect.version < 15)) {
+		
+		var el = document.getElementById("divErrorBrowserTooOld");
+		if (el) {
+			el.className = el.className.replace(/\bhidden\b/,'');
+		}
+	}
+
+	ShowIEAlert();
+
+    function isIE() {
+        const ua = window.navigator.userAgent; //Check the userAgent property of the window.navigator object
+        const msie = ua.indexOf('MSIE '); // IE 10 or older
+        const trident = ua.indexOf('Trident/'); //IE 11
+
+        return (msie > 0 || trident > 0);
+    }
+
+
+    //function to show alert if it's IE
+    function ShowIEAlert(){
+        if(isIE()){
+            alert("Informuojame, kad siekiant užtikrinti elektroninės informacijos saugą, artimiausiu metu vartotojams, naudojantiems senesnę nei 11 Internet Explorer naršyklės versiją, www.evarzytynes.lt bus nepasiekiamas. Tam, kad galėtumėte pasiekti visą svetainėje esančią informaciją, maloniai prašome naudoti naujausias interneto naršyklių versijas.\n" +
+                " We inform you, that to ensure electronic information security, in the near future for users, who use older than 11 Internet Explorer browsers versions,  www.evarzytynes.lt will not be available. In order to access all the information on the website, please use the latest versions of web browsers.");
+        }
+    }
+</script>
+
+<script type="text/javascript" src="/evs/js/lib/jquery/jquery-2.1.4.min.js?v=1791947077056"></script>
+<script type="text/javascript" src="/evs/js/lib/bootstrap/js/bootstrap.min.js?v=1791947077056"></script>
+<!--[if lt IE 9]><script type="text/javascript" src="/evs/js/lib/respond.min.js?v=1791947077056"></script><![endif]-->
+<script type="text/javascript" src="/evs/js/lib/URI.js?v=1791947077056"></script>
+<script type="text/javascript" src="/evs/js/lib/momentjs/moment.min.js?v=1791947077056"></script>
+
+<script type="text/javascript" src="/evs/js/common.js?v=1791947077056"></script>
+
+<script type="text/javascript" src="/evs/js/lib/jquery.form.min.js?v=1791947077056"></script>
+
+<script type="text/javascript" src="/evs/js/lib/fancybox/jquery.fancybox.pack.js?v=2.1.5"></script>
+<script type="text/javascript" src="/evs/js/fancyboxConstructor.js?v=1791947077056"></script>
+<script type="text/javascript" src="/evs/js/sessionTimeout.js?v=1791947077056"></script>
+<script type="text/javascript" src="/evs/js/fileViewerConstructor.js?v=1791947077056"></script>
+
+<script type="text/javascript">
+	common.contextPath = '/evs';
+	common.language = 'lt';
+
+	common.csrfHeaderName = 'X-CSRF-TOKEN';
+	common.csrfName = '_csrf';
+	common.csrfToken = '00000000-0000-0000-0000-000000000000';
+
+	
+
+	var NTPserverUrl = common.contextPath + '/api/public/timeDifference.txt';
+</script>
+
+<script type="text/javascript" src="/evs/js/lib/ntp.js?v=1791947077056"></script>
+	<script type="text/javascript" src="/evs/js/lib/select2-4.0.0/js/select2.min.js"></script>
+	<script type="text/javascript" src="/evs/js/lib/jquery-ui/jquery-ui-1.10.4.custom.min.js"></script>
+
+
+	<script type="text/javascript" src="/evs/js/lib/jquery-ui/jquery.ui.datepicker-lt.js"></script>
+	<script type="text/javascript" src="/evs/js/datepickerConstructor.js?v=1791947077056"></script>
+
+	<script type="text/javascript" src="/evs/js/auctionsSearch.js?v=1791947077056"></script>
+	<script type="text/javascript" src="/evs/js/auction/markedAuction.js?v=1791947077056"></script>
+	<script type="text/javascript">
+		markedAuction.addText = 'Įsiminti';
+		markedAuction.removeText = 'Įsimintas';
+	</script>
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+	/** Lentelė [turto potipio ID -> turto tipo ID]. */
+	auctionsSearch.typeIdsBySubtypeIds = {"1":1,"2":1,"3":1,"4":1,"5":2,"6":2,"7":2,"8":2,"9":2,"10":2,"11":2,"12":2,"13":2,"14":2,"15":2,"16":2,"17":2,"18":2,"19":2,"20":2,"21":2,"22":2,"23":2,"24":2,"25":2,"26":2,"27":2,"28":2,"29":2,"30":2,"31":2,"32":2,"33":2,"34":2,"35":2,"36":2,"37":2,"38":2,"39":2,"40":2,"41":2,"42":2,"43":2,"44":2,"45":2,"46":2,"47":2,"48":2,"49":2,"50":2,"51":2,"52":2,"53":2,"54":2,"55":2,"56":2,"57":2,"58":2,"59":2,"60":2,"61":2,"62":2,"63":2,"64":2,"65":2,"66":2,"67":3,"68":3,"69":3,"70":3,"71":3,"72":3,"2549":3,"2550":3,"2551":3,"2552":3,"2553":3,"2554":3,"2555":3,"2556":3,"2557":3,"2558":3,"2559":3,"2560":3,"2649":3,"2650":3};
+
+	/** Lentelė [vietovės ID -> savivaldybės ID]. */
+	auctionsSearch.municipalityIdsByCityIds = {"1":461,"2":2,"3":42,"4":3,"5":162,"6":43,"7":112,"8":113,"9":114,"10":205,"11":259,"12":260,"13":260,"14":359,"15":260,"16":4,"17":4,"18":393,"19":393,"20":393,"21":206,"22":206,"23":16,"24":163,"25":163,"26":163,"27":462,"28":403,"29":403,"31":413,"32":413,"33":459,"34":44,"35":267,"36":267,"37":53,"38":53,"39":1193,"40":1192,"41":63,"42":63,"45":63,"46":215,"48":278,"49":278,"50":278,"51":115,"52":115,"53":127,"54":127,"55":228,"56":228,"57":27,"58":27,"59":359,"60":359,"61":426,"62":289,"63":289,"64":235,"66":247,"67":247,"68":367,"69":1197,"70":86,"71":86,"72":298,"73":298,"75":98,"76":98,"77":438,"78":438,"79":438,"81":136,"82":323,"83":323,"84":381,"85":381,"86":487,"87":1191,"88":487,"89":461,"90":487,"91":1191,"92":501,"93":449,"94":187,"95":187,"96":187,"97":513,"98":513,"99":513,"100":526,"101":526,"102":526,"103":332,"104":146,"105":1196,"108":1196,"109":539,"110":311,"111":346,"112":346};
+
+	/** Mapas [Varžytynių / aukciono rūšies ID -> Leistinų Varžytynių / aukcionų tipų ID]. */
+	auctionsSearch.auctionKindToAuctionTypesRelations = {"1":[2,4,1,3],"2":[2,4,1,3],"3":[1638,1637],"4":[1638,1637],"5":[1638,1637],"6":[1638,1637],"7":[3040,3039],"8":[3237,3137],"10":[3338,3337]};
+
+    var streetsDisabled = [true];
+	auctionsSearch.isStreetsDisabled = streetsDisabled.length > 0 && streetsDisabled[0];
+</script>
+
+        </main>
+      </div>
+      <div class="clearfooter"></div>
+      
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<a id="sessionTimeoutPopupTrigger" class="fancybox-no-close hidden" href="#sessionTimeoutPopupContent" aria-label="Session timeout popup trigger"></a>
+<div id="sessionTimeoutPopupContent"></div>
+    </div>
+
+    <footer class="footer" role="contentinfo">
+      
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="info_row">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="copy">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+
+				<ul class="list">
+					<li>&copy; 2024 Valstybės įmonė Registrų centras</li>
+					<li>
+						
+						<a href="http://info.registrucentras.lt/faq/evs">Informacija ir pagalba</a>
+					</li>
+				</ul>
+
+				<a href="http://www.esparama.lt/" class="url_logo">
+					<img src="/evs/css/img/bottom_logo.jpg" width="127" height="51"
+					alt="Europos Sąjunga. Kuriame Lietuvos ateitį." />
+				</a>
+
+			</div>
+		</div>
+	</div>
+</div>
+
+    </footer>
+  </body>
+</html>
+
