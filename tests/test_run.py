@@ -1,6 +1,8 @@
+import logging
 from datetime import UTC, date, datetime
 
 import httpx
+import pytest
 
 from eaukcionai import store
 from eaukcionai.fetch import Client
@@ -16,6 +18,12 @@ def client(routes: dict[str, tuple[int, str]]) -> Client:
         return httpx.Response(status, text=body)
 
     return Client(transport=httpx.MockTransport(handle), interval=0, sleep=lambda _: None)
+
+
+def listing_html(ids: range, last_page: int) -> str:
+    items = "".join(f'<li><h2 class="no"><a href="auction.do?id={i}">{i}</a></h2></li>' for i in ids)
+    links = "".join(f'<a class="paginationLink" data-page="{p}">{p + 1}</a>' for p in range(last_page + 1))
+    return f'<html><body><ul class="bid_list">{items}</ul>{links}</body></html>'
 
 
 def seeded_state(tmp_path) -> bytes:
@@ -55,3 +63,30 @@ def test_parse_failure_keeps_record_writes_the_rest_and_exits_1(tmp_path, fixtur
     assert (fetched.status, fetched.first_seen, fetched.done) == ("Vykstančios", datetime.now(UTC).date(), False)
     assert [i.name for i in state.items[338315]][:2] == ["Žemės sklypas", "Gyvenamas namas"]
     assert state.auctions[300000].last_seen == date(2025, 2, 1)
+
+
+@pytest.mark.parametrize("extra_args", [[], ["--max-pages", "2"]])
+def test_short_middle_listing_page_aborts_before_touching_data(tmp_path, caplog, extra_args):
+    routes = {
+        "page=0": (200, listing_html(range(100, 103), last_page=2)),
+        "page=1": (200, listing_html(range(200, 202), last_page=2)),
+        "page=2": (200, listing_html(range(300, 301), last_page=2)),
+    }
+    exit_code = main(["--data-dir", str(tmp_path / "data"), *extra_args], client(routes))
+
+    assert exit_code == 2
+    assert "listing page 1 has 2 auctions, page 0 had 3" in caplog.text
+    assert list(tmp_path.iterdir()) == []
+
+
+def test_short_last_listing_page_is_accepted(tmp_path, caplog):
+    caplog.set_level(logging.INFO, logger="eaukcionai")
+    routes = {
+        "page=0": (200, listing_html(range(100, 103), last_page=2)),
+        "page=1": (200, listing_html(range(200, 203), last_page=2)),
+        "page=2": (200, listing_html(range(300, 301), last_page=2)),
+    }
+    exit_code = main(["--data-dir", str(tmp_path), "--max-details", "0"], client(routes))
+
+    assert exit_code == 0
+    assert "listing: 7 live auctions on 3 pages" in caplog.text
