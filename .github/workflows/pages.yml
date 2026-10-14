@@ -25,7 +25,7 @@ jobs:
       - uses: actions/checkout@v7
         with:
           ref: main
-      - uses: astral-sh/setup-uv@v10
+      - uses: astral-sh/setup-uv@v10.3.0
       - name: Build site/auctions.sqlite
         run: uv run --locked python -m eaukcionai.build_site
       - uses: actions/configure-pages@v6
