@@ -33,7 +33,10 @@ def crawl_listing(client: Client, max_pages: int | None) -> set[int]:
     last = first.last_page if max_pages is None else min(first.last_page, max_pages - 1)
     live = set(first.auction_ids)
     for page in range(1, last + 1):
-        live.update(_listing_page(client, page).auction_ids)
+        ids = _listing_page(client, page).auction_ids
+        if page < first.last_page and len(ids) != len(first.auction_ids):
+            raise ListingError(f"listing page {page} has {len(ids)} auctions, page 0 had {len(first.auction_ids)}")
+        live.update(ids)
     log.info("listing: %d live auctions on %d pages", len(live), last + 1)
     return live
 
