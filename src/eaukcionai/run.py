@@ -45,6 +45,7 @@ def main(argv: list[str] | None = None, client: Client | None = None) -> int:
     parser.add_argument("--data-dir", type=Path, default=Path("data"))
     args = parser.parse_args(argv)
     logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
+    logging.getLogger("httpx").setLevel(logging.WARNING)
 
     client = client or Client()
     now = datetime.now(UTC).replace(microsecond=0)
