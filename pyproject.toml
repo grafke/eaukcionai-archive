@@ -1,0 +1,30 @@
+[project]
+name = "eaukcionai-archive"
+version = "0.1.0"
+description = "Nightly archive of eaukcionai.lt auctions"
+requires-python = ">=3.13"
+dependencies = [
+    "httpx>=0.28",
+    "selectolax>=1.0",
+]
+
+[dependency-groups]
+dev = ["pytest>=8"]
+
+[build-system]
+requires = ["uv_build>=0.9,<0.14"]
+build-backend = "uv_build"
+
+[tool.uv.build-backend]
+module-name = "eaukcionai"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 120
+
+[[tool.uv.index]]
+name = "pypi"
+url = "https://pypi.org/simple"
+default = true
