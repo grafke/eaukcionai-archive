@@ -18,7 +18,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v7
-      - uses: astral-sh/setup-uv@v10
+      - uses: astral-sh/setup-uv@v10.3.0
       - name: Scrape eaukcionai.lt
         run: uv run --locked python -m eaukcionai.run
       # Runs after a scrape that exited 1 too: it wrote data for every auction that parsed.
