@@ -99,7 +99,7 @@ Expected runtime is about 20–25 minutes.
 ## View (GitHub Pages, `.github/workflows/pages.yml`)
 
 - At deploy time a step builds `site/auctions.sqlite` from the JSONL files. The file is an artifact and is **not committed**.
-  - Tables: `auctions`, `items`, a view `item_rows` joining the two, and an FTS index on `items.name` + `address`.
+  - Tables: `auctions`, `items`, a view `item_rows` joining the two. Search uses LIKE with a diacritic-folding function; at this size no index is needed.
 - `site/index.html` is a single static page with sql.js and a small table component, with no build framework. It loads the whole SQLite file, about 5 MB per year. If the file grows too big, switch to sql.js-httpvfs range requests.
 - **Rows:** one row per item, with its auction's fields.
 - **Search:** full text over item name and address.
