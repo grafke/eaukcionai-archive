@@ -4,7 +4,7 @@ from collections.abc import Callable
 from selectolax.lexbor import LexborHTMLParser, LexborNode
 
 from eaukcionai import parse_values as v
-from eaukcionai.model import AuctionFields, Detail, Item
+from eaukcionai.model import AuctionFields, Detail, Item, LandPurpose
 
 
 class ParseError(ValueError):
@@ -62,15 +62,30 @@ def _label(node: LexborNode | None, selector: str) -> str | None:
     return v.optional(found.text()) if found is not None else None
 
 
-def _items(tree: LexborHTMLParser, auction_id: int) -> tuple[Item, ...]:
+def _paskirtis(name: str, description: str | None, about: str | None) -> LandPurpose | None:
+    if name != "Žemės sklypas":
+        return None
+    return v.land_purpose(description) or v.land_purpose(about)
+
+
+def _items(tree: LexborHTMLParser, auction_id: int, about: str | None) -> tuple[Item, ...]:
     items = []
     for block in tree.css("div.product_desc"):
         heading = block.css_first("h2")
         match = _ITEM_HEADING.match(v.clean(heading.text())) if heading is not None else None
         if match is None:
             continue
-        fields = _fields(_pairs(block.css("ul.list > li")), _ITEM_LABELS)
-        items.append(Item(auction_id=auction_id, item_no=len(items) + 1, name=match[1], **fields))
+        pairs = _pairs(block.css("ul.list > li"))
+        description = pairs["Aprašymas:"].text() if "Aprašymas:" in pairs else None
+        items.append(
+            Item(
+                auction_id=auction_id,
+                item_no=len(items) + 1,
+                name=match[1],
+                paskirtis=_paskirtis(match[1], description, about),
+                **_fields(pairs, _ITEM_LABELS),
+            )
+        )
     return tuple(items)
 
 
@@ -90,6 +105,7 @@ def _parse_detail(tree: LexborHTMLParser, auction_id: int) -> Detail:
     status_node = pairs.get("Būsena:")
     max_bid = tree.css_first("#maxBid")
     highest_bid = v.eur(max_bid.text()) if max_bid is not None else None
+    about = pairs.get("Apie objektą:")
     auction = AuctionFields(
         number=_number(tree),
         kind=_label(status_node, ".label-default"),
@@ -97,4 +113,4 @@ def _parse_detail(tree: LexborHTMLParser, auction_id: int) -> Detail:
         highest_bid_eur=highest_bid or None,
         **_fields(pairs, _AUCTION_LABELS),
     )
-    return Detail(auction_fields=auction, items=_items(tree, auction_id))
+    return Detail(auction_fields=auction, items=_items(tree, auction_id, about.text() if about is not None else None))

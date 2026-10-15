@@ -56,11 +56,11 @@ def test_writes_sorted_rows_with_fixed_key_order(tmp_path):
     assert auctions.endswith("}\n") and auctions.count("\n") == 2
     assert (tmp_path / "items.jsonl").read_text(encoding="utf-8") == (
         '{"auction_id": 300000, "item_no": 1, "name": "Butas", "share_sold": null, "subtype": null, '
-        '"area_m2": null, "share_area_m2": null, "address": null, "unique_nr": null}\n'
+        '"area_m2": null, "share_area_m2": null, "address": null, "unique_nr": null, "paskirtis": null}\n'
         '{"auction_id": 300000, "item_no": 2, "name": "Rūsys", "share_sold": null, "subtype": null, '
-        '"area_m2": null, "share_area_m2": null, "address": null, "unique_nr": null}\n'
+        '"area_m2": null, "share_area_m2": null, "address": null, "unique_nr": null, "paskirtis": null}\n'
         '{"auction_id": 339283, "item_no": 1, "name": "Mechaninės dirbtuvės", "share_sold": null, "subtype": null, '
-        '"area_m2": 524.67, "share_area_m2": null, "address": "Šilutės r. sav.", "unique_nr": null}\n'
+        '"area_m2": 524.67, "share_area_m2": null, "address": "Šilutės r. sav.", "unique_nr": null, "paskirtis": null}\n'
     )
 
 
@@ -83,3 +83,12 @@ def test_round_trip_is_lossless_and_rewrite_is_byte_identical(tmp_path):
 
 def test_missing_files_load_as_empty(tmp_path):
     assert store.load(tmp_path / "nowhere") == store.State()
+
+
+def test_item_row_without_paskirtis_loads(tmp_path):
+    (tmp_path / "items.jsonl").write_text(
+        '{"auction_id": 1, "item_no": 1, "name": "Žemės sklypas", "share_sold": null, "subtype": null, '
+        '"area_m2": null, "share_area_m2": null, "address": null, "unique_nr": null}\n',
+        encoding="utf-8",
+    )
+    assert store.load(tmp_path).items[1][0].paskirtis is None

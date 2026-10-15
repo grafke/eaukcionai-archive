@@ -2,7 +2,7 @@ import sqlite3
 from datetime import UTC, datetime
 
 from eaukcionai import store
-from eaukcionai.build_site import build, municipality
+from eaukcionai.build_site import build, municipality, settlement
 from eaukcionai.detail import parse_detail
 from eaukcionai.lifecycle import reconcile
 
@@ -16,7 +16,7 @@ def test_item_rows_join_items_to_auctions_with_municipality(tmp_path, fixture_te
 
     db = sqlite3.connect(tmp_path / "auctions.sqlite")
     rows = db.execute(
-        "SELECT item_no, name, municipality, kind, status, starting_price_eur, end_date, url, done"
+        "SELECT item_no, name, municipality, settlement, kind, status, starting_price_eur, end_date, url, done"
         " FROM item_rows ORDER BY item_no"
     ).fetchall()
     assert rows == [
@@ -24,6 +24,7 @@ def test_item_rows_join_items_to_auctions_with_municipality(tmp_path, fixture_te
             1,
             "Sandėlis",
             "Telšių r. sav.",
+            "Telšių m.",
             "Antstolių varžytynės",
             "Baigtos",
             13200,
@@ -35,6 +36,7 @@ def test_item_rows_join_items_to_auctions_with_municipality(tmp_path, fixture_te
             2,
             "Butas",
             "Telšių r. sav.",
+            "Telšių m.",
             "Antstolių varžytynės",
             "Baigtos",
             13200,
@@ -57,3 +59,32 @@ def test_municipality_prefixes():
             None,
         )
     ] == ["Vilniaus m. sav.", "Marijampolės sav.", "Kazlų Rūdos sav.", None, None]
+
+
+def test_settlement_is_the_locality_after_the_municipality():
+    assert [
+        settlement(a)
+        for a in (
+            "Vilniaus m. sav. Vilniaus m. Gedimino pr. 1",
+            "Marijampolės sav. Želsvos k. Želsvelės g. 3-10",
+            "Kazlų Rūdos sav. Kazlų Rūdos m. Atžalyno g. 2",
+            "Pakruojo r. sav. Lygumų mstl. Juknaičių g. 12",
+            "Panevėžio r. sav. Steponiškio vs.",
+            "Akmenės r. sav. Naujosios Akmenės m.",
+            "Vilniaus m. sav. Vilniaus m. Pylimo g. 11-16A",
+            "Radviliškio r. sav. Radviliškio r. sav. teritorija",
+            "Vilnius, Gedimino pr. 1",
+            None,
+        )
+    ] == [
+        "Vilniaus m.",
+        "Želsvos k.",
+        "Kazlų Rūdos m.",
+        "Lygumų mstl.",
+        "Steponiškio vs.",
+        "Naujosios Akmenės m.",
+        "Vilniaus m.",
+        None,
+        None,
+        None,
+    ]
