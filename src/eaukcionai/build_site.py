@@ -13,11 +13,21 @@ from eaukcionai import store
 from eaukcionai.model import Auction, Item
 
 _MUNICIPALITY = re.compile(r"^(\S+(?: \S+)?(?: [rm]\.)? sav\.)")
+_LOCALITY = re.compile(r"^((?:\S+ )*(?:mstl\.|vs\.|k\.|m\.))(?!\S)")
 
 
 def municipality(address: str | None) -> str | None:
     """`Telšių r. sav. Telšių m. ...` -> `Telšių r. sav.`; None when the address has no municipality prefix."""
     match = _MUNICIPALITY.match(address or "")
+    return match[1] if match else None
+
+
+def settlement(address: str | None) -> str | None:
+    """`Telšių r. sav. Telšių m. ...` -> `Telšių m.`. Cities, towns, villages, and homesteads share one list."""
+    prefix = municipality(address)
+    if prefix is None or address is None:
+        return None
+    match = _LOCALITY.match(address[len(prefix) :].lstrip())
     return match[1] if match else None
 
 
@@ -28,7 +38,7 @@ def _columns(cls) -> list[str]:
 def build(data_dir: Path, out: Path) -> None:
     state = store.load(data_dir)
     auction_columns = _columns(Auction)
-    item_columns = [*_columns(Item), "municipality"]
+    item_columns = [*_columns(Item), "municipality", "settlement"]
     out.unlink(missing_ok=True)
     with sqlite3.connect(out) as db:
         db.execute(f"CREATE TABLE auctions ({', '.join(auction_columns)}, PRIMARY KEY (auction_id))")
@@ -39,7 +49,11 @@ def build(data_dir: Path, out: Path) -> None:
         )
         db.executemany(
             f"INSERT INTO items VALUES ({', '.join('?' * len(item_columns))})",
-            ([*asdict(item).values(), municipality(item.address)] for items in state.items.values() for item in items),
+            (
+                [*asdict(item).values(), municipality(item.address), settlement(item.address)]
+                for items in state.items.values()
+                for item in items
+            ),
         )
         auction_only = [c for c in auction_columns if c not in item_columns]
         db.execute(

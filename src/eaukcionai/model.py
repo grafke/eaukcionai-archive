@@ -1,7 +1,9 @@
 from dataclasses import dataclass
 from datetime import date, datetime
+from typing import Literal
 
 type Eur = int | float
+type LandPurpose = Literal["Žemės ūkio", "Miškų ūkio", "Vandens ūkio", "Konservacinė", "Kita"]
 
 BASE_URL = "https://www.eaukcionai.lt/evs/pages"
 
@@ -21,6 +23,7 @@ class Item:
     share_area_m2: float | None = None
     address: str | None = None
     unique_nr: str | None = None
+    paskirtis: LandPurpose | None = None
 
 
 @dataclass(frozen=True, kw_only=True)

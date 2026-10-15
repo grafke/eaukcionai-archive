@@ -132,6 +132,77 @@ def test_page_without_core_dates_is_a_parse_error():
         parse_detail("<html><body><main><h2>Nr. 5</h2></main></body></html>", 1)
 
 
+def _page(name: str, description: str, about: str = "", second: tuple[str, str] | None = None) -> str:
+    blocks = f"""
+    <div class="product_desc">
+      <h2>Parduodamas turtas: {name}</h2>
+      <ul class="list"><li><span class="left">Aprašymas:</span><span class="right">{description}</span></li></ul>
+    </div>
+    """
+    if second is not None:
+        blocks += f"""
+        <div class="product_desc">
+          <h2>Parduodamas turtas: {second[0]}</h2>
+          <ul class="list"><li><span class="left">Aprašymas:</span><span class="right">{second[1]}</span></li></ul>
+        </div>
+        """
+    return f"""
+    <html><body>
+    <div class="load_block"><ul class="list">
+      <li><span class="left">Pradžios data:</span><span class="right">2026-10-20 09:00:00</span></li>
+      <li><span class="left">Pabaigos data:</span><span class="right">2026-10-21 13:59:59</span></li>
+      <li><span class="left">Apie objektą:</span><span class="right">{about}</span></li>
+    </ul></div>
+    <main><h2>Nr. 9</h2></main>
+    {blocks}
+    </body></html>
+    """
+
+
+def test_land_plot_paskirtis_comes_from_the_item_description():
+    detail = parse_detail(
+        _page(
+            "Žemės sklypas",
+            "Daikto pagrindinė naudojimo paskirtis: Kita.",
+            about="pagrindinė žemės sklypo naudojimo paskirtis – miškų ūkio",
+        ),
+        1,
+    )
+    assert [item.paskirtis for item in detail.items] == ["Kita"]
+
+
+def test_land_plot_paskirtis_falls_back_to_apie_objekta():
+    detail = parse_detail(
+        _page("Žemės sklypas", "", about="pagrindinė žemės sklypo naudojimo paskirtis – miškų ūkio"),
+        1,
+    )
+    assert [item.paskirtis for item in detail.items] == ["Miškų ūkio"]
+
+
+def test_paskirtis_stays_on_the_land_plot_when_a_building_shares_the_page():
+    detail = parse_detail(
+        _page(
+            "Žemės sklypas",
+            "Daikto pagrindinė naudojimo paskirtis: Žemės ūkio.",
+            about="pagrindinė žemės sklypo naudojimo paskirtis – miškų ūkio",
+            second=("Gyvenamas namas", "Daikto pagrindinė naudojimo paskirtis: Kita."),
+        ),
+        1,
+    )
+    assert [(item.name, item.paskirtis) for item in detail.items] == [
+        ("Žemės sklypas", "Žemės ūkio"),
+        ("Gyvenamas namas", None),
+    ]
+
+
+def test_rental_right_is_not_a_land_plot_purpose():
+    detail = parse_detail(
+        _page("Valstybinės žemės sklypo nuomos teisė", "Daikto pagrindinė naudojimo paskirtis: Kita."),
+        1,
+    )
+    assert [item.paskirtis for item in detail.items] == [None]
+
+
 def test_listing_page(fixture_text):
     page = parse_listing(fixture_text("listing_page0.html"))
     assert page.last_page == 58

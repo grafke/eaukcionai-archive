@@ -126,6 +126,8 @@
     <label>Aukciono rūšis <select name="kind"></select></label>
     <label>Turto potipis <select name="subtype"></select></label>
     <label>Savivaldybė <select name="municipality"></select></label>
+    <label>Vietovė <select name="settlement"></select></label>
+    <label>Paskirtis <select name="paskirtis"></select></label>
     <label>Būsena <select name="status"></select></label>
     <label>Pradinė kaina, Eur
       <span class="pair"><input type="number" name="price_min" min="0" placeholder="nuo" inputmode="numeric"><input type="number" name="price_max" min="0" placeholder="iki" inputmode="numeric"></span>
@@ -153,7 +155,9 @@ const DEFAULT_WINDOW_DAYS = 90;
 const COLUMNS = [
   { key: "name", label: "Turtas", sql: "name" },
   { key: "municipality", label: "Savivaldybė", sql: "municipality" },
+  { key: "settlement", label: "Vietovė", sql: "settlement" },
   { key: "subtype", label: "Potipis", sql: "subtype" },
+  { key: "paskirtis", label: "Paskirtis", sql: "paskirtis" },
   { key: "kind", label: "Rūšis", sql: "kind" },
   { key: "status", label: "Būsena", sql: "status" },
   { key: "starting_price_eur", label: "Pradinė kaina", sql: "starting_price_eur", num: true },
@@ -161,7 +165,7 @@ const COLUMNS = [
   { key: "area_m2", label: "Plotas, m²", sql: "area_m2", num: true },
   { key: "end_date", label: "Pabaiga", sql: "end_date" },
 ];
-const SELECTS = ["kind", "subtype", "municipality", "status"];
+const SELECTS = ["kind", "subtype", "municipality", "settlement", "paskirtis", "status"];
 
 const form = document.getElementById("filters");
 const results = document.getElementById("results");
@@ -205,7 +209,8 @@ function query(sqlText, params = []) {
 function fillSelects() {
   for (const name of SELECTS) {
     const select = form.elements[name];
-    const values = query(`SELECT DISTINCT ${name} AS v FROM item_rows WHERE ${name} IS NOT NULL ORDER BY ${name}`).map((r) => r.v);
+    const values = query(`SELECT DISTINCT ${name} AS v FROM item_rows WHERE ${name} IS NOT NULL`).map((r) => r.v);
+    values.sort((a, b) => String(a).localeCompare(String(b), "lt"));
     select.replaceChildren(new Option("Visos", ""), ...values.map((v) => new Option(v, v)));
   }
 }
@@ -294,6 +299,16 @@ function fillSortSelect() {
   });
 }
 
+function compareRows(a, b, column, dir) {
+  const av = a[column.key];
+  const bv = b[column.key];
+  if (av == null && bv == null) return 0;
+  if (av == null) return 1;
+  if (bv == null) return -1;
+  const primary = column.num ? av - bv : String(av).localeCompare(String(bv), "lt");
+  return dir === "desc" ? -primary : primary;
+}
+
 function render() {
   sortSelect.value = `${sort.key}.${sort.dir}`;
   const f = readForm();
@@ -301,10 +316,19 @@ function render() {
   const { sql: where, params } = buildWhere(f);
   const total = query(`SELECT count(*) AS n FROM item_rows ${where}`, params)[0].n;
   const column = COLUMNS.find((c) => c.key === sort.key);
-  const rows = query(
-    `SELECT * FROM item_rows ${where} ORDER BY ${column.sql} IS NULL, ${column.sql} ${sort.dir === "asc" ? "ASC" : "DESC"}, auction_id, item_no LIMIT ${MAX_ROWS}`,
+  // sql.js has no Lithuanian collation. Dates and numbers stay in SQL. Text sorts in the page.
+  const sqlOrder = column.num || column.key === "end_date";
+  let rows = query(
+    `SELECT * FROM item_rows ${where}`
+      + (sqlOrder
+        ? ` ORDER BY ${column.sql} IS NULL, ${column.sql} ${sort.dir === "asc" ? "ASC" : "DESC"}, auction_id, item_no LIMIT ${MAX_ROWS}`
+        : ""),
     params,
   );
+  if (!sqlOrder) {
+    rows.sort((a, b) => compareRows(a, b, column, sort.dir) || a.auction_id - b.auction_id || a.item_no - b.item_no);
+    rows = rows.slice(0, MAX_ROWS);
+  }
   countEl.textContent = total > rows.length ? `Rodoma ${rows.length} iš ${total}` : items(total);
   if (!rows.length) {
     results.innerHTML = '<p class="empty">Nieko nerasta. Pabandykite plačiau nustatyti filtrus.</p>';
