@@ -56,9 +56,10 @@ def build(data_dir: Path, out: Path) -> None:
             ),
         )
         auction_only = [c for c in auction_columns if c not in item_columns]
+        price_per_m2 = "CAST(a.starting_price_eur AS REAL) / NULLIF(i.area_m2, 0) AS price_per_m2"
         db.execute(
             "CREATE VIEW item_rows AS SELECT "
-            + ", ".join([*(f"i.{c}" for c in item_columns), *(f"a.{c}" for c in auction_only)])
+            + ", ".join([*(f"i.{c}" for c in item_columns), *(f"a.{c}" for c in auction_only), price_per_m2])
             + " FROM items i JOIN auctions a USING (auction_id)"
         )
     db.close()

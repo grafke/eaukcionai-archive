@@ -163,6 +163,7 @@ const COLUMNS = [
   { key: "starting_price_eur", label: "Pradinė kaina", sql: "starting_price_eur", num: true },
   { key: "highest_bid_eur", label: "Didžiausia kaina", sql: "highest_bid_eur", num: true },
   { key: "area_m2", label: "Plotas, m²", sql: "area_m2", num: true },
+  { key: "price_per_m2", label: "Eur/m²", sql: "price_per_m2", num: true },
   { key: "end_date", label: "Pabaiga", sql: "end_date" },
 ];
 const SELECTS = ["kind", "subtype", "municipality", "settlement", "paskirtis", "status"];
@@ -176,6 +177,7 @@ let sort = { key: "end_date", dir: "desc" };
 
 const fold = (s) => (s ?? "").normalize("NFD").replace(/\p{M}/gu, "").toLocaleLowerCase("lt");
 const eur = new Intl.NumberFormat("lt-LT", { maximumFractionDigits: 2 });
+const perM2Small = new Intl.NumberFormat("lt-LT", { maximumSignificantDigits: 2 });
 const isoDate = (d) => d.toISOString().slice(0, 10);
 const ITEM_WORD = { one: "objektas", few: "objektai" };
 const plural = new Intl.PluralRules("lt");
@@ -232,6 +234,12 @@ function buildWhere(f) {
   return { sql: where.length ? `WHERE ${where.join(" AND ")}` : "", params };
 }
 
+function formatPerM2(value) {
+  if (value == null) return null;
+  if (value !== 0 && Math.abs(value) < 0.005) return perM2Small.format(value);
+  return eur.format(value);
+}
+
 function cell(tr, column, content, className) {
   const td = document.createElement("td");
   td.dataset.label = column.label;
@@ -260,6 +268,7 @@ function renderRow(row) {
     if (column.key === "name") cell(tr, column, title, "title");
     else if (column.key === "status") cell(tr, column, status);
     else if (column.key === "end_date") cell(tr, column, value?.replace("T", " ").slice(0, 16), "date");
+    else if (column.key === "price_per_m2") cell(tr, column, formatPerM2(value), "num");
     else if (column.num) cell(tr, column, value == null ? null : eur.format(value), "num");
     else cell(tr, column, value);
   }
