@@ -6,7 +6,7 @@ An auction that never shows a final status stops being fetched 30 days after it 
 listed. HTTP 400 for a known id counts as a final status.
 """
 
-from dataclasses import asdict, fields
+from dataclasses import asdict, fields, replace
 from datetime import datetime, timedelta
 
 from eaukcionai.model import Auction, AuctionFields, Detail, Missing, auction_url
@@ -23,6 +23,17 @@ def is_known_status(status: str) -> bool:
 
 def needs_fetch(auction: Auction | None, *, live: bool) -> bool:
     return live or (auction is not None and not auction.done)
+
+
+def discover(auction_id: int, observed: Detail, *, now: datetime) -> Auction:
+    """First fetch of an id found by walking, not by the listing.
+
+    A final status is done on this run. A live status stays on the nightly rules.
+    """
+    record = reconcile(auction_id, None, observed, live=False, now=now)
+    if record is None:
+        raise RuntimeError(f"auction {auction_id}: detail produced no record")
+    return replace(record, done=record.final_status_seen_at is not None)
 
 
 def reconcile(

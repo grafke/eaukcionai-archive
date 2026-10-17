@@ -1,0 +1,71 @@
+name: backfill
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: archive-data
+  cancel-in-progress: false
+
+jobs:
+  walk:
+    runs-on: ubuntu-latest
+    timeout-minutes: 330
+    steps:
+      - uses: actions/checkout@v7
+      - uses: astral-sh/setup-uv@v10.3.0
+      # 210000 is before the November 2019 id we sampled, so January 2020 is inside the range.
+      # 341000 is just past the highest id stored on 2026-10-17. Newer ids belong to the nightly job.
+      - name: Walk historical ids
+        id: walk
+        run: |
+          set +e
+          uv run --locked python -m eaukcionai.walk 210000 341000 --data-dir data --max-fetches 15000
+          code=$?
+          set -e
+          echo "code=$code" >> "$GITHUB_OUTPUT"
+          echo "walker exit $code"
+          if [ "$code" -ne 0 ] && [ "$code" -ne 1 ] && [ "$code" -ne 3 ]; then
+            exit "$code"
+          fi
+      - name: Commit data
+        if: steps.walk.outcome == 'success'
+        run: |
+          git add data
+          if git diff --cached --quiet; then
+            echo "data unchanged"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "data: backfill snapshot $(date -u +%F)"
+          git pull --rebase origin "$GITHUB_REF_NAME"
+          git push origin "HEAD:$GITHUB_REF_NAME"
+      - name: Continue until the range is settled
+        if: steps.walk.outcome == 'success'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          code="${{ steps.walk.outputs.code }}"
+          if [ "$code" = "0" ]; then
+            echo "backfill caught up through id 341000; not starting another run"
+            exit 0
+          fi
+          if [ "$code" = "1" ]; then
+            echo "stopped on a fetch or parse error; retrying in 10 minutes"
+            sleep 600
+          fi
+          gh workflow run backfill.yml --ref "$GITHUB_REF_NAME"
+
+  pages:
+    needs: walk
+    if: ${{ !cancelled() && needs.walk.result == 'success' }}
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    uses: ./.github/workflows/pages.yml

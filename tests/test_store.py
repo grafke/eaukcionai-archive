@@ -1,7 +1,9 @@
+import subprocess
+import sys
 from datetime import UTC, date, datetime
 
 from eaukcionai import store
-from eaukcionai.model import Auction, Item
+from eaukcionai.model import Auction, Gap, Item
 
 
 def auction(auction_id: int, **changes) -> Auction:
@@ -85,7 +87,61 @@ def test_missing_files_load_as_empty(tmp_path):
     assert store.load(tmp_path / "nowhere") == store.State()
 
 
+def test_gaps_round_trip_and_auction_drops_the_gap(tmp_path):
+    when = datetime(2026, 10, 17, 8, 0, tzinfo=UTC)
+    store.write(tmp_path, store.State(auctions={1: auction(1)}, gaps={1: Gap(1, when), 2: Gap(2, when)}))
+    loaded = store.load(tmp_path)
+    assert loaded.gaps == {2: Gap(auction_id=2, checked_at=when)}
+    assert list(loaded.auctions) == [1]
+
+
+def test_load_drops_items_with_no_auction(tmp_path):
+    store.write(
+        tmp_path,
+        store.State(auctions={1: auction(1)}, items={1: (Item(auction_id=1, item_no=1, name="Butas"),)}),
+    )
+    orphan = (
+        '{"auction_id": 9, "item_no": 1, "name": "Gone", "share_sold": null, "subtype": null, '
+        '"area_m2": null, "share_area_m2": null, "address": null, "unique_nr": null, "paskirtis": null}\n'
+    )
+    items = tmp_path / "items.jsonl"
+    items.write_text(items.read_text(encoding="utf-8") + orphan, encoding="utf-8")
+    loaded = store.load(tmp_path)
+    assert list(loaded.items) == [1]
+
+
+def test_second_process_cannot_open_the_archive(tmp_path):
+    holder = subprocess.Popen(
+        [
+            sys.executable,
+            "-c",
+            "import sys\nfrom pathlib import Path\nfrom eaukcionai import store\n"
+            "with store.open_archive(Path(sys.argv[1])):\n"
+            "    print('ready', flush=True)\n"
+            "    sys.stdin.readline()\n",
+            str(tmp_path),
+        ],
+        stdin=subprocess.PIPE,
+        stdout=subprocess.PIPE,
+    )
+    assert holder.stdout is not None and holder.stdin is not None
+    assert holder.stdout.readline() == b"ready\n"
+    try:
+        raised = False
+        try:
+            with store.open_archive(tmp_path):
+                pass
+        except store.ArchiveBusy:
+            raised = True
+        assert raised
+    finally:
+        holder.stdin.write(b"\n")
+        holder.stdin.close()
+        holder.wait(timeout=5)
+
+
 def test_item_row_without_paskirtis_loads(tmp_path):
+    store.write(tmp_path, store.State(auctions={1: auction(1)}))
     (tmp_path / "items.jsonl").write_text(
         '{"auction_id": 1, "item_no": 1, "name": "Žemės sklypas", "share_sold": null, "subtype": null, '
         '"area_m2": null, "share_area_m2": null, "address": null, "unique_nr": null}\n',

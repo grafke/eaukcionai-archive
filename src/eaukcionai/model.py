@@ -54,6 +54,14 @@ class Missing:
 
 
 @dataclass(frozen=True)
+class Gap:
+    """An id the walker asked for and the site answered HTTP 400. Not an auction."""
+
+    auction_id: int
+    checked_at: datetime
+
+
+@dataclass(frozen=True)
 class Auction:
     auction_id: int
     number: int | None

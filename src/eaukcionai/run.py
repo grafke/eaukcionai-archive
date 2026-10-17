@@ -58,38 +58,43 @@ def main(argv: list[str] | None = None, client: Client | None = None) -> int:
         log.error("aborting before touching data: %s", error)
         return 2
 
-    state = store.load(args.data_dir)
-    targets = [
-        auction_id
-        for auction_id in sorted(live_ids | state.auctions.keys())
-        if lifecycle.needs_fetch(state.auctions.get(auction_id), live=auction_id in live_ids)
-    ][: args.max_details]
-    log.info("fetching %d detail pages", len(targets))
+    try:
+        with store.open_archive(args.data_dir) as archive:
+            state = archive.state
+            targets = [
+                auction_id
+                for auction_id in sorted(live_ids | state.auctions.keys())
+                if lifecycle.needs_fetch(state.auctions.get(auction_id), live=auction_id in live_ids)
+            ][: args.max_details]
+            log.info("fetching %d detail pages", len(targets))
 
-    failures = 0
-    unseen_statuses: set[str] = set()
-    for auction_id in targets:
-        try:
-            body = client.get(auction_url(auction_id))
-            observed = body if isinstance(body, Missing) else parse_detail(body, auction_id)
-        except (FetchError, ParseError) as error:
-            failures += 1
-            log.error("%s", error)
-            continue
-        live = auction_id in live_ids
-        record = lifecycle.reconcile(auction_id, state.auctions.get(auction_id), observed, live=live, now=now)
-        if record is None:
-            log.warning("auction %d: listed but HTTP 400, skipped", auction_id)
-            continue
-        state.auctions[auction_id] = record
-        if isinstance(observed, Detail):
-            state.items[auction_id] = observed.items
-        status = record.status
-        if status and not lifecycle.is_known_status(status) and status not in unseen_statuses:
-            unseen_statuses.add(status)
-            log.warning("unseen status %r (auction %d), treated as final", status, auction_id)
+            failures = 0
+            unseen_statuses: set[str] = set()
+            for auction_id in targets:
+                try:
+                    body = client.get(auction_url(auction_id))
+                    observed = body if isinstance(body, Missing) else parse_detail(body, auction_id)
+                except (FetchError, ParseError) as error:
+                    failures += 1
+                    log.error("%s", error)
+                    continue
+                live = auction_id in live_ids
+                record = lifecycle.reconcile(auction_id, state.auctions.get(auction_id), observed, live=live, now=now)
+                if record is None:
+                    log.warning("auction %d: listed but HTTP 400, skipped", auction_id)
+                    continue
+                state.auctions[auction_id] = record
+                if isinstance(observed, Detail):
+                    state.items[auction_id] = observed.items
+                status = record.status
+                if status and not lifecycle.is_known_status(status) and status not in unseen_statuses:
+                    unseen_statuses.add(status)
+                    log.warning("unseen status %r (auction %d), treated as final", status, auction_id)
 
-    store.write(args.data_dir, state)
+            archive.save()
+    except store.ArchiveBusy as error:
+        log.error("aborting before touching data: %s", error)
+        return 2
     done = sum(a.done for a in state.auctions.values())
     log.info("wrote %d auctions (%d done), %d failures", len(state.auctions), done, failures)
     return 1 if failures else 0
