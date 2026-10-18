@@ -160,11 +160,12 @@ const COLUMNS = [
   { key: "paskirtis", label: "Paskirtis", sql: "paskirtis" },
   { key: "kind", label: "Rūšis", sql: "kind" },
   { key: "status", label: "Būsena", sql: "status" },
-  { key: "starting_price_eur", label: "Pradinė kaina", sql: "starting_price_eur", num: true },
-  { key: "highest_bid_eur", label: "Didžiausia kaina", sql: "highest_bid_eur", num: true },
-  { key: "area_m2", label: "Plotas, m²", sql: "area_m2", num: true },
-  { key: "price_per_m2", label: "Eur/m²", sql: "price_per_m2", num: true },
-  { key: "end_date", label: "Pabaiga", sql: "end_date" },
+  { key: "starting_price_eur", label: "Pradinė kaina", sql: "starting_price_eur", format: "number" },
+  { key: "highest_bid_eur", label: "Didžiausia kaina", sql: "highest_bid_eur", format: "number" },
+  { key: "area_m2", label: "Plotas, m²", sql: "area_m2", format: "number" },
+  { key: "price_per_m2", label: "Eur/m²", sql: "price_per_m2", format: "perM2" },
+  { key: "first_seen", label: "Paskelbta", sql: "first_seen", format: "date" },
+  { key: "end_date", label: "Pabaiga", sql: "end_date", format: "date" },
 ];
 const SELECTS = ["kind", "subtype", "municipality", "settlement", "paskirtis", "status"];
 
@@ -178,6 +179,16 @@ let sort = { key: "end_date", dir: "desc" };
 const fold = (s) => (s ?? "").normalize("NFD").replace(/\p{M}/gu, "").toLocaleLowerCase("lt");
 const eur = new Intl.NumberFormat("lt-LT", { maximumFractionDigits: 2 });
 const perM2Small = new Intl.NumberFormat("lt-LT", { maximumSignificantDigits: 2 });
+const FORMATS = {
+  text: { text: (v) => v, firstDir: "asc", sqlOrder: false },
+  number: { text: (v) => eur.format(v), className: "num", firstDir: "desc", sqlOrder: true },
+  perM2: { text: (v) => formatPerM2(v), className: "num", firstDir: "desc", sqlOrder: true },
+  date: { text: (v) => v.replace("T", " ").slice(0, 16), className: "date", firstDir: "desc", sqlOrder: true },
+};
+const formatOf = (column) => FORMATS[column.format ?? "text"];
+for (const column of COLUMNS) {
+  if (column.format && !FORMATS[column.format]) throw new Error(`unknown format ${column.format} on ${column.key}`);
+}
 const isoDate = (d) => d.toISOString().slice(0, 10);
 const ITEM_WORD = { one: "objektas", few: "objektai" };
 const plural = new Intl.PluralRules("lt");
@@ -267,10 +278,10 @@ function renderRow(row) {
     const value = row[column.key];
     if (column.key === "name") cell(tr, column, title, "title");
     else if (column.key === "status") cell(tr, column, status);
-    else if (column.key === "end_date") cell(tr, column, value?.replace("T", " ").slice(0, 16), "date");
-    else if (column.key === "price_per_m2") cell(tr, column, formatPerM2(value), "num");
-    else if (column.num) cell(tr, column, value == null ? null : eur.format(value), "num");
-    else cell(tr, column, value);
+    else {
+      const format = formatOf(column);
+      cell(tr, column, value == null ? null : format.text(value), format.className);
+    }
   }
   return tr;
 }
@@ -285,7 +296,9 @@ function renderHead() {
     button.type = "button";
     button.textContent = column.label;
     button.addEventListener("click", () => {
-      sort = sort.key === column.key ? { key: column.key, dir: sort.dir === "asc" ? "desc" : "asc" } : { key: column.key, dir: column.num ? "desc" : "asc" };
+      sort = sort.key === column.key
+        ? { key: column.key, dir: sort.dir === "asc" ? "desc" : "asc" }
+        : { key: column.key, dir: formatOf(column).firstDir };
       render();
     });
     th.append(button);
@@ -314,7 +327,7 @@ function compareRows(a, b, column, dir) {
   if (av == null && bv == null) return 0;
   if (av == null) return 1;
   if (bv == null) return -1;
-  const primary = column.num ? av - bv : String(av).localeCompare(String(bv), "lt");
+  const primary = formatOf(column).className === "num" ? av - bv : String(av).localeCompare(String(bv), "lt");
   return dir === "desc" ? -primary : primary;
 }
 
@@ -326,7 +339,7 @@ function render() {
   const total = query(`SELECT count(*) AS n FROM item_rows ${where}`, params)[0].n;
   const column = COLUMNS.find((c) => c.key === sort.key);
   // sql.js has no Lithuanian collation. Dates and numbers stay in SQL. Text sorts in the page.
-  const sqlOrder = column.num || column.key === "end_date";
+  const sqlOrder = formatOf(column).sqlOrder;
   let rows = query(
     `SELECT * FROM item_rows ${where}`
       + (sqlOrder
