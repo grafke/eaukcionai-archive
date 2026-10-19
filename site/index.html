@@ -74,7 +74,19 @@
     outline: 2px solid var(--accent);
     outline-offset: 1px;
   }
-  .summary { display: flex; justify-content: space-between; gap: 12px; color: var(--muted); margin: 0 0 8px; font-size: 13px; }
+  .summary { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 16px; color: var(--muted); margin: 0 0 8px; font-size: 13px; }
+  .summary-main { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; }
+  .page-size { flex: none; flex-direction: row; align-items: center; gap: 6px; font-size: 13px; white-space: nowrap; }
+  .page-size select { min-height: 30px; padding: 2px 6px; }
+  .pager { display: flex; flex-wrap: wrap; align-items: center; gap: 4px; margin: 0 0 8px; }
+  .pager.bottom { margin: 10px 0 0; }
+  .pager[hidden] { display: none; }
+  .pager button { min-height: 30px; min-width: 32px; padding: 2px 8px; font-size: 13px; }
+  .pager button[aria-current="page"] { border-color: var(--accent); color: var(--accent); font-weight: 600; }
+  .pager button[aria-current="page"]:disabled { opacity: 1; cursor: default; }
+  .pager button:disabled { opacity: 0.4; cursor: default; }
+  #count { scroll-margin-top: 12px; }
+  .pager .ellipsis { color: var(--muted); padding: 0 2px; user-select: none; }
   table { width: 100%; border-collapse: collapse; background: var(--surface); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
   th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--border); vertical-align: top; }
   th { font-size: 12px; color: var(--muted); font-weight: 600; white-space: nowrap; }
@@ -140,8 +152,23 @@
     </details>
   </form>
 
-  <p class="summary"><span id="count">Kraunama…</span><span id="updated"></span></p>
+  <p class="summary">
+    <span class="summary-main">
+      <span id="count" aria-live="polite">Kraunama…</span>
+      <label class="page-size">Puslapyje
+        <select id="page-size">
+          <option>50</option>
+          <option selected>100</option>
+          <option>200</option>
+          <option>500</option>
+        </select>
+      </label>
+    </span>
+    <span id="updated"></span>
+  </p>
+  <nav id="pager" class="pager" aria-label="Puslapiai" hidden></nav>
   <div id="results"></div>
+  <nav id="pager-bottom" class="pager bottom" aria-label="Puslapiai" hidden></nav>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.14.2/sql-wasm.min.js" integrity="sha512-3rCfIirhW2xUpZCwDHnpKT5qyOvlt6hsu0Sq1IjP5hW9/k5YWnsLJ/7bF9KTmUgjDSQmvJw40mQDFbrxr647Ag==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -149,7 +176,8 @@
 "use strict";
 const SQL_JS_DIR = "https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.14.2/";
 const LIVE_STATUSES = new Set(["Paskelbtas", "Paskelbtos", "Vykstančios", "Vykstantis"]);
-const MAX_ROWS = 500;
+const PAGE_SIZES = [50, 100, 200, 500];
+const DEFAULT_PAGE_SIZE = 100;
 const DEFAULT_WINDOW_DAYS = 90;
 
 const COLUMNS = [
@@ -173,8 +201,12 @@ const form = document.getElementById("filters");
 const results = document.getElementById("results");
 const countEl = document.getElementById("count");
 const sortSelect = document.getElementById("sort");
+const pageSizeSelect = document.getElementById("page-size");
+const pagers = [document.getElementById("pager"), document.getElementById("pager-bottom")];
 let db;
 let sort = { key: "end_date", dir: "desc" };
+let page = 1;
+let pageSize = DEFAULT_PAGE_SIZE;
 
 const fold = (s) => (s ?? "").normalize("NFD").replace(/\p{M}/gu, "").toLocaleLowerCase("lt");
 const eur = new Intl.NumberFormat("lt-LT", { maximumFractionDigits: 2 });
@@ -299,6 +331,7 @@ function renderHead() {
       sort = sort.key === column.key
         ? { key: column.key, dir: sort.dir === "asc" ? "desc" : "asc" }
         : { key: column.key, dir: formatOf(column).firstDir };
+      page = 1;
       render();
     });
     th.append(button);
@@ -317,8 +350,54 @@ function fillSortSelect() {
     event.stopPropagation();
     const [key, dir] = sortSelect.value.split(".");
     sort = { key, dir };
+    page = 1;
     render();
   });
+}
+
+function pageWindow(current, count) {
+  const keep = new Set([1, count]);
+  for (let n = current - 2; n <= current + 2; n++) keep.add(n);
+  return [...keep].filter((n) => n >= 1 && n <= count).sort((a, b) => a - b);
+}
+
+function pageButton(text, target, { disabled = false, current = false, label }) {
+  const button = document.createElement("button");
+  button.type = "button";
+  button.textContent = text;
+  button.setAttribute("aria-label", label);
+  if (current) button.setAttribute("aria-current", "page");
+  button.disabled = disabled || current;
+  if (!disabled && !current) button.addEventListener("click", () => goTo(target));
+  return button;
+}
+
+function renderPagers(pageCount) {
+  for (const nav of pagers) {
+    nav.replaceChildren();
+    nav.hidden = pageCount < 2;
+    if (nav.hidden) continue;
+    nav.append(pageButton("Ankstesnis", page - 1, { disabled: page === 1, label: "Ankstesnis puslapis" }));
+    let previous = 0;
+    for (const n of pageWindow(page, pageCount)) {
+      if (n - previous > 1) {
+        const gap = document.createElement("span");
+        gap.className = "ellipsis";
+        gap.textContent = "…";
+        gap.setAttribute("aria-hidden", "true");
+        nav.append(gap);
+      }
+      nav.append(pageButton(String(n), n, { current: n === page, label: `Puslapis ${n}` }));
+      previous = n;
+    }
+    nav.append(pageButton("Kitas", page + 1, { disabled: page === pageCount, label: "Kitas puslapis" }));
+  }
+}
+
+function goTo(next) {
+  page = next;
+  render();
+  if (countEl.getBoundingClientRect().top < 0) countEl.scrollIntoView({ block: "start" });
 }
 
 function compareRows(a, b, column, dir) {
@@ -333,27 +412,41 @@ function compareRows(a, b, column, dir) {
 
 function render() {
   sortSelect.value = `${sort.key}.${sort.dir}`;
+  pageSizeSelect.value = String(pageSize);
   const f = readForm();
-  history.replaceState(null, "", `#${new URLSearchParams({ ...f, sort: `${sort.key}.${sort.dir}` })}`);
   const { sql: where, params } = buildWhere(f);
   const total = query(`SELECT count(*) AS n FROM item_rows ${where}`, params)[0].n;
+  const pageCount = Math.max(1, Math.ceil(total / pageSize));
+  if (page > pageCount) page = pageCount;
+  if (page < 1) page = 1;
+  const hash = { ...f, sort: `${sort.key}.${sort.dir}` };
+  if (page > 1) hash.page = String(page);
+  if (pageSize !== DEFAULT_PAGE_SIZE) hash.page_size = String(pageSize);
+  history.replaceState(null, "", `#${new URLSearchParams(hash)}`);
+  const offset = (page - 1) * pageSize;
   const column = COLUMNS.find((c) => c.key === sort.key);
   // sql.js has no Lithuanian collation. Dates and numbers stay in SQL. Text sorts in the page.
   const sqlOrder = formatOf(column).sqlOrder;
+  const direction = sort.dir === "asc" ? "ASC" : "DESC";
   let rows = query(
     `SELECT * FROM item_rows ${where}`
       + (sqlOrder
-        ? ` ORDER BY ${column.sql} IS NULL, ${column.sql} ${sort.dir === "asc" ? "ASC" : "DESC"}, auction_id, item_no LIMIT ${MAX_ROWS}`
+        ? ` ORDER BY ${column.sql} IS NULL, ${column.sql} ${direction}, auction_id, item_no LIMIT ? OFFSET ?`
         : ""),
-    params,
+    sqlOrder ? [...params, pageSize, offset] : params,
   );
   if (!sqlOrder) {
     rows.sort((a, b) => compareRows(a, b, column, sort.dir) || a.auction_id - b.auction_id || a.item_no - b.item_no);
-    rows = rows.slice(0, MAX_ROWS);
+    rows = rows.slice(offset, offset + pageSize);
   }
-  countEl.textContent = total > rows.length ? `Rodoma ${rows.length} iš ${total}` : items(total);
+  const shownTo = offset + rows.length;
+  countEl.textContent = page > 1 || shownTo < total ? `Rodoma ${offset + 1}–${shownTo} iš ${total}` : items(total);
+  renderPagers(pageCount);
   if (!rows.length) {
-    results.innerHTML = '<p class="empty">Nieko nerasta. Pabandykite plačiau nustatyti filtrus.</p>';
+    const p = document.createElement("p");
+    p.className = "empty";
+    p.textContent = "Nieko nerasta. Pabandykite plačiau nustatyti filtrus.";
+    results.replaceChildren(p);
     return;
   }
   const table = document.createElement("table");
@@ -370,6 +463,12 @@ function restoreFromHash() {
     if (COLUMNS.some((c) => c.key === key) && (dir === "asc" || dir === "desc")) sort = { key, dir };
     delete params.sort;
   }
+  const requestedPage = Number(params.page);
+  if (Number.isInteger(requestedPage) && requestedPage >= 1) page = requestedPage;
+  delete params.page;
+  const requestedSize = Number(params.page_size);
+  if (PAGE_SIZES.includes(requestedSize)) pageSize = requestedSize;
+  delete params.page_size;
   writeForm(Object.keys(params).length ? params : defaults());
 }
 
@@ -392,6 +491,7 @@ async function main() {
     render();
   } catch (error) {
     countEl.textContent = "";
+    for (const nav of pagers) nav.hidden = true;
     results.innerHTML = "";
     const p = document.createElement("p");
     p.className = "error";
@@ -401,8 +501,21 @@ async function main() {
 }
 
 let debounce;
-form.addEventListener("input", () => { clearTimeout(debounce); debounce = setTimeout(render, 150); });
-document.getElementById("reset").addEventListener("click", () => { writeForm(defaults()); sort = { key: "end_date", dir: "desc" }; render(); });
+form.addEventListener("input", () => {
+  clearTimeout(debounce);
+  debounce = setTimeout(() => { page = 1; if (db) render(); }, 150);
+});
+pageSizeSelect.addEventListener("change", () => {
+  pageSize = Number(pageSizeSelect.value);
+  page = 1;
+  if (db) render();
+});
+document.getElementById("reset").addEventListener("click", () => {
+  writeForm(defaults());
+  sort = { key: "end_date", dir: "desc" };
+  page = 1;
+  render();
+});
 if (matchMedia("(max-width: 760px)").matches) document.getElementById("more").open = false;
 main();
 </script>
