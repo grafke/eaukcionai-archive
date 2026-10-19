@@ -43,8 +43,9 @@ def test_retries_5xx_and_timeouts_with_backoff_then_returns_body():
 
 def test_gives_up_after_retries():
     recorder = Recorder([500] * 5)
-    with pytest.raises(FetchError, match=r"HTTP 500 after 5 attempts"):
+    with pytest.raises(FetchError, match=r"HTTP 500 after 5 attempts") as raised:
         recorder.client().get("https://example.test/a")
+    assert raised.value.status_code == 500
 
 
 def test_waits_one_second_between_requests():

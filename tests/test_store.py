@@ -3,7 +3,7 @@ import sys
 from datetime import UTC, date, datetime
 
 from eaukcionai import store
-from eaukcionai.model import Auction, Gap, Item
+from eaukcionai.model import Auction, Gap, Item, Unreadable
 
 
 def auction(auction_id: int, **changes) -> Auction:
@@ -92,6 +92,17 @@ def test_gaps_round_trip_and_auction_drops_the_gap(tmp_path):
     store.write(tmp_path, store.State(auctions={1: auction(1)}, gaps={1: Gap(1, when), 2: Gap(2, when)}))
     loaded = store.load(tmp_path)
     assert loaded.gaps == {2: Gap(auction_id=2, checked_at=when)}
+    assert list(loaded.auctions) == [1]
+
+
+def test_unreadable_round_trip_and_auction_drops_the_mark(tmp_path):
+    when = datetime(2026, 10, 19, 18, 0, tzinfo=UTC)
+    store.write(
+        tmp_path,
+        store.State(auctions={1: auction(1)}, unreadable={1: Unreadable(1, when), 2: Unreadable(2, when)}),
+    )
+    loaded = store.load(tmp_path)
+    assert loaded.unreadable == {2: Unreadable(auction_id=2, checked_at=when)}
     assert list(loaded.auctions) == [1]
 
 

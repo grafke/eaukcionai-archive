@@ -61,6 +61,18 @@ def test_isolated_server_errors_are_skipped_and_not_retried(tmp_path):
     assert requested == []
 
 
+def test_a_run_of_server_errors_stops_and_retries_that_id(tmp_path):
+    failing = client({"10": (200, page("Įvykęs")), "11": (500, ""), "12": (500, ""), "13": (500, "")})
+    assert main(["10", "13", "--data-dir", str(tmp_path)], failing) == 1
+    state = store.load(tmp_path)
+    assert list(state.auctions) == [10]
+    assert state.unreadable == {}
+    requested: list[str] = []
+    routes = {str(auction_id): (200, page("Įvykęs")) for auction_id in range(11, 14)}
+    assert main(["10", "13", "--data-dir", str(tmp_path)], client(routes, requested)) == 0
+    assert requested == ["11", "12", "13"]
+
+
 def test_fetch_error_keeps_progress_and_resumes_at_that_id(tmp_path):
     first = client({"10": (200, page("Įvykęs")), "11": (429, "")})
     assert main(["10", "12", "--data-dir", str(tmp_path)], first) == 1
@@ -77,6 +89,7 @@ def test_unparseable_page_is_not_settled(tmp_path):
     state = store.load(tmp_path)
     assert 11 not in state.auctions
     assert 11 not in state.gaps
+    assert 11 not in state.unreadable
 
 
 def test_checkpoint_is_on_disk_before_the_next_batch(tmp_path):

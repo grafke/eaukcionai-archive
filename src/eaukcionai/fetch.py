@@ -9,7 +9,9 @@ USER_AGENT = "eaukcionai-archive (+https://github.com/grafke/eaukcionai-archive)
 
 
 class FetchError(RuntimeError):
-    pass
+    def __init__(self, message: str, *, status_code: int | None = None) -> None:
+        super().__init__(message)
+        self.status_code = status_code
 
 
 class Client:
@@ -36,6 +38,8 @@ class Client:
         self._next_request_at = 0.0
 
     def get(self, url: str) -> str | Missing:
+        failure = "no response"
+        status_code: int | None = None
         for attempt in range(self._retries + 1):
             if attempt:
                 self._sleep(self._backoff**attempt)
@@ -47,13 +51,15 @@ class Client:
                 response = self._http.get(url)
             except httpx.TransportError as error:
                 failure = f"{type(error).__name__}: {error}"
+                status_code = None
                 continue
             if response.status_code == 400:
                 return Missing()
             if response.status_code >= 500:
                 failure = f"HTTP {response.status_code}"
+                status_code = response.status_code
                 continue
             if response.status_code != 200:
-                raise FetchError(f"{url}: HTTP {response.status_code}")
+                raise FetchError(f"{url}: HTTP {response.status_code}", status_code=response.status_code)
             return response.text
-        raise FetchError(f"{url}: {failure} after {self._retries + 1} attempts")
+        raise FetchError(f"{url}: {failure} after {self._retries + 1} attempts", status_code=status_code)
