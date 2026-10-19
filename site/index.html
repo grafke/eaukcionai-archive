@@ -94,6 +94,20 @@
   .card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 10px 12px; }
   .card b { display: block; font-size: 18px; font-weight: 650; font-variant-numeric: tabular-nums; }
   .card span, .note, .rounds { color: var(--muted); font-size: 12px; }
+  .metric { cursor: help; text-decoration: underline dotted; text-underline-offset: 2px; }
+  .tip {
+    position: fixed;
+    z-index: 5;
+    max-width: 280px;
+    padding: 6px 8px;
+    background: var(--text);
+    color: var(--bg);
+    font-size: 12px;
+    font-weight: 450;
+    line-height: 1.35;
+    border-radius: 6px;
+    pointer-events: none;
+  }
   .note, .rounds { margin: 4px 0 0; }
   .stat-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; }
   .stat-head h2 { margin: 0; font-size: 16px; }
@@ -541,13 +555,93 @@ function wonText(wonRate, won, decided) {
   return wonRate == null ? "–" : `${rate(wonRate)} (${won}/${decided})`;
 }
 
-function card(value, label) {
+const TIP = {
+  items: "Objektų skaičius po dabartiniais filtrais. Viena eilutė yra vienas objektas.",
+  auctions: "Skirtingi aukcionai. Keli to paties aukciono objektai skaičiuojami vieną kartą.",
+  live: "Būsena Paskelbtas, Paskelbtos, Vykstančios arba Vykstantis.",
+  wonRate: "Įvykusios, padalinta iš įvykusių ir neįvykusių. Atšaukti ir gyvi neįeina. Įvykusios apima Įvykęs, Baigtas ir Baigtos.",
+  cancelled: "Būsena Atšauktos, įskaitant Atšauktas.",
+  starting: "Pradinės kainos mediana. Viena reikšmė vienam aukcionui.",
+  achieved: "Didžiausios kainos mediana. Tik įvykę aukcionai, kurių pradinė kaina didesnė už nulį.",
+  premium: "Didžiausios ir pradinės kainos santykio mediana, minus 1. Tik įvykę aukcionai.",
+  atStart: "Įvykusių dalis, kurių didžiausia kaina lygi pradinei.",
+  soon: "Gyvi aukcionai, kurių pabaiga yra per 7 dienas nuo archyvo atnaujinimo datos.",
+  subtype: "Turto potipis.",
+  askingM2: "Pradinė kaina, padalinta iš ploto. Tik vienas objektas, dalis 1/1, plotas didesnis už nulį.",
+  achievedM2: "Didžiausia kaina, padalinta iš ploto. Tos pačios sąlygos, ir tik įvykęs aukcionas.",
+  period: "Pabaigos data. Savaitė prasideda pirmadienį. Mėnuo yra kalendorinis.",
+  timeAuctions: "Aukcionai, kurių pabaiga patenka į šį laikotarpį ir į dabartinius filtrus.",
+  place: "Savivaldybė arba vietovė, paimta iš adreso pradžios.",
+  placeAuctions: "Visi laikotarpiai. Kiti filtrai galioja, pabaigos datos filtras ne.",
+  placeLive: "Gyvi iš dabartinių filtrų, įskaitant pabaigos datą.",
+  placeWon: "Įvykusių dalis iš visų laikų šioje vietoje. Datos filtras negalioja.",
+  placeAchievedM2: "Įvykusių Eur/m² mediana iš visų laikų. Datos filtras negalioja.",
+  placeAskingM2: "Gyvų pradinės Eur/m² mediana iš dabartinių filtrų.",
+  gap: "Skelbiama Eur/m², padalinta iš pasiektos, minus 1. Neigiama reiškia pigiau už įvykusius.",
+  rounds: "Gyvų aukcionų skaičius pagal tipą, pavyzdžiui Pirmosios ar Pakartotinis.",
+};
+
+const tip = document.createElement("div");
+tip.className = "tip";
+tip.id = "metric-tip";
+tip.setAttribute("role", "tooltip");
+tip.hidden = true;
+document.body.append(tip);
+let tipTarget = null;
+document.addEventListener("click", (event) => {
+  if (tipTarget && !tipTarget.contains(event.target)) hideTip();
+});
+
+function hideTip() {
+  tip.hidden = true;
+  if (tipTarget) tipTarget.removeAttribute("aria-describedby");
+  tipTarget = null;
+}
+
+function showTip(el, text) {
+  if (tipTarget && tipTarget !== el) tipTarget.removeAttribute("aria-describedby");
+  tipTarget = el;
+  el.setAttribute("aria-describedby", tip.id);
+  tip.hidden = false;
+  tip.textContent = text;
+  const rect = el.getBoundingClientRect();
+  const width = Math.min(280, window.innerWidth - 16);
+  tip.style.maxWidth = `${width}px`;
+  tip.style.left = `${Math.max(8, Math.min(rect.left, window.innerWidth - width - 8))}px`;
+  tip.style.top = "0px";
+  const below = rect.bottom + 6;
+  const top = below + tip.offsetHeight > window.innerHeight - 8 ? rect.top - tip.offsetHeight - 6 : below;
+  tip.style.top = `${Math.max(8, top)}px`;
+}
+
+function bindTip(el, text, { focusable = true } = {}) {
+  if (focusable) {
+    el.classList.add("metric");
+    el.tabIndex = 0;
+  }
+  el.addEventListener("pointerenter", (event) => {
+    if (event.pointerType !== "touch") showTip(el, text);
+  });
+  el.addEventListener("pointerleave", (event) => {
+    if (event.pointerType !== "touch") hideTip();
+  });
+  el.addEventListener("focus", () => showTip(el, text));
+  el.addEventListener("blur", hideTip);
+  el.addEventListener("click", (event) => {
+    event.stopPropagation();
+    if (tip.hidden || tipTarget !== el) showTip(el, text);
+    else hideTip();
+  });
+}
+
+function card(value, label, definition) {
   const div = document.createElement("div");
   div.className = "card";
   const strong = document.createElement("b");
   strong.textContent = value;
   const span = document.createElement("span");
   span.textContent = label;
+  bindTip(span, definition);
   div.append(strong, span);
   return div;
 }
@@ -571,7 +665,8 @@ function statsTable(headers, rows) {
   const head = document.createElement("tr");
   for (const header of headers) {
     const th = document.createElement("th");
-    th.textContent = header;
+    bindTip(th, header.tip);
+    th.textContent = header.label;
     head.append(th);
   }
   const thead = document.createElement("thead");
@@ -589,7 +684,9 @@ function statsTable(headers, rows) {
     const tr = document.createElement("tr");
     cells.forEach((value, index) => {
       const td = document.createElement("td");
-      td.dataset.label = headers[index];
+      const header = headers[index];
+      td.dataset.label = header.label;
+      bindTip(td, header.tip, { focusable: false });
       if (index > 0) td.className = "num";
       td.textContent = value ?? "–";
       tr.append(td);
@@ -614,7 +711,12 @@ function section(title, note, controls, table) {
   return wrap;
 }
 
+function col(label, tipText) {
+  return { label, tip: tipText };
+}
+
 function renderStats(f) {
+  hideTip();
   for (const nav of pagers) nav.hidden = true;
   const market = loadObservations(f);
   const current = market.filter((obs) => inWindow(obs, f));
@@ -628,20 +730,20 @@ function renderStats(f) {
   const cards = document.createElement("div");
   cards.className = "cards";
   cards.append(
-    card(String(summary.items), "Objektai"),
-    card(String(summary.auctions), "Aukcionai"),
-    card(String(summary.live), "Gyvi"),
-    card(wonText(summary.wonRate, summary.won, summary.decided), "Įvykusių dalis"),
-    card(String(summary.cancelled), "Atšaukta"),
-    card(money(summary.startingMedian), "Pradinė kaina, mediana"),
-    card(money(summary.achievedMedian), "Pasiekta kaina, mediana"),
-    card(summary.premiumMedian == null ? "–" : rate(summary.premiumMedian - 1), "Antkainis, mediana"),
-    card(rate(summary.soldAtStart), "Parduota už pradinę"),
-    card(String(summary.endingWithin7Days), "Baigiasi per 7 dienas"),
+    card(String(summary.items), "Objektai", TIP.items),
+    card(String(summary.auctions), "Aukcionai", TIP.auctions),
+    card(String(summary.live), "Gyvi", TIP.live),
+    card(wonText(summary.wonRate, summary.won, summary.decided), "Įvykusių dalis", TIP.wonRate),
+    card(String(summary.cancelled), "Atšaukta", TIP.cancelled),
+    card(money(summary.startingMedian), "Pradinė kaina, mediana", TIP.starting),
+    card(money(summary.achievedMedian), "Pasiekta kaina, mediana", TIP.achieved),
+    card(summary.premiumMedian == null ? "–" : rate(summary.premiumMedian - 1), "Antkainis, mediana", TIP.premium),
+    card(rate(summary.soldAtStart), "Parduota už pradinę", TIP.atStart),
+    card(String(summary.endingWithin7Days), "Baigiasi per 7 dienas", TIP.soon),
   );
   root.append(cards);
 
-  const m2Headers = ["Potipis", "Pradinė, Eur/m²", "Pasiekta, Eur/m²"];
+  const m2Headers = [col("Potipis", TIP.subtype), col("Pradinė, Eur/m²", TIP.askingM2), col("Pasiekta, Eur/m²", TIP.achievedM2)];
   const m2Rows = summary.eurM2.map((row) => [row.subtype, formatPerM2(row.askingMedian), formatPerM2(row.achievedMedian)]);
   root.append(section(
     "Eur/m²",
@@ -653,12 +755,22 @@ function renderStats(f) {
   if (summary.rounds.length) {
     const rounds = document.createElement("p");
     rounds.className = "rounds";
-    rounds.textContent = `Gyvi pagal etapą. ${summary.rounds.map((round) => `${round.type} ${round.n}`).join(", ")}.`;
+    const roundsLabel = document.createElement("span");
+    roundsLabel.textContent = "Gyvi pagal etapą.";
+    bindTip(roundsLabel, TIP.rounds);
+    rounds.append(roundsLabel, ` ${summary.rounds.map((round) => `${round.type} ${round.n}`).join(", ")}.`);
     root.append(rounds);
   }
 
-  const timeHeaders = ["Laikotarpis", "Aukcionai", "Įvyko", "Pradinė", "Pasiekta", "Antkainis"];
-  if (showM2) timeHeaders.push("Pradinė, Eur/m²", "Pasiekta, Eur/m²");
+  const timeHeaders = [
+    col("Laikotarpis", TIP.period),
+    col("Aukcionai", TIP.timeAuctions),
+    col("Įvyko", TIP.wonRate),
+    col("Pradinė", TIP.starting),
+    col("Pasiekta", TIP.achieved),
+    col("Antkainis", TIP.premium),
+  ];
+  if (showM2) timeHeaders.push(col("Pradinė, Eur/m²", TIP.askingM2), col("Pasiekta, Eur/m²", TIP.achievedM2));
   const timeRows = AuctionStats.byTime(current, grain).map((row) => {
     const cells = [
       row.period,
@@ -681,8 +793,19 @@ function renderStats(f) {
     statsTable(timeHeaders, timeRows),
   ));
 
-  const placeHeaders = ["Vieta", "Aukcionai", "Gyvi", "Įvyko"];
-  if (showM2) placeHeaders.push("Pasiekta, Eur/m²", "Skelbiama, Eur/m²", "Skirtumas");
+  const placeHeaders = [
+    col("Vieta", TIP.place),
+    col("Aukcionai", TIP.placeAuctions),
+    col("Gyvi", TIP.placeLive),
+    col("Įvyko", TIP.placeWon),
+  ];
+  if (showM2) {
+    placeHeaders.push(
+      col("Pasiekta, Eur/m²", TIP.placeAchievedM2),
+      col("Skelbiama, Eur/m²", TIP.placeAskingM2),
+      col("Skirtumas", TIP.gap),
+    );
+  }
   const placeRows = AuctionStats.byPlace(market, current, placeLevel, showM2).map((row) => {
     const cells = [row.place, String(row.auctions), String(row.live), wonText(row.wonRate, row.won, row.decided)];
     if (showM2) cells.push(formatPerM2(row.achievedMedian), formatPerM2(row.liveAskingMedian), rate(row.gap));
