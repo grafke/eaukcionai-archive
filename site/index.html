@@ -87,6 +87,17 @@
   .pager button:disabled { opacity: 0.4; cursor: default; }
   #count { scroll-margin-top: 12px; }
   .pager .ellipsis { color: var(--muted); padding: 0 2px; user-select: none; }
+  .views { display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 8px; }
+  .views button[aria-selected="true"], .views button[aria-pressed="true"] { border-color: var(--accent); color: var(--accent); font-weight: 600; }
+  .stats { display: grid; gap: 16px; }
+  .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 8px; }
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 10px 12px; }
+  .card b { display: block; font-size: 18px; font-weight: 650; font-variant-numeric: tabular-nums; }
+  .card span, .note, .rounds { color: var(--muted); font-size: 12px; }
+  .note, .rounds { margin: 4px 0 0; }
+  .stat-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; }
+  .stat-head h2 { margin: 0; font-size: 16px; }
+  .stat-head .views { margin: 0; }
   table { width: 100%; border-collapse: collapse; background: var(--surface); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
   th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--border); vertical-align: top; }
   th { font-size: 12px; color: var(--muted); font-weight: 600; white-space: nowrap; }
@@ -166,11 +177,16 @@
     </span>
     <span id="updated"></span>
   </p>
+  <div class="views" role="tablist" aria-label="Rodinys">
+    <button type="button" id="view-list" role="tab" aria-selected="true">Sąrašas</button>
+    <button type="button" id="view-stats" role="tab" aria-selected="false">Statistika</button>
+  </div>
   <nav id="pager" class="pager" aria-label="Puslapiai" hidden></nav>
   <div id="results"></div>
   <nav id="pager-bottom" class="pager bottom" aria-label="Puslapiai" hidden></nav>
 </div>
 
+<script src="stats.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.14.2/sql-wasm.min.js" integrity="sha512-3rCfIirhW2xUpZCwDHnpKT5qyOvlt6hsu0Sq1IjP5hW9/k5YWnsLJ/7bF9KTmUgjDSQmvJw40mQDFbrxr647Ag==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>
 "use strict";
@@ -207,6 +223,11 @@ let db;
 let sort = { key: "end_date", dir: "desc" };
 let page = 1;
 let pageSize = DEFAULT_PAGE_SIZE;
+let view = "list";
+let grain = "week";
+let placeLevel = "municipality";
+let itemCountByAuction;
+const pct = new Intl.NumberFormat("lt-LT", { style: "percent", maximumFractionDigits: 1 });
 
 const fold = (s) => (s ?? "").normalize("NFD").replace(/\p{M}/gu, "").toLocaleLowerCase("lt");
 const eur = new Intl.NumberFormat("lt-LT", { maximumFractionDigits: 2 });
@@ -254,13 +275,15 @@ function query(sqlText, params = []) {
 function fillSelects() {
   for (const name of SELECTS) {
     const select = form.elements[name];
-    const values = query(`SELECT DISTINCT ${name} AS v FROM item_rows WHERE ${name} IS NOT NULL`).map((r) => r.v);
+    const values = name === "status"
+      ? [...new Set(query("SELECT DISTINCT status AS v FROM item_rows WHERE status IS NOT NULL").map((r) => AuctionStats.statusGroup(r.v)))]
+      : query(`SELECT DISTINCT ${name} AS v FROM item_rows WHERE ${name} IS NOT NULL`).map((r) => r.v);
     values.sort((a, b) => String(a).localeCompare(String(b), "lt"));
     select.replaceChildren(new Option("Visos", ""), ...values.map((v) => new Option(v, v)));
   }
 }
 
-function buildWhere(f) {
+function buildWhere(f, { dates = true } = {}) {
   const where = [];
   const params = [];
   if (f.q) {
@@ -269,11 +292,20 @@ function buildWhere(f) {
       params.push(`%${word}%`);
     }
   }
-  for (const name of SELECTS) if (f[name]) { where.push(`${name} = ?`); params.push(f[name]); }
+  for (const name of SELECTS) if (f[name]) {
+    if (name === "status") {
+      const raw = AuctionStats.statusesFor(f[name]);
+      where.push(`status IN (${raw.map(() => "?").join(", ")})`);
+      params.push(...raw);
+    } else {
+      where.push(`${name} = ?`);
+      params.push(f[name]);
+    }
+  }
   if (f.price_min) { where.push("starting_price_eur >= ?"); params.push(Number(f.price_min)); }
   if (f.price_max) { where.push("starting_price_eur <= ?"); params.push(Number(f.price_max)); }
-  if (f.end_from) { where.push("end_date >= ?"); params.push(f.end_from); }
-  if (f.end_to) { where.push("end_date < ?"); params.push(`${f.end_to}T24`); }
+  if (dates && f.end_from) { where.push("end_date >= ?"); params.push(f.end_from); }
+  if (dates && f.end_to) { where.push("end_date < ?"); params.push(`${f.end_to}T24`); }
   return { sql: where.length ? `WHERE ${where.join(" AND ")}` : "", params };
 }
 
@@ -305,7 +337,7 @@ function renderRow(row) {
   title.append(link, address);
   const status = document.createElement("span");
   status.className = LIVE_STATUSES.has(row.status) ? "status live" : "status";
-  status.textContent = row.status;
+  status.textContent = AuctionStats.statusGroup(row.status);
   for (const column of COLUMNS) {
     const value = row[column.key];
     if (column.key === "name") cell(tr, column, title, "title");
@@ -410,19 +442,35 @@ function compareRows(a, b, column, dir) {
   return dir === "desc" ? -primary : primary;
 }
 
+function writeHash(f) {
+  const hash = { ...f, sort: `${sort.key}.${sort.dir}` };
+  if (page > 1) hash.page = String(page);
+  if (pageSize !== DEFAULT_PAGE_SIZE) hash.page_size = String(pageSize);
+  if (view === "stats") hash.view = "stats";
+  if (grain !== "week") hash.grain = grain;
+  if (placeLevel !== "municipality") hash.place = placeLevel;
+  history.replaceState(null, "", `#${new URLSearchParams(hash)}`);
+}
+
 function render() {
   sortSelect.value = `${sort.key}.${sort.dir}`;
   pageSizeSelect.value = String(pageSize);
+  document.querySelector(".page-size").hidden = view === "stats";
+  for (const [id, selected] of [["view-list", view === "list"], ["view-stats", view === "stats"]]) {
+    document.getElementById(id).setAttribute("aria-selected", String(selected));
+  }
   const f = readForm();
+  writeHash(f);
+  if (view === "stats") renderStats(f);
+  else renderList(f);
+}
+
+function renderList(f) {
   const { sql: where, params } = buildWhere(f);
   const total = query(`SELECT count(*) AS n FROM item_rows ${where}`, params)[0].n;
   const pageCount = Math.max(1, Math.ceil(total / pageSize));
   if (page > pageCount) page = pageCount;
   if (page < 1) page = 1;
-  const hash = { ...f, sort: `${sort.key}.${sort.dir}` };
-  if (page > 1) hash.page = String(page);
-  if (pageSize !== DEFAULT_PAGE_SIZE) hash.page_size = String(pageSize);
-  history.replaceState(null, "", `#${new URLSearchParams(hash)}`);
   const offset = (page - 1) * pageSize;
   const column = COLUMNS.find((c) => c.key === sort.key);
   // sql.js has no Lithuanian collation. Dates and numbers stay in SQL. Text sorts in the page.
@@ -456,6 +504,202 @@ function render() {
   results.replaceChildren(table);
 }
 
+function itemCount(auctionId) {
+  // Every item on the auction, including ones the filter hides, so a lot price is not treated as one sibling's price.
+  if (!itemCountByAuction) {
+    itemCountByAuction = new Map(
+      query("SELECT auction_id, count(*) AS n FROM items GROUP BY auction_id").map((row) => [row.auction_id, row.n]),
+    );
+  }
+  return itemCountByAuction.get(auctionId) ?? 1;
+}
+
+function inWindow(obs, f) {
+  if (f.end_from && (!obs.endDay || obs.endDay < f.end_from)) return false;
+  if (f.end_to && (!obs.endDay || obs.endDay > f.end_to)) return false;
+  return true;
+}
+
+function loadObservations(f) {
+  const { sql, params } = buildWhere(f, { dates: false });
+  return query(
+    "SELECT auction_id, status, type, end_date, municipality, settlement, subtype, share_sold, area_m2, starting_price_eur, highest_bid_eur"
+      + ` FROM item_rows ${sql}`,
+    params,
+  ).map((row) => AuctionStats.observe(row, itemCount(row.auction_id)));
+}
+
+function money(value) {
+  return value == null ? "–" : eur.format(value);
+}
+
+function rate(value) {
+  return value == null ? "–" : pct.format(value);
+}
+
+function wonText(wonRate, won, decided) {
+  return wonRate == null ? "–" : `${rate(wonRate)} (${won}/${decided})`;
+}
+
+function card(value, label) {
+  const div = document.createElement("div");
+  div.className = "card";
+  const strong = document.createElement("b");
+  strong.textContent = value;
+  const span = document.createElement("span");
+  span.textContent = label;
+  div.append(strong, span);
+  return div;
+}
+
+function choice(options, current, onPick) {
+  const span = document.createElement("span");
+  span.className = "views";
+  for (const [id, label] of options) {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.textContent = label;
+    button.setAttribute("aria-pressed", String(id === current));
+    button.addEventListener("click", () => onPick(id));
+    span.append(button);
+  }
+  return span;
+}
+
+function statsTable(headers, rows) {
+  const table = document.createElement("table");
+  const head = document.createElement("tr");
+  for (const header of headers) {
+    const th = document.createElement("th");
+    th.textContent = header;
+    head.append(th);
+  }
+  const thead = document.createElement("thead");
+  thead.append(head);
+  const tbody = document.createElement("tbody");
+  if (!rows.length) {
+    const tr = document.createElement("tr");
+    const td = document.createElement("td");
+    td.colSpan = headers.length;
+    td.textContent = "Nėra duomenų.";
+    tr.append(td);
+    tbody.append(tr);
+  }
+  for (const cells of rows) {
+    const tr = document.createElement("tr");
+    cells.forEach((value, index) => {
+      const td = document.createElement("td");
+      td.dataset.label = headers[index];
+      if (index > 0) td.className = "num";
+      td.textContent = value ?? "–";
+      tr.append(td);
+    });
+    tbody.append(tr);
+  }
+  table.append(thead, tbody);
+  return table;
+}
+
+function section(title, note, controls, table) {
+  const wrap = document.createElement("section");
+  const head = document.createElement("div");
+  head.className = "stat-head";
+  const heading = document.createElement("h2");
+  heading.textContent = title;
+  head.append(heading, controls);
+  const caption = document.createElement("p");
+  caption.className = "note";
+  caption.textContent = note;
+  wrap.append(head, caption, table);
+  return wrap;
+}
+
+function renderStats(f) {
+  for (const nav of pagers) nav.hidden = true;
+  const market = loadObservations(f);
+  const current = market.filter((obs) => inWindow(obs, f));
+  const asOf = (query("SELECT max(last_fetched) AS t FROM auctions")[0].t || "").slice(0, 10);
+  const summary = AuctionStats.summarize(current, asOf);
+  const showM2 = Boolean(f.subtype);
+  countEl.textContent = items(summary.items);
+  const root = document.createElement("div");
+  root.className = "stats";
+
+  const cards = document.createElement("div");
+  cards.className = "cards";
+  cards.append(
+    card(String(summary.items), "Objektai"),
+    card(String(summary.auctions), "Aukcionai"),
+    card(String(summary.live), "Gyvi"),
+    card(wonText(summary.wonRate, summary.won, summary.decided), "Įvykusių dalis"),
+    card(String(summary.cancelled), "Atšaukta"),
+    card(money(summary.startingMedian), "Pradinė kaina, mediana"),
+    card(money(summary.achievedMedian), "Pasiekta kaina, mediana"),
+    card(summary.premiumMedian == null ? "–" : rate(summary.premiumMedian - 1), "Antkainis, mediana"),
+    card(rate(summary.soldAtStart), "Parduota už pradinę"),
+    card(String(summary.endingWithin7Days), "Baigiasi per 7 dienas"),
+  );
+  root.append(cards);
+
+  const m2Headers = ["Potipis", "Pradinė, Eur/m²", "Pasiekta, Eur/m²"];
+  const m2Rows = summary.eurM2.map((row) => [row.subtype, formatPerM2(row.askingMedian), formatPerM2(row.achievedMedian)]);
+  root.append(section(
+    "Eur/m²",
+    "Vienas objektas, parduodamas visas. Pasiekta kaina tik įvykusiems.",
+    document.createElement("span"),
+    statsTable(m2Headers, m2Rows),
+  ));
+
+  if (summary.rounds.length) {
+    const rounds = document.createElement("p");
+    rounds.className = "rounds";
+    rounds.textContent = `Gyvi pagal etapą. ${summary.rounds.map((round) => `${round.type} ${round.n}`).join(", ")}.`;
+    root.append(rounds);
+  }
+
+  const timeHeaders = ["Laikotarpis", "Aukcionai", "Įvyko", "Pradinė", "Pasiekta", "Antkainis"];
+  if (showM2) timeHeaders.push("Pradinė, Eur/m²", "Pasiekta, Eur/m²");
+  const timeRows = AuctionStats.byTime(current, grain).map((row) => {
+    const cells = [
+      row.period,
+      String(row.auctions),
+      wonText(row.wonRate, row.won, row.decided),
+      money(row.startingMedian),
+      money(row.achievedMedian),
+      row.premiumMedian == null ? "–" : rate(row.premiumMedian - 1),
+    ];
+    if (showM2) cells.push(formatPerM2(row.askingMedian), formatPerM2(row.achievedM2Median));
+    return cells;
+  });
+  root.append(section(
+    "Pagal laiką",
+    "Pagal pabaigos datą, su tais pačiais filtrais. Eur/m² atsiranda pasirinkus potipį.",
+    choice([["day", "Diena"], ["week", "Savaitė"], ["month", "Mėnuo"]], grain, (next) => {
+      grain = next;
+      render();
+    }),
+    statsTable(timeHeaders, timeRows),
+  ));
+
+  const placeHeaders = ["Vieta", "Aukcionai", "Gyvi", "Įvyko"];
+  if (showM2) placeHeaders.push("Pasiekta, Eur/m²", "Skelbiama, Eur/m²", "Skirtumas");
+  const placeRows = AuctionStats.byPlace(market, current, placeLevel, showM2).map((row) => {
+    const cells = [row.place, String(row.auctions), String(row.live), wonText(row.wonRate, row.won, row.decided)];
+    if (showM2) cells.push(formatPerM2(row.achievedMedian), formatPerM2(row.liveAskingMedian), rate(row.gap));
+    return cells;
+  });
+  root.append(section(
+    "Pagal vietą",
+    "Įvykusių dalis ir pasiekta kaina yra iš visų laikų. Gyvi ir skelbiama kaina yra iš dabartinių filtrų. Pigiausios vietos viršuje, kai pasirinktas potipis.",
+    choice([["municipality", "Savivaldybė"], ["settlement", "Vietovė"]], placeLevel, (next) => {
+      placeLevel = next;
+      render();
+    }),
+    statsTable(placeHeaders, placeRows),
+  ));
+  results.replaceChildren(root);
+}
+
 function restoreFromHash() {
   const params = Object.fromEntries(new URLSearchParams(location.hash.slice(1)));
   if (params.sort) {
@@ -469,6 +713,13 @@ function restoreFromHash() {
   const requestedSize = Number(params.page_size);
   if (PAGE_SIZES.includes(requestedSize)) pageSize = requestedSize;
   delete params.page_size;
+  if (params.view === "stats") view = "stats";
+  delete params.view;
+  if (params.grain === "day" || params.grain === "week" || params.grain === "month") grain = params.grain;
+  delete params.grain;
+  if (params.place === "municipality" || params.place === "settlement") placeLevel = params.place;
+  delete params.place;
+  if (params.status) params.status = AuctionStats.statusGroup(params.status);
   writeForm(Object.keys(params).length ? params : defaults());
 }
 
@@ -514,7 +765,17 @@ document.getElementById("reset").addEventListener("click", () => {
   writeForm(defaults());
   sort = { key: "end_date", dir: "desc" };
   page = 1;
+  grain = "week";
+  placeLevel = "municipality";
   render();
+});
+document.getElementById("view-list").addEventListener("click", () => {
+  view = "list";
+  if (db) render();
+});
+document.getElementById("view-stats").addEventListener("click", () => {
+  view = "stats";
+  if (db) render();
 });
 if (matchMedia("(max-width: 760px)").matches) document.getElementById("more").open = false;
 main();
