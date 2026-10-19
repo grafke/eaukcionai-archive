@@ -1,3 +1,4 @@
+import threading
 import time
 from collections.abc import Callable
 
@@ -36,6 +37,7 @@ class Client:
         self._interval, self._retries, self._backoff = interval, retries, backoff
         self._sleep, self._clock = sleep, clock
         self._next_request_at = 0.0
+        self._schedule = threading.Lock()
 
     def get(self, url: str) -> str | Missing:
         failure = "no response"
@@ -43,10 +45,11 @@ class Client:
         for attempt in range(self._retries + 1):
             if attempt:
                 self._sleep(self._backoff**attempt)
-            wait = self._next_request_at - self._clock()
+            with self._schedule:
+                wait = self._next_request_at - self._clock()
+                self._next_request_at = max(self._next_request_at, self._clock()) + self._interval
             if wait > 0:
                 self._sleep(wait)
-            self._next_request_at = self._clock() + self._interval
             try:
                 response = self._http.get(url)
             except httpx.TransportError as error:

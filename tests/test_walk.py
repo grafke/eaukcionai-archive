@@ -1,3 +1,5 @@
+import threading
+
 import httpx
 
 from eaukcionai import store
@@ -106,6 +108,25 @@ def test_checkpoint_is_on_disk_before_the_next_batch(tmp_path):
     http = Client(transport=httpx.MockTransport(handle), interval=0, sleep=lambda _: None)
     assert main([str(start), str(last), "--data-dir", str(tmp_path)], http) == 0
     assert seen["saved"] == CHECKPOINT_EVERY
+
+
+def test_five_pages_are_fetched_at_once(tmp_path):
+    started: list[str] = []
+    lock = threading.Lock()
+    release = threading.Event()
+
+    def handle(request: httpx.Request) -> httpx.Response:
+        with lock:
+            started.append(request.url.params["id"])
+            if len(started) == 5:
+                release.set()
+        assert release.wait(2)
+        return httpx.Response(200, text=page("Įvykęs"))
+
+    http = Client(transport=httpx.MockTransport(handle), interval=0, sleep=lambda _: None)
+    assert main(["1", "5", "--data-dir", str(tmp_path), "--concurrency", "5"], http) == 0
+    assert sorted(started) == ["1", "2", "3", "4", "5"]
+    assert list(store.load(tmp_path).auctions) == [1, 2, 3, 4, 5]
 
 
 def test_max_fetches_pauses_and_resume_continues(tmp_path):
