@@ -45,6 +45,22 @@ def test_second_run_requests_nothing(tmp_path):
     assert requested == []
 
 
+def test_isolated_server_errors_are_skipped_and_not_retried(tmp_path):
+    routes = {
+        "10": (200, page("Įvykęs")),
+        "11": (500, ""),
+        "12": (500, ""),
+        "13": (200, page("Įvykęs")),
+    }
+    assert main(["10", "13", "--data-dir", str(tmp_path)], client(routes)) == 0
+    state = store.load(tmp_path)
+    assert list(state.auctions) == [10, 13]
+    assert list(state.unreadable) == [11, 12]
+    requested: list[str] = []
+    assert main(["10", "13", "--data-dir", str(tmp_path)], client(routes, requested)) == 0
+    assert requested == []
+
+
 def test_fetch_error_keeps_progress_and_resumes_at_that_id(tmp_path):
     first = client({"10": (200, page("Įvykęs")), "11": (429, "")})
     assert main(["10", "12", "--data-dir", str(tmp_path)], first) == 1
