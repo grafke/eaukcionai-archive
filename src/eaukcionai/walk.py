@@ -1,4 +1,4 @@
-"""One-time id walk. An id is settled when the archive already has an auction or a gap for it."""
+"""One-time id walk. An id is settled when the archive has an auction, a gap, or an unreadable mark."""
 
 import argparse
 import logging
@@ -9,11 +9,13 @@ from pathlib import Path
 from eaukcionai import lifecycle, store
 from eaukcionai.detail import ParseError, parse_detail
 from eaukcionai.fetch import Client, FetchError
-from eaukcionai.model import Gap, Missing, auction_url
+from eaukcionai.model import Gap, Missing, Unreadable, auction_url
 
 log = logging.getLogger("eaukcionai")
 
 CHECKPOINT_EVERY = 20
+# One broken page is skipped. This many HTTP 5xx responses in a row means the site is down.
+SERVER_ERROR_STREAK = 3
 
 
 def main(argv: list[str] | None = None, client: Client | None = None) -> int:
@@ -42,9 +44,8 @@ def main(argv: list[str] | None = None, client: Client | None = None) -> int:
 def _walk(client: Client, data_dir: Path, ids: range, *, now: datetime, max_fetches: int | None) -> int:
     with store.open_archive(data_dir) as archive:
         state = archive.state
-        pending = [
-            auction_id for auction_id in ids if auction_id not in state.auctions and auction_id not in state.gaps
-        ]
+        settled = state.auctions.keys() | state.gaps.keys() | state.unreadable.keys()
+        pending = [auction_id for auction_id in ids if auction_id not in settled]
         log.info(
             "walk %d..%d: %d ids, %d already settled, fetching %d",
             ids.start,
@@ -56,7 +57,21 @@ def _walk(client: Client, data_dir: Path, ids: range, *, now: datetime, max_fetc
         unsaved = 0
         fetched = 0
         unseen_statuses: set[str] = set()
+        streak: list[tuple[int, FetchError]] = []
         code = 0
+
+        def settle_server_errors() -> None:
+            nonlocal unsaved, fetched
+            for failed_id, error in streak:
+                log.error("skipping %d: %s", failed_id, error)
+                state.unreadable[failed_id] = Unreadable(auction_id=failed_id, checked_at=now)
+                unsaved += 1
+                fetched += 1
+                if unsaved == CHECKPOINT_EVERY:
+                    archive.save()
+                    unsaved = 0
+            streak.clear()
+
         try:
             for auction_id in pending:
                 if max_fetches is not None and fetched >= max_fetches:
@@ -66,10 +81,25 @@ def _walk(client: Client, data_dir: Path, ids: range, *, now: datetime, max_fetc
                 try:
                     body = client.get(auction_url(auction_id))
                     observed = body if isinstance(body, Missing) else parse_detail(body, auction_id)
-                except (FetchError, ParseError) as error:
+                except FetchError as error:
+                    if error.status_code is not None and error.status_code >= 500:
+                        streak.append((auction_id, error))
+                        if len(streak) >= SERVER_ERROR_STREAK:
+                            log.error("stopping at %d: %s", streak[0][0], streak[0][1])
+                            streak.clear()
+                            code = 1
+                            return code
+                        continue
+                    settle_server_errors()
                     log.error("stopping at %d: %s", auction_id, error)
                     code = 1
                     return code
+                except ParseError as error:
+                    settle_server_errors()
+                    log.error("stopping at %d: %s", auction_id, error)
+                    code = 1
+                    return code
+                settle_server_errors()
                 fetched += 1
                 if isinstance(observed, Missing):
                     state.gaps[auction_id] = Gap(auction_id=auction_id, checked_at=now)
@@ -85,6 +115,7 @@ def _walk(client: Client, data_dir: Path, ids: range, *, now: datetime, max_fetc
                 if unsaved == CHECKPOINT_EVERY:
                     archive.save()
                     unsaved = 0
+            settle_server_errors()
             log.info("range settled")
             return code
         finally:

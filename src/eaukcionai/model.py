@@ -62,6 +62,14 @@ class Gap:
 
 
 @dataclass(frozen=True)
+class Unreadable:
+    """An id whose page still returned HTTP 5xx after retries. Not an auction."""
+
+    auction_id: int
+    checked_at: datetime
+
+
+@dataclass(frozen=True)
 class Auction:
     auction_id: int
     number: int | None

@@ -7,11 +7,12 @@ from dataclasses import asdict, dataclass, field
 from datetime import UTC, date, datetime
 from pathlib import Path
 
-from eaukcionai.model import Auction, Gap, Item
+from eaukcionai.model import Auction, Gap, Item, Unreadable
 
 AUCTIONS_FILE = "auctions.jsonl"
 ITEMS_FILE = "items.jsonl"
 GAPS_FILE = "gaps.jsonl"
+UNREADABLE_FILE = "unreadable.jsonl"
 _TIMESTAMP = "%Y-%m-%dT%H:%M:%SZ"
 
 
@@ -20,6 +21,7 @@ class State:
     auctions: dict[int, Auction] = field(default_factory=dict)
     items: dict[int, tuple[Item, ...]] = field(default_factory=dict)
     gaps: dict[int, Gap] = field(default_factory=dict)
+    unreadable: dict[int, Unreadable] = field(default_factory=dict)
 
 
 class ArchiveBusy(RuntimeError):
@@ -40,6 +42,10 @@ def _timestamp(text: str) -> datetime:
 
 def _decode_gap(row: dict) -> Gap:
     return Gap(auction_id=row["auction_id"], checked_at=_timestamp(row["checked_at"]))
+
+
+def _decode_unreadable(row: dict) -> Unreadable:
+    return Unreadable(auction_id=row["auction_id"], checked_at=_timestamp(row["checked_at"]))
 
 
 def _decode_auction(row: dict) -> Auction:
@@ -84,6 +90,10 @@ def load(data_dir: Path) -> State:
         gap = _decode_gap(row)
         if gap.auction_id not in state.auctions:
             state.gaps[gap.auction_id] = gap
+    for row in _read_jsonl(data_dir / UNREADABLE_FILE):
+        mark = _decode_unreadable(row)
+        if mark.auction_id not in state.auctions:
+            state.unreadable[mark.auction_id] = mark
     return state
 
 
@@ -98,13 +108,20 @@ class Archive:
         auctions = self.state.auctions
         self.state.items = {auction_id: items for auction_id, items in self.state.items.items() if auction_id in auctions}
         self.state.gaps = {auction_id: gap for auction_id, gap in self.state.gaps.items() if auction_id not in auctions}
+        self.state.unreadable = {
+            auction_id: mark for auction_id, mark in self.state.unreadable.items() if auction_id not in auctions
+        }
         data_dir = self._data_dir
         data_dir.mkdir(parents=True, exist_ok=True)
         item_rows = [item for auction_id in sorted(self.state.items) for item in self.state.items[auction_id]]
         gap_rows = [self.state.gaps[auction_id] for auction_id in sorted(self.state.gaps)]
+        unreadable_rows = [self.state.unreadable[auction_id] for auction_id in sorted(self.state.unreadable)]
         auction_rows = [auctions[auction_id] for auction_id in sorted(auctions)]
         _write_jsonl(data_dir / ITEMS_FILE, item_rows)
         _write_jsonl(data_dir / GAPS_FILE, gap_rows)
+        unreadable_path = data_dir / UNREADABLE_FILE
+        if unreadable_rows or unreadable_path.exists():
+            _write_jsonl(unreadable_path, unreadable_rows)
         _write_jsonl(data_dir / AUCTIONS_FILE, auction_rows)
 
 
