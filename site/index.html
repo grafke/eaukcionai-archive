@@ -107,7 +107,9 @@
     line-height: 1.35;
     border-radius: 6px;
     pointer-events: none;
+    white-space: pre-line;
   }
+  select.has-tip { cursor: help; }
   .note, .rounds { margin: 4px 0 0; }
   .stat-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; }
   .stat-head h2 { margin: 0; font-size: 16px; }
@@ -205,7 +207,7 @@
 <script>
 "use strict";
 const SQL_JS_DIR = "https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.14.2/";
-const LIVE_STATUSES = new Set(["Paskelbtas", "Paskelbtos", "Vykstančios", "Vykstantis"]);
+const LIVE_STATUSES = new Set(AuctionStats.ACTIVE_STATUSES);
 const PAGE_SIZES = [50, 100, 200, 500];
 const DEFAULT_PAGE_SIZE = 100;
 const DEFAULT_WINDOW_DAYS = 90;
@@ -289,9 +291,28 @@ function query(sqlText, params = []) {
 function fillSelects() {
   for (const name of SELECTS) {
     const select = form.elements[name];
-    const values = name === "status"
-      ? [...new Set(query("SELECT DISTINCT status AS v FROM item_rows WHERE status IS NOT NULL").map((r) => AuctionStats.statusGroup(r.v)))]
-      : query(`SELECT DISTINCT ${name} AS v FROM item_rows WHERE ${name} IS NOT NULL`).map((r) => r.v);
+    if (name === "status") {
+      const present = query("SELECT DISTINCT status AS v FROM item_rows WHERE status IS NOT NULL AND status != ''").map((r) => r.v);
+      const active = new Option(AuctionStats.ACTIVE, AuctionStats.ACTIVE);
+      const inactive = new Option(AuctionStats.INACTIVE, AuctionStats.INACTIVE);
+      active.title = AuctionStats.statusMembers(AuctionStats.ACTIVE, present).join(", ");
+      inactive.title = AuctionStats.statusMembers(AuctionStats.INACTIVE, present).join(", ");
+      select.replaceChildren(new Option("Visos", ""), active, inactive);
+      if (!select.dataset.tipBound) {
+        select.dataset.tipBound = "1";
+        select.classList.add("has-tip");
+        bindTip(select, AuctionStats.statusFilterTip(present), {
+          focusable: false,
+          toggleOnClick: false,
+          place: "above",
+          maxWidth: 520,
+          keepWhileFocused: true,
+          hideOnChange: true,
+        });
+      }
+      continue;
+    }
+    const values = query(`SELECT DISTINCT ${name} AS v FROM item_rows WHERE ${name} IS NOT NULL`).map((r) => r.v);
     values.sort((a, b) => String(a).localeCompare(String(b), "lt"));
     select.replaceChildren(new Option("Visos", ""), ...values.map((v) => new Option(v, v)));
   }
@@ -308,9 +329,9 @@ function buildWhere(f, { dates = true } = {}) {
   }
   for (const name of SELECTS) if (f[name]) {
     if (name === "status") {
-      const raw = AuctionStats.statusesFor(f[name]);
-      where.push(`status IN (${raw.map(() => "?").join(", ")})`);
-      params.push(...raw);
+      const clause = AuctionStats.statusClause(f[name]);
+      where.push(clause.sql);
+      params.push(...clause.params);
     } else {
       where.push(`${name} = ?`);
       params.push(f[name]);
@@ -598,38 +619,46 @@ function hideTip() {
   tipTarget = null;
 }
 
-function showTip(el, text) {
+function showTip(el, text, { place = "auto", maxWidth = 280 } = {}) {
   if (tipTarget && tipTarget !== el) tipTarget.removeAttribute("aria-describedby");
   tipTarget = el;
   el.setAttribute("aria-describedby", tip.id);
   tip.hidden = false;
   tip.textContent = text;
   const rect = el.getBoundingClientRect();
-  const width = Math.min(280, window.innerWidth - 16);
+  const width = Math.min(maxWidth, window.innerWidth - 16);
   tip.style.maxWidth = `${width}px`;
   tip.style.left = `${Math.max(8, Math.min(rect.left, window.innerWidth - width - 8))}px`;
   tip.style.top = "0px";
+  const above = rect.top - tip.offsetHeight - 6;
   const below = rect.bottom + 6;
-  const top = below + tip.offsetHeight > window.innerHeight - 8 ? rect.top - tip.offsetHeight - 6 : below;
+  const top = place === "above"
+    ? (above >= 8 ? above : below)
+    : (below + tip.offsetHeight > window.innerHeight - 8 ? above : below);
   tip.style.top = `${Math.max(8, top)}px`;
 }
 
-function bindTip(el, text, { focusable = true } = {}) {
+function bindTip(el, text, { focusable = true, toggleOnClick = true, place = "auto", maxWidth = 280, keepWhileFocused = false, hideOnChange = false } = {}) {
   if (focusable) {
     el.classList.add("metric");
     el.tabIndex = 0;
   }
+  const show = () => showTip(el, text, { place, maxWidth });
   el.addEventListener("pointerenter", (event) => {
-    if (event.pointerType !== "touch") showTip(el, text);
+    if (event.pointerType !== "touch") show();
   });
   el.addEventListener("pointerleave", (event) => {
-    if (event.pointerType !== "touch") hideTip();
+    if (event.pointerType === "touch") return;
+    if (keepWhileFocused && document.activeElement === el) return;
+    hideTip();
   });
-  el.addEventListener("focus", () => showTip(el, text));
+  el.addEventListener("focus", show);
   el.addEventListener("blur", hideTip);
+  if (hideOnChange) el.addEventListener("change", hideTip);
+  if (!toggleOnClick) return;
   el.addEventListener("click", (event) => {
     event.stopPropagation();
-    if (tip.hidden || tipTarget !== el) showTip(el, text);
+    if (tip.hidden || tipTarget !== el) show();
     else hideTip();
   });
 }
@@ -842,7 +871,7 @@ function restoreFromHash() {
   delete params.grain;
   if (params.place === "municipality" || params.place === "settlement") placeLevel = params.place;
   delete params.place;
-  if (params.status) params.status = AuctionStats.statusGroup(params.status);
+  if (params.status) params.status = AuctionStats.filterGroup(params.status);
   writeForm(Object.keys(params).length ? params : defaults());
 }
 
