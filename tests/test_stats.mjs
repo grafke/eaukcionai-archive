@@ -17,6 +17,43 @@ function row(fields) {
   };
 }
 
+test("the status filter is active or inactive, and the tip names the states in each", () => {
+  assert.equal(stats.filterGroup("Paskelbtas"), "Aktyvūs");
+  assert.equal(stats.filterGroup("Paskelbtos"), "Aktyvūs");
+  assert.equal(stats.filterGroup("Vykstančios"), "Aktyvūs");
+  assert.equal(stats.filterGroup("Vykstantis"), "Aktyvūs");
+  assert.equal(stats.filterGroup("Aktyvūs"), "Aktyvūs");
+  assert.equal(stats.filterGroup("Įvykęs"), "Neaktyvūs");
+  assert.equal(stats.filterGroup("Baigtos"), "Neaktyvūs");
+  assert.equal(stats.filterGroup("Neįvykusios"), "Neaktyvūs");
+  assert.equal(stats.filterGroup("Atšauktas"), "Neaktyvūs");
+  assert.equal(stats.filterGroup("Neaktyvūs"), "Neaktyvūs");
+  assert.equal(stats.filterGroup("Sustabdytas"), "Neaktyvūs");
+  assert.deepEqual(stats.statusMembers("Aktyvūs"), ["Paskelbtas", "Paskelbtos", "Vykstančios", "Vykstantis"]);
+  assert.deepEqual(stats.statusMembers("Neaktyvūs", ["Sustabdytas"]), [
+    "Atšauktas",
+    "Atšauktos",
+    "Baigtas",
+    "Baigtos",
+    "Įvykęs",
+    "Įvykusios",
+    "Neįvykęs",
+    "Neįvykusios",
+    "Sustabdytas",
+  ]);
+  assert.equal(
+    stats.statusFilterTip(["Sustabdytas"]),
+    "Aktyvūs: Paskelbtas, Paskelbtos, Vykstančios, Vykstantis\n"
+      + "Neaktyvūs: Atšauktas, Atšauktos, Baigtas, Baigtos, Įvykęs, Įvykusios, Neįvykęs, Neįvykusios, Sustabdytas",
+  );
+  const active = stats.statusClause("Aktyvūs");
+  const inactive = stats.statusClause("Neaktyvūs");
+  assert.equal(active.sql, "status IN (?, ?, ?, ?)");
+  assert.deepEqual(active.params, ["Paskelbtas", "Paskelbtos", "Vykstančios", "Vykstantis"]);
+  assert.equal(inactive.sql, "status NOT IN (?, ?, ?, ?) AND status != ''");
+  assert.deepEqual(inactive.params, active.params);
+});
+
 test("status labels collapse onto the three outcomes", () => {
   assert.equal(stats.statusGroup("Įvykęs"), "Įvykusios");
   assert.equal(stats.statusGroup("Baigtos"), "Įvykusios");
