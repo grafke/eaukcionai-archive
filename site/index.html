@@ -163,6 +163,7 @@
     <details id="more" open>
     <summary>Filtrai</summary>
     <div class="grid">
+    <label>Turtas <select name="name"></select></label>
     <label>Aukciono rūšis <select name="kind"></select></label>
     <label>Turto potipis <select name="subtype"></select></label>
     <label>Savivaldybė <select name="municipality"></select></label>
@@ -232,7 +233,9 @@ const COLUMNS = [
   { key: "first_seen", label: "Paskelbta", sql: "first_seen", format: "date" },
   { key: "end_date", label: "Pabaiga", sql: "end_date", format: "date" },
 ];
-const SELECTS = ["kind", "subtype", "municipality", "settlement", "paskirtis", "status"];
+const SELECTS = ["name", "kind", "subtype", "municipality", "settlement", "paskirtis", "status"];
+// One-off titles (a vehicle, a named debt) stay in the search box. "Butas Nr. 2" rolls up into Butas.
+const NAME_MIN_COUNT = 30;
 
 const form = document.getElementById("filters");
 const results = document.getElementById("results");
@@ -319,10 +322,23 @@ function fillSelects() {
       }
       continue;
     }
+    if (name === "name") {
+      const values = query(
+        "SELECT name AS v FROM item_rows WHERE name IS NOT NULL GROUP BY name HAVING count(*) >= ?",
+        [NAME_MIN_COUNT],
+      ).map((r) => r.v).filter((v) => !/ Nr\.?\s*\d/.test(v));
+      values.sort((a, b) => String(a).localeCompare(String(b), "lt"));
+      select.replaceChildren(new Option("Visi", ""), ...values.map((v) => new Option(v, v)));
+      continue;
+    }
     const values = query(`SELECT DISTINCT ${name} AS v FROM item_rows WHERE ${name} IS NOT NULL`).map((r) => r.v);
     values.sort((a, b) => String(a).localeCompare(String(b), "lt"));
     select.replaceChildren(new Option("Visos", ""), ...values.map((v) => new Option(v, v)));
   }
+}
+
+function likeLiteral(value) {
+  return value.replace(/[\\%_]/g, (ch) => `\\${ch}`);
 }
 
 function buildWhere(f, { dates = true } = {}) {
@@ -339,6 +355,9 @@ function buildWhere(f, { dates = true } = {}) {
       const clause = AuctionStats.statusClause(f[name]);
       where.push(clause.sql);
       params.push(...clause.params);
+    } else if (name === "name") {
+      where.push("(name = ? OR name LIKE ? ESCAPE '\\')");
+      params.push(f.name, `${likeLiteral(f.name)} Nr%`);
     } else {
       where.push(`${name} = ?`);
       params.push(f[name]);
