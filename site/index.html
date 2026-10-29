@@ -88,6 +88,7 @@
   #count { scroll-margin-top: 12px; }
   .pager .ellipsis { color: var(--muted); padding: 0 2px; user-select: none; }
   .views { display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 8px; }
+  .view-tabs { display: flex; gap: 6px; }
   .views button[aria-selected="true"], .views button[aria-pressed="true"] { border-color: var(--accent); color: var(--accent); font-weight: 600; }
   .stats { display: grid; gap: 16px; }
   .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 8px; }
@@ -193,9 +194,12 @@
     </span>
     <span id="updated"></span>
   </p>
-  <div class="views" role="tablist" aria-label="Rodinys">
-    <button type="button" id="view-list" role="tab" aria-selected="true">Sąrašas</button>
-    <button type="button" id="view-stats" role="tab" aria-selected="false">Statistika</button>
+  <div class="views">
+    <div class="view-tabs" role="tablist" aria-label="Rodinys">
+      <button type="button" id="view-list" role="tab" aria-selected="true">Sąrašas</button>
+      <button type="button" id="view-stats" role="tab" aria-selected="false">Statistika</button>
+    </div>
+    <button type="button" id="watch-only" aria-pressed="false">Tik stebimi (0)</button>
   </div>
   <nav id="pager" class="pager" aria-label="Puslapiai" hidden></nav>
   <div id="results"></div>
@@ -203,6 +207,7 @@
 </div>
 
 <script src="stats.js"></script>
+<script src="watch.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.14.2/sql-wasm.min.js" integrity="sha512-3rCfIirhW2xUpZCwDHnpKT5qyOvlt6hsu0Sq1IjP5hW9/k5YWnsLJ/7bF9KTmUgjDSQmvJw40mQDFbrxr647Ag==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>
 "use strict";
@@ -243,6 +248,8 @@ let view = "list";
 let grain = "week";
 let placeLevel = "municipality";
 let itemCountByAuction;
+let marks = [];
+let watchOnly = false;
 const pct = new Intl.NumberFormat("lt-LT", { style: "percent", maximumFractionDigits: 1 });
 
 const fold = (s) => (s ?? "").normalize("NFD").replace(/\p{M}/gu, "").toLocaleLowerCase("lt");
@@ -339,8 +346,14 @@ function buildWhere(f, { dates = true } = {}) {
   }
   if (f.price_min) { where.push("starting_price_eur >= ?"); params.push(Number(f.price_min)); }
   if (f.price_max) { where.push("starting_price_eur <= ?"); params.push(Number(f.price_max)); }
-  if (dates && f.end_from) { where.push("end_date >= ?"); params.push(f.end_from); }
-  if (dates && f.end_to) { where.push("end_date < ?"); params.push(`${f.end_to}T24`); }
+  const skipDates = Watch.skipDefaultWindow(watchOnly, f.end_from, f.end_to, defaults().end_from);
+  if (dates && !skipDates && f.end_from) { where.push("end_date >= ?"); params.push(f.end_from); }
+  if (dates && !skipDates && f.end_to) { where.push("end_date < ?"); params.push(`${f.end_to}T24`); }
+  const watched = Watch.watchClause(watchOnly, marks);
+  if (watched) {
+    where.push(watched.sql);
+    params.push(...watched.params);
+  }
   return { sql: where.length ? `WHERE ${where.join(" AND ")}` : "", params };
 }
 
@@ -358,8 +371,32 @@ function cell(tr, column, content, className) {
   tr.append(td);
 }
 
+function marked(auctionId, itemNo) {
+  return marks.some((pair) => pair[0] === auctionId && pair[1] === itemNo);
+}
+
 function renderRow(row) {
   const tr = document.createElement("tr");
+  const watchCell = document.createElement("td");
+  watchCell.dataset.label = "Stebėti";
+  const star = document.createElement("button");
+  star.type = "button";
+  const on = marked(row.auction_id, row.item_no);
+  star.setAttribute("aria-pressed", String(on));
+  star.setAttribute("aria-label", on ? "Nebestebėti" : "Stebėti");
+  star.textContent = on ? "★" : "☆";
+  star.addEventListener("click", () => {
+    const next = Watch.toggleMark(marks, row.auction_id, row.item_no);
+    try {
+      localStorage.setItem(Watch.WATCH_KEY, Watch.dumpMarks(next));
+    } catch {
+      return;
+    }
+    marks = next;
+    render();
+  });
+  watchCell.append(star);
+  tr.append(watchCell);
   const title = document.createElement("span");
   const link = document.createElement("a");
   link.href = row.url;
@@ -387,6 +424,10 @@ function renderRow(row) {
 
 function renderHead() {
   const tr = document.createElement("tr");
+  const watchTh = document.createElement("th");
+  watchTh.scope = "col";
+  watchTh.textContent = "Stebėti";
+  tr.append(watchTh);
   for (const column of COLUMNS) {
     const th = document.createElement("th");
     th.scope = "col";
@@ -488,6 +529,9 @@ function writeHash(f) {
 }
 
 function render() {
+  const watchOnlyButton = document.getElementById("watch-only");
+  watchOnlyButton.textContent = `Tik stebimi (${marks.length})`;
+  watchOnlyButton.setAttribute("aria-pressed", String(watchOnly));
   sortSelect.value = `${sort.key}.${sort.dir}`;
   pageSizeSelect.value = String(pageSize);
   document.querySelector(".page-size").hidden = view === "stats";
@@ -528,7 +572,9 @@ function renderList(f) {
   if (!rows.length) {
     const p = document.createElement("p");
     p.className = "empty";
-    p.textContent = "Nieko nerasta. Pabandykite plačiau nustatyti filtrus.";
+    p.textContent = watchOnly && marks.length === 0
+      ? "Nėra stebimų objektų."
+      : "Nieko nerasta. Pabandykite plačiau nustatyti filtrus.";
     results.replaceChildren(p);
     return;
   }
@@ -550,6 +596,7 @@ function itemCount(auctionId) {
 }
 
 function inWindow(obs, f) {
+  if (Watch.skipDefaultWindow(watchOnly, f.end_from, f.end_to, defaults().end_from)) return true;
   if (f.end_from && (!obs.endDay || obs.endDay < f.end_from)) return false;
   if (f.end_to && (!obs.endDay || obs.endDay > f.end_to)) return false;
   return true;
@@ -875,7 +922,23 @@ function restoreFromHash() {
   writeForm(Object.keys(params).length ? params : defaults());
 }
 
+function loadWatch() {
+  try {
+    marks = Watch.parseMarks(localStorage.getItem(Watch.WATCH_KEY));
+    watchOnly = Watch.parseWatchOnly(localStorage.getItem(Watch.WATCH_ONLY_KEY));
+  } catch {
+    marks = [];
+    watchOnly = false;
+  }
+}
+
 async function main() {
+  try {
+    loadWatch();
+  } catch {
+    marks = [];
+    watchOnly = false;
+  }
   try {
     const [SQL, buffer] = await Promise.all([
       initSqlJs({ locateFile: (file) => SQL_JS_DIR + file }),
@@ -927,6 +990,23 @@ document.getElementById("view-list").addEventListener("click", () => {
 });
 document.getElementById("view-stats").addEventListener("click", () => {
   view = "stats";
+  if (db) render();
+});
+document.getElementById("watch-only").addEventListener("click", () => {
+  const next = !watchOnly;
+  try {
+    if (next) localStorage.setItem(Watch.WATCH_ONLY_KEY, "1");
+    else localStorage.removeItem(Watch.WATCH_ONLY_KEY);
+  } catch {
+    return;
+  }
+  watchOnly = next;
+  page = 1;
+  render();
+});
+window.addEventListener("storage", (event) => {
+  if (event.key !== Watch.WATCH_KEY && event.key !== Watch.WATCH_ONLY_KEY) return;
+  loadWatch();
   if (db) render();
 });
 if (matchMedia("(max-width: 760px)").matches) document.getElementById("more").open = false;
