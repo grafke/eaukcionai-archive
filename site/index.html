@@ -244,6 +244,11 @@ const sortSelect = document.getElementById("sort");
 const pageSizeSelect = document.getElementById("page-size");
 const pagers = [document.getElementById("pager"), document.getElementById("pager-bottom")];
 let db;
+let sqlEngine;
+let loadGeneration = 0;
+let scope = "full";
+let coveredFrom = null;
+let archiveState = "ready";
 let sort = { key: "end_date", dir: "desc" };
 let page = 1;
 let pageSize = DEFAULT_PAGE_SIZE;
@@ -559,8 +564,32 @@ function render() {
   }
   const f = readForm();
   writeHash(f);
-  if (view === "stats") renderStats(f);
+  if (view === "stats" && scope === "recent") renderStatsWaiting();
+  else if (view === "stats") renderStats(f);
   else renderList(f);
+}
+
+function listIsComplete(f) {
+  if (scope === "full") return true;
+  if (Watch.skipDefaultWindow(watchOnly, f.end_from, f.end_to, defaults().end_from)) return false;
+  return coveredFrom != null && Boolean(f.end_from) && f.end_from >= coveredFrom;
+}
+
+function listSuffix(f) {
+  if (listIsComplete(f)) return "";
+  return archiveState === "failed" ? " Viso archyvo atsiųsti nepavyko." : " Visas archyvas dar siunčiamas.";
+}
+
+function renderStatsWaiting() {
+  hideTip();
+  for (const nav of pagers) nav.hidden = true;
+  countEl.textContent = archiveState === "failed" ? "Viso archyvo atsiųsti nepavyko." : "Kraunama…";
+  const p = document.createElement("p");
+  p.className = "empty";
+  p.textContent = archiveState === "failed"
+    ? "Statistikai reikia viso archyvo, o jo atsiųsti nepavyko."
+    : "Statistika bus parodyta, kai bus atsiųstas visas archyvas.";
+  results.replaceChildren(p);
 }
 
 function renderList(f) {
@@ -586,7 +615,8 @@ function renderList(f) {
     rows = rows.slice(offset, offset + pageSize);
   }
   const shownTo = offset + rows.length;
-  countEl.textContent = page > 1 || shownTo < total ? `Rodoma ${offset + 1}–${shownTo} iš ${total}` : items(total);
+  const label = page > 1 || shownTo < total ? `Rodoma ${offset + 1}–${shownTo} iš ${total}` : items(total);
+  countEl.textContent = label + listSuffix(f);
   renderPagers(pageCount);
   if (!rows.length) {
     const p = document.createElement("p");
@@ -951,37 +981,96 @@ function loadWatch() {
   }
 }
 
-async function main() {
+const RECENT_URL = "auctions-recent.sqlite";
+const FULL_URL = "auctions.sqlite";
+
+function fetchBytes(url) {
+  // A refresh aborts the request. arrayBuffer resolves only for a whole file, so a cancelled download is never opened and never stored. The next page starts from the recent file again.
+  return fetch(url).then((response) => {
+    if (!response.ok) throw new Error(`${url}: HTTP ${response.status}`);
+    return response.arrayBuffer();
+  });
+}
+
+function readCoverage() {
+  scope = "full";
+  coveredFrom = null;
   try {
-    loadWatch();
+    const meta = Object.fromEntries(query("SELECT key, value FROM meta").map((row) => [row.key, row.value]));
+    if (meta.scope === "recent") {
+      scope = "recent";
+      coveredFrom = meta.end_from || null;
+    }
   } catch {
-    marks = [];
-    watchOnly = false;
+    // The full archive has no meta table.
   }
+}
+
+function install(buffer) {
+  const next = new sqlEngine.Database(new Uint8Array(buffer));
+  next.create_function("fold", fold);
+  const previous = db;
+  db = next;
+  itemCountByAuction = null;
+  readCoverage();
+  archiveState = scope === "recent" ? "loading" : "ready";
+  if (previous) previous.close();
+}
+
+function showUpdated() {
+  const latest = query("SELECT max(last_fetched) AS t FROM auctions")[0].t;
+  if (latest) document.getElementById("updated").textContent = `Atnaujinta ${latest.replace("T", " ").replace("Z", " UTC")}`;
+}
+
+function showLoadError(error) {
+  countEl.textContent = "";
+  for (const nav of pagers) nav.hidden = true;
+  results.innerHTML = "";
+  const p = document.createElement("p");
+  p.className = "error";
+  p.textContent = `Nepavyko įkelti duomenų: ${error.message}`;
+  results.append(p);
+}
+
+async function loadFull(generation) {
   try {
-    const [SQL, buffer] = await Promise.all([
-      initSqlJs({ locateFile: (file) => SQL_JS_DIR + file }),
-      fetch("auctions.sqlite").then((r) => {
-        if (!r.ok) throw new Error(`auctions.sqlite: HTTP ${r.status}`);
-        return r.arrayBuffer();
-      }),
-    ]);
-    db = new SQL.Database(new Uint8Array(buffer));
-    db.create_function("fold", fold);
+    const buffer = await fetchBytes(FULL_URL);
+    if (generation !== loadGeneration) return;
+    const values = readForm();
+    install(buffer);
+    fillSelects();
+    writeForm(values);
+    showUpdated();
+    render();
+  } catch (error) {
+    if (generation !== loadGeneration) return;
+    archiveState = "failed";
+    if (db) render();
+  }
+}
+
+async function main() {
+  const generation = ++loadGeneration;
+  loadWatch();
+  try {
+    sqlEngine = await initSqlJs({ locateFile: (file) => SQL_JS_DIR + file });
+    let buffer;
+    try {
+      buffer = await fetchBytes(RECENT_URL);
+    } catch {
+      buffer = await fetchBytes(FULL_URL);
+    }
+    if (generation !== loadGeneration) return;
+    install(buffer);
     fillSelects();
     fillSortSelect();
     restoreFromHash();
-    const latest = query("SELECT max(last_fetched) AS t FROM auctions")[0].t;
-    if (latest) document.getElementById("updated").textContent = `Atnaujinta ${latest.replace("T", " ").replace("Z", " UTC")}`;
+    showUpdated();
     render();
+    if (scope === "recent") await loadFull(generation);
   } catch (error) {
-    countEl.textContent = "";
-    for (const nav of pagers) nav.hidden = true;
-    results.innerHTML = "";
-    const p = document.createElement("p");
-    p.className = "error";
-    p.textContent = `Nepavyko įkelti duomenų: ${error.message}`;
-    results.append(p);
+    if (generation !== loadGeneration) return;
+    showLoadError(error);
   }
 }
 
