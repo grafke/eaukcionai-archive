@@ -14,7 +14,11 @@ const STATUS_GROUP = {
 const WON = "Įvykusios";
 const LOST = "Neįvykusios";
 const CANCELLED = "Atšauktos";
-const LIVE = new Set(["Paskelbtas", "Paskelbtos", "Vykstančios", "Vykstantis"]);
+const ACTIVE = "Aktyvūs";
+const INACTIVE = "Neaktyvūs";
+const ACTIVE_STATUSES = ["Paskelbtas", "Paskelbtos", "Vykstančios", "Vykstantis"];
+const LIVE = new Set(ACTIVE_STATUSES);
+const byLt = (a, b) => a.localeCompare(b, "lt");
 
 function statusGroup(status) {
   return STATUS_GROUP[status] ?? status;
@@ -23,6 +27,30 @@ function statusGroup(status) {
 function statusesFor(label) {
   const raw = Object.keys(STATUS_GROUP).filter((status) => STATUS_GROUP[status] === label);
   return raw.length ? raw : [label];
+}
+
+function filterGroup(status) {
+  if (status === ACTIVE || status === INACTIVE) return status;
+  if (LIVE.has(status)) return ACTIVE;
+  return status ? INACTIVE : status;
+}
+
+function statusMembers(label, present = []) {
+  const known = label === ACTIVE ? ACTIVE_STATUSES : label === INACTIVE ? Object.keys(STATUS_GROUP) : [];
+  const extra = present.filter((status) => status && filterGroup(status) === label && !known.includes(status));
+  return [...known, ...extra].sort(byLt);
+}
+
+function statusFilterTip(present = []) {
+  return `${ACTIVE}: ${statusMembers(ACTIVE, present).join(", ")}\n${INACTIVE}: ${statusMembers(INACTIVE, present).join(", ")}`;
+}
+
+function statusClause(label) {
+  const marks = ACTIVE_STATUSES.map(() => "?").join(", ");
+  if (label === ACTIVE) return { sql: `status IN (${marks})`, params: [...ACTIVE_STATUSES] };
+  if (label === INACTIVE) return { sql: `status NOT IN (${marks}) AND status != ''`, params: [...ACTIVE_STATUSES] };
+  const raw = statusesFor(label);
+  return { sql: `status IN (${raw.map(() => "?").join(", ")})`, params: raw };
 }
 
 function eurPerM2(price, row, itemCount) {
@@ -272,8 +300,15 @@ function byPlace(marketObservations, currentObservations, placeKey, rankByGap = 
 }
 
 globalThis.AuctionStats = {
+  ACTIVE,
+  INACTIVE,
+  ACTIVE_STATUSES,
   statusGroup,
   statusesFor,
+  filterGroup,
+  statusMembers,
+  statusFilterTip,
+  statusClause,
   observe,
   median,
   weekStart,

@@ -88,6 +88,7 @@
   #count { scroll-margin-top: 12px; }
   .pager .ellipsis { color: var(--muted); padding: 0 2px; user-select: none; }
   .views { display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 8px; }
+  .view-tabs { display: flex; gap: 6px; }
   .views button[aria-selected="true"], .views button[aria-pressed="true"] { border-color: var(--accent); color: var(--accent); font-weight: 600; }
   .stats { display: grid; gap: 16px; }
   .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 8px; }
@@ -107,7 +108,9 @@
     line-height: 1.35;
     border-radius: 6px;
     pointer-events: none;
+    white-space: pre-line;
   }
+  select.has-tip { cursor: help; }
   .note, .rounds { margin: 4px 0 0; }
   .stat-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; }
   .stat-head h2 { margin: 0; font-size: 16px; }
@@ -160,6 +163,7 @@
     <details id="more" open>
     <summary>Filtrai</summary>
     <div class="grid">
+    <label>Turtas <select name="name"></select></label>
     <label>Aukciono rūšis <select name="kind"></select></label>
     <label>Turto potipis <select name="subtype"></select></label>
     <label>Savivaldybė <select name="municipality"></select></label>
@@ -191,9 +195,12 @@
     </span>
     <span id="updated"></span>
   </p>
-  <div class="views" role="tablist" aria-label="Rodinys">
-    <button type="button" id="view-list" role="tab" aria-selected="true">Sąrašas</button>
-    <button type="button" id="view-stats" role="tab" aria-selected="false">Statistika</button>
+  <div class="views">
+    <div class="view-tabs" role="tablist" aria-label="Rodinys">
+      <button type="button" id="view-list" role="tab" aria-selected="true">Sąrašas</button>
+      <button type="button" id="view-stats" role="tab" aria-selected="false">Statistika</button>
+    </div>
+    <button type="button" id="watch-only" aria-pressed="false">Tik stebimi (0)</button>
   </div>
   <nav id="pager" class="pager" aria-label="Puslapiai" hidden></nav>
   <div id="results"></div>
@@ -201,11 +208,12 @@
 </div>
 
 <script src="stats.js"></script>
+<script src="watch.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.14.2/sql-wasm.min.js" integrity="sha512-3rCfIirhW2xUpZCwDHnpKT5qyOvlt6hsu0Sq1IjP5hW9/k5YWnsLJ/7bF9KTmUgjDSQmvJw40mQDFbrxr647Ag==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>
 "use strict";
 const SQL_JS_DIR = "https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.14.2/";
-const LIVE_STATUSES = new Set(["Paskelbtas", "Paskelbtos", "Vykstančios", "Vykstantis"]);
+const LIVE_STATUSES = new Set(AuctionStats.ACTIVE_STATUSES);
 const PAGE_SIZES = [50, 100, 200, 500];
 const DEFAULT_PAGE_SIZE = 100;
 const DEFAULT_WINDOW_DAYS = 90;
@@ -225,7 +233,9 @@ const COLUMNS = [
   { key: "first_seen", label: "Paskelbta", sql: "first_seen", format: "date" },
   { key: "end_date", label: "Pabaiga", sql: "end_date", format: "date" },
 ];
-const SELECTS = ["kind", "subtype", "municipality", "settlement", "paskirtis", "status"];
+const SELECTS = ["name", "kind", "subtype", "municipality", "settlement", "paskirtis", "status"];
+// One-off titles (a vehicle, a named debt) stay in the search box. "Butas Nr. 2" rolls up into Butas.
+const NAME_MIN_COUNT = 30;
 
 const form = document.getElementById("filters");
 const results = document.getElementById("results");
@@ -246,6 +256,8 @@ let view = "list";
 let grain = "week";
 let placeLevel = "municipality";
 let itemCountByAuction;
+let marks = [];
+let watchOnly = false;
 const pct = new Intl.NumberFormat("lt-LT", { style: "percent", maximumFractionDigits: 1 });
 
 const fold = (s) => (s ?? "").normalize("NFD").replace(/\p{M}/gu, "").toLocaleLowerCase("lt");
@@ -294,12 +306,44 @@ function query(sqlText, params = []) {
 function fillSelects() {
   for (const name of SELECTS) {
     const select = form.elements[name];
-    const values = name === "status"
-      ? [...new Set(query("SELECT DISTINCT status AS v FROM item_rows WHERE status IS NOT NULL").map((r) => AuctionStats.statusGroup(r.v)))]
-      : query(`SELECT DISTINCT ${name} AS v FROM item_rows WHERE ${name} IS NOT NULL`).map((r) => r.v);
+    if (name === "status") {
+      const present = query("SELECT DISTINCT status AS v FROM item_rows WHERE status IS NOT NULL AND status != ''").map((r) => r.v);
+      const active = new Option(AuctionStats.ACTIVE, AuctionStats.ACTIVE);
+      const inactive = new Option(AuctionStats.INACTIVE, AuctionStats.INACTIVE);
+      active.title = AuctionStats.statusMembers(AuctionStats.ACTIVE, present).join(", ");
+      inactive.title = AuctionStats.statusMembers(AuctionStats.INACTIVE, present).join(", ");
+      select.replaceChildren(new Option("Visos", ""), active, inactive);
+      if (!select.dataset.tipBound) {
+        select.dataset.tipBound = "1";
+        select.classList.add("has-tip");
+        bindTip(select, AuctionStats.statusFilterTip(present), {
+          focusable: false,
+          toggleOnClick: false,
+          place: "above",
+          maxWidth: 520,
+          keepWhileFocused: true,
+          hideOnChange: true,
+        });
+      }
+      continue;
+    }
+    if (name === "name") {
+      const values = query(
+        "SELECT name AS v FROM item_rows WHERE name IS NOT NULL GROUP BY name HAVING count(*) >= ?",
+        [NAME_MIN_COUNT],
+      ).map((r) => r.v).filter((v) => !/ Nr\.?\s*\d/.test(v));
+      values.sort((a, b) => String(a).localeCompare(String(b), "lt"));
+      select.replaceChildren(new Option("Visi", ""), ...values.map((v) => new Option(v, v)));
+      continue;
+    }
+    const values = query(`SELECT DISTINCT ${name} AS v FROM item_rows WHERE ${name} IS NOT NULL`).map((r) => r.v);
     values.sort((a, b) => String(a).localeCompare(String(b), "lt"));
     select.replaceChildren(new Option("Visos", ""), ...values.map((v) => new Option(v, v)));
   }
+}
+
+function likeLiteral(value) {
+  return value.replace(/[\\%_]/g, (ch) => `\\${ch}`);
 }
 
 function buildWhere(f, { dates = true } = {}) {
@@ -313,9 +357,12 @@ function buildWhere(f, { dates = true } = {}) {
   }
   for (const name of SELECTS) if (f[name]) {
     if (name === "status") {
-      const raw = AuctionStats.statusesFor(f[name]);
-      where.push(`status IN (${raw.map(() => "?").join(", ")})`);
-      params.push(...raw);
+      const clause = AuctionStats.statusClause(f[name]);
+      where.push(clause.sql);
+      params.push(...clause.params);
+    } else if (name === "name") {
+      where.push("(name = ? OR name LIKE ? ESCAPE '\\')");
+      params.push(f.name, `${likeLiteral(f.name)} Nr%`);
     } else {
       where.push(`${name} = ?`);
       params.push(f[name]);
@@ -323,8 +370,14 @@ function buildWhere(f, { dates = true } = {}) {
   }
   if (f.price_min) { where.push("starting_price_eur >= ?"); params.push(Number(f.price_min)); }
   if (f.price_max) { where.push("starting_price_eur <= ?"); params.push(Number(f.price_max)); }
-  if (dates && f.end_from) { where.push("end_date >= ?"); params.push(f.end_from); }
-  if (dates && f.end_to) { where.push("end_date < ?"); params.push(`${f.end_to}T24`); }
+  const skipDates = Watch.skipDefaultWindow(watchOnly, f.end_from, f.end_to, defaults().end_from);
+  if (dates && !skipDates && f.end_from) { where.push("end_date >= ?"); params.push(f.end_from); }
+  if (dates && !skipDates && f.end_to) { where.push("end_date < ?"); params.push(`${f.end_to}T24`); }
+  const watched = Watch.watchClause(watchOnly, marks);
+  if (watched) {
+    where.push(watched.sql);
+    params.push(...watched.params);
+  }
   return { sql: where.length ? `WHERE ${where.join(" AND ")}` : "", params };
 }
 
@@ -342,8 +395,32 @@ function cell(tr, column, content, className) {
   tr.append(td);
 }
 
+function marked(auctionId, itemNo) {
+  return marks.some((pair) => pair[0] === auctionId && pair[1] === itemNo);
+}
+
 function renderRow(row) {
   const tr = document.createElement("tr");
+  const watchCell = document.createElement("td");
+  watchCell.dataset.label = "Stebėti";
+  const star = document.createElement("button");
+  star.type = "button";
+  const on = marked(row.auction_id, row.item_no);
+  star.setAttribute("aria-pressed", String(on));
+  star.setAttribute("aria-label", on ? "Nebestebėti" : "Stebėti");
+  star.textContent = on ? "★" : "☆";
+  star.addEventListener("click", () => {
+    const next = Watch.toggleMark(marks, row.auction_id, row.item_no);
+    try {
+      localStorage.setItem(Watch.WATCH_KEY, Watch.dumpMarks(next));
+    } catch {
+      return;
+    }
+    marks = next;
+    render();
+  });
+  watchCell.append(star);
+  tr.append(watchCell);
   const title = document.createElement("span");
   const link = document.createElement("a");
   link.href = row.url;
@@ -371,6 +448,10 @@ function renderRow(row) {
 
 function renderHead() {
   const tr = document.createElement("tr");
+  const watchTh = document.createElement("th");
+  watchTh.scope = "col";
+  watchTh.textContent = "Stebėti";
+  tr.append(watchTh);
   for (const column of COLUMNS) {
     const th = document.createElement("th");
     th.scope = "col";
@@ -472,6 +553,9 @@ function writeHash(f) {
 }
 
 function render() {
+  const watchOnlyButton = document.getElementById("watch-only");
+  watchOnlyButton.textContent = `Tik stebimi (${marks.length})`;
+  watchOnlyButton.setAttribute("aria-pressed", String(watchOnly));
   sortSelect.value = `${sort.key}.${sort.dir}`;
   pageSizeSelect.value = String(pageSize);
   document.querySelector(".page-size").hidden = view === "stats";
@@ -486,7 +570,9 @@ function render() {
 }
 
 function listIsComplete(f) {
-  return scope === "full" || (coveredFrom != null && Boolean(f.end_from) && f.end_from >= coveredFrom);
+  if (scope === "full") return true;
+  if (Watch.skipDefaultWindow(watchOnly, f.end_from, f.end_to, defaults().end_from)) return false;
+  return coveredFrom != null && Boolean(f.end_from) && f.end_from >= coveredFrom;
 }
 
 function listSuffix(f) {
@@ -535,7 +621,9 @@ function renderList(f) {
   if (!rows.length) {
     const p = document.createElement("p");
     p.className = "empty";
-    p.textContent = "Nieko nerasta. Pabandykite plačiau nustatyti filtrus.";
+    p.textContent = watchOnly && marks.length === 0
+      ? "Nėra stebimų objektų."
+      : "Nieko nerasta. Pabandykite plačiau nustatyti filtrus.";
     results.replaceChildren(p);
     return;
   }
@@ -557,6 +645,7 @@ function itemCount(auctionId) {
 }
 
 function inWindow(obs, f) {
+  if (Watch.skipDefaultWindow(watchOnly, f.end_from, f.end_to, defaults().end_from)) return true;
   if (f.end_from && (!obs.endDay || obs.endDay < f.end_from)) return false;
   if (f.end_to && (!obs.endDay || obs.endDay > f.end_to)) return false;
   return true;
@@ -626,38 +715,46 @@ function hideTip() {
   tipTarget = null;
 }
 
-function showTip(el, text) {
+function showTip(el, text, { place = "auto", maxWidth = 280 } = {}) {
   if (tipTarget && tipTarget !== el) tipTarget.removeAttribute("aria-describedby");
   tipTarget = el;
   el.setAttribute("aria-describedby", tip.id);
   tip.hidden = false;
   tip.textContent = text;
   const rect = el.getBoundingClientRect();
-  const width = Math.min(280, window.innerWidth - 16);
+  const width = Math.min(maxWidth, window.innerWidth - 16);
   tip.style.maxWidth = `${width}px`;
   tip.style.left = `${Math.max(8, Math.min(rect.left, window.innerWidth - width - 8))}px`;
   tip.style.top = "0px";
+  const above = rect.top - tip.offsetHeight - 6;
   const below = rect.bottom + 6;
-  const top = below + tip.offsetHeight > window.innerHeight - 8 ? rect.top - tip.offsetHeight - 6 : below;
+  const top = place === "above"
+    ? (above >= 8 ? above : below)
+    : (below + tip.offsetHeight > window.innerHeight - 8 ? above : below);
   tip.style.top = `${Math.max(8, top)}px`;
 }
 
-function bindTip(el, text, { focusable = true } = {}) {
+function bindTip(el, text, { focusable = true, toggleOnClick = true, place = "auto", maxWidth = 280, keepWhileFocused = false, hideOnChange = false } = {}) {
   if (focusable) {
     el.classList.add("metric");
     el.tabIndex = 0;
   }
+  const show = () => showTip(el, text, { place, maxWidth });
   el.addEventListener("pointerenter", (event) => {
-    if (event.pointerType !== "touch") showTip(el, text);
+    if (event.pointerType !== "touch") show();
   });
   el.addEventListener("pointerleave", (event) => {
-    if (event.pointerType !== "touch") hideTip();
+    if (event.pointerType === "touch") return;
+    if (keepWhileFocused && document.activeElement === el) return;
+    hideTip();
   });
-  el.addEventListener("focus", () => showTip(el, text));
+  el.addEventListener("focus", show);
   el.addEventListener("blur", hideTip);
+  if (hideOnChange) el.addEventListener("change", hideTip);
+  if (!toggleOnClick) return;
   el.addEventListener("click", (event) => {
     event.stopPropagation();
-    if (tip.hidden || tipTarget !== el) showTip(el, text);
+    if (tip.hidden || tipTarget !== el) show();
     else hideTip();
   });
 }
@@ -870,8 +967,18 @@ function restoreFromHash() {
   delete params.grain;
   if (params.place === "municipality" || params.place === "settlement") placeLevel = params.place;
   delete params.place;
-  if (params.status) params.status = AuctionStats.statusGroup(params.status);
+  if (params.status) params.status = AuctionStats.filterGroup(params.status);
   writeForm(Object.keys(params).length ? params : defaults());
+}
+
+function loadWatch() {
+  try {
+    marks = Watch.parseMarks(localStorage.getItem(Watch.WATCH_KEY));
+    watchOnly = Watch.parseWatchOnly(localStorage.getItem(Watch.WATCH_ONLY_KEY));
+  } catch {
+    marks = [];
+    watchOnly = false;
+  }
 }
 
 const RECENT_URL = "auctions-recent.sqlite";
@@ -944,6 +1051,7 @@ async function loadFull(generation) {
 
 async function main() {
   const generation = ++loadGeneration;
+  loadWatch();
   try {
     sqlEngine = await initSqlJs({ locateFile: (file) => SQL_JS_DIR + file });
     let buffer;
@@ -990,6 +1098,23 @@ document.getElementById("view-list").addEventListener("click", () => {
 });
 document.getElementById("view-stats").addEventListener("click", () => {
   view = "stats";
+  if (db) render();
+});
+document.getElementById("watch-only").addEventListener("click", () => {
+  const next = !watchOnly;
+  try {
+    if (next) localStorage.setItem(Watch.WATCH_ONLY_KEY, "1");
+    else localStorage.removeItem(Watch.WATCH_ONLY_KEY);
+  } catch {
+    return;
+  }
+  watchOnly = next;
+  page = 1;
+  render();
+});
+window.addEventListener("storage", (event) => {
+  if (event.key !== Watch.WATCH_KEY && event.key !== Watch.WATCH_ONLY_KEY) return;
+  loadWatch();
   if (db) render();
 });
 if (matchMedia("(max-width: 760px)").matches) document.getElementById("more").open = false;

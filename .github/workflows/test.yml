@@ -16,3 +16,4 @@ jobs:
       - uses: actions/checkout@v7
       - uses: astral-sh/setup-uv@v10.3.0
       - run: uv run --locked pytest
+      - run: node --test site/watch.test.js
