@@ -2,7 +2,7 @@ import sqlite3
 from datetime import UTC, date, datetime
 
 from eaukcionai import store
-from eaukcionai.build_site import build, municipality, settlement
+from eaukcionai.build_site import build, municipality, recent_cutoff, recent_output, settlement
 from eaukcionai.detail import parse_detail
 from eaukcionai.lifecycle import reconcile
 from eaukcionai.model import Auction, Item
@@ -159,3 +159,55 @@ def test_settlement_is_the_locality_after_the_municipality():
         None,
         None,
     ]
+
+
+def _auction(auction_id: int, end_date: str) -> Auction:
+    return Auction(
+        auction_id=auction_id,
+        number=auction_id,
+        url=f"https://www.eaukcionai.lt/evs/pages/auction.do?id={auction_id}",
+        kind=None,
+        type=None,
+        status="Paskelbtas",
+        start_date="2026-01-01T00:00:00",
+        end_date=end_date,
+        registration_start=None,
+        registration_end=None,
+        starting_price_eur=1000,
+        highest_bid_eur=None,
+        first_seen=date(2026, 1, 1),
+        last_seen=date(2026, 1, 1),
+        last_fetched=datetime(2026, 1, 1, tzinfo=UTC),
+        final_status_seen_at=None,
+        done=False,
+    )
+
+
+def test_recent_file_keeps_auctions_inside_the_default_window(tmp_path):
+    today = date(2026, 11, 2)
+    cutoff = recent_cutoff(today)
+    assert cutoff == "2026-08-02"
+    old = _auction(1, "2026-08-01T23:59:59")
+    kept = _auction(2, "2026-08-02T00:00:00")
+    store.write(
+        tmp_path,
+        store.State(
+            auctions={1: old, 2: kept},
+            items={
+                1: (Item(auction_id=1, item_no=1, name="Senas"),),
+                2: (Item(auction_id=2, item_no=1, name="Naujas"),),
+            },
+        ),
+    )
+    out = tmp_path / "auctions.sqlite"
+    build(tmp_path, out, today=today)
+
+    full = sqlite3.connect(out)
+    assert full.execute("SELECT auction_id FROM auctions ORDER BY auction_id").fetchall() == [(1,), (2,)]
+    assert full.execute("SELECT name FROM sqlite_master WHERE name = 'meta'").fetchone() is None
+
+    recent = sqlite3.connect(recent_output(out))
+    assert recent.execute("SELECT value FROM meta WHERE key = 'scope'").fetchone() == ("recent",)
+    assert recent.execute("SELECT value FROM meta WHERE key = 'end_from'").fetchone() == (cutoff,)
+    assert recent.execute("SELECT auction_id FROM auctions").fetchall() == [(2,)]
+    assert recent.execute("SELECT name FROM item_rows").fetchall() == [("Naujas",)]
